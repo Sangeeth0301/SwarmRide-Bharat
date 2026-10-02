@@ -49,46 +49,43 @@ def rounded(img, r):
 
 # ---------------------------------------------------------------- hero banner
 def hero():
-    W, H = 1920, 760
-    im = Image.new("RGB", (W, H), NAVY)
+    """White banner: title, one sentence, and three real photos."""
+    W, H = 1920, 900
+    im = Image.new("RGB", (W, H), WHITE)
     d = ImageDraw.Draw(im)
-    for y in range(H):                       # subtle vertical gradient
-        t = y / H
-        d.line([(0, y), (W, y)], fill=tuple(round(NAVY[i] * (1 - t) + NAVY2[i] * t) for i in range(3)))
 
-    # photos on the right: Casnub bogie (large) + Vande Bharat + LHB air spring
-    cas = cover(Image.open(PHOTOS / "casnub.jpg").convert("RGB"), 820, 400, 0.5, 0.62)
-    vb = cover(Image.open(PHOTOS / "vande_bharat.jpg").convert("RGB"), 400, 225, 0.82, 0.5)
-    air = cover(Image.open(PHOTOS / "air_spring.jpg").convert("RGB"), 400, 225, 0.5, 0.5)
-    for pic, (x, y) in [(cas, (1040, 60)), (vb, (1040, 490)), (air, (1460, 490))]:
-        sh = Image.new("RGBA", (pic.width + 30, pic.height + 30), (0, 0, 0, 0))
-        ImageDraw.Draw(sh).rounded_rectangle((15, 15, pic.width + 15, pic.height + 15), 18, fill=(0, 0, 0, 110))
-        im.paste(sh.filter(ImageFilter.GaussianBlur(10)), (x - 15, y - 5), sh.filter(ImageFilter.GaussianBlur(10)))
-        im.paste(rounded(pic, 16), (x, y), rounded(pic, 16))
+    # title, centred: "SwarmRide" navy + "Bharat" orange
+    ft = font(104, True)
+    a, b = "SwarmRide ", "Bharat"
+    wa, wb = d.textlength(a, font=ft), d.textlength(b, font=ft)
+    x = (W - wa - wb) / 2
+    d.text((x, 40), a, font=ft, fill=NAVY)
+    d.text((x + wa, 40), b, font=ft, fill=ORANGE)
+    fs = font(36)
+    line = "Self-powered, load-adaptive, train-synchronised suspension for Indian Railways"
+    d.text(((W - d.textlength(line, font=fs)) / 2, 192), line, font=fs, fill=(74, 85, 104))
 
-    # text block
-    x0 = 110
-    tag = "INDIAN RAILWAYS · DEEP TECH"
-    tw = d.textlength(tag, font=font(21, True))
-    d.rounded_rectangle((x0, 118, x0 + tw + 44, 158), 20, fill=(224, 122, 31))
-    d.text((x0 + 22, 121), tag, font=font(21, True), fill=WHITE)
-    d.text((x0 - 4, 180), "SwarmRide", font=font(118, True), fill=WHITE)
-    d.text((x0 - 2, 315), "Bharat", font=font(118, True), fill=ORANGE)
-    d.text((x0, 470), "Self-powered, load-adaptive, train-synchronised", font=font(34), fill=WHITE)
-    d.text((x0, 515), "suspension for passenger and freight trains", font=font(34), fill=WHITE)
+    # three photos in a row
+    pw, ph, gap, y = 590, 440, 35, 300
+    x0 = (W - 3 * pw - 2 * gap) // 2
+    pics = [cover(Image.open(PHOTOS / "casnub.jpg").convert("RGB"), pw, ph, 0.5, 0.62),
+            cover(Image.open(PHOTOS / "vande_bharat.jpg").convert("RGB"), pw, ph, 0.80, 0.55),
+            cover(Image.open(PHOTOS / "air_spring.jpg").convert("RGB"), pw, ph, 0.5, 0.5)]
+    caps = ["Goods: Casnub bogie, BOXN wagon", "Passenger: Vande Bharat", "Coach bogie: LHB air spring"]
+    for k, pic in enumerate(pics):
+        px = x0 + k * (pw + gap)
+        sh = Image.new("RGBA", (pw + 40, ph + 40), (0, 0, 0, 0))
+        ImageDraw.Draw(sh).rounded_rectangle((20, 24, pw + 20, ph + 24), 20, fill=(19, 35, 58, 70))
+        sh = sh.filter(ImageFilter.GaussianBlur(12))
+        im.paste(sh, (px - 20, y - 20), sh)
+        r = rounded(pic, 20)
+        im.paste(r, (px, y), r)
+        fc = font(26, True)
+        d.text((px + (pw - d.textlength(caps[k], font=fc)) / 2, y + ph + 26), caps[k], font=fc, fill=NAVY)
 
-    chips = [("HARVEST", "track bumps → bogie power"), ("CONTROL", "ride tuned to live load"),
-             ("PROTECT", "self-powered safety sensors")]
-    cx = x0
-    for title, sub in chips:
-        d.rounded_rectangle((cx, 600, cx + 278, 680), 14, outline=(78, 101, 133), width=2, fill=(24, 44, 72))
-        d.ellipse((cx + 18, 618, cx + 30, 630), fill=TEAL if title != "HARVEST" else ORANGE)
-        d.text((cx + 40, 608), title, font=font(22, True), fill=WHITE)
-        d.text((cx + 18, 642), sub, font=font(18), fill=MUTED)
-        cx += 296
-
-    d.text((1040, H - 34), "Photos: Wikimedia Commons (CC BY-SA / CC0) and project archive, cropped. Credits: pdf/photos/CREDITS.md",
-           font=font(15), fill=(140, 152, 170))
+    fn = font(17)
+    note = "Photos: Wikimedia Commons (CC BY-SA / CC0) and project archive, cropped. Credits: pdf/photos/CREDITS.md"
+    d.text(((W - d.textlength(note, font=fn)) / 2, H - 42), note, font=fn, fill=(138, 147, 160))
     im.save(OUT / "hero.jpg", quality=90)
 
 
