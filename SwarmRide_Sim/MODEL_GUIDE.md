@@ -3,6 +3,8 @@
 What every block in `models/SR_Stage1.slx` is, why it is there, and where every number comes from.
 The model is always rebuilt by `scripts/build_stage1.m`; edit the script, not the `.slx`.
 
+**Stage 2** (`models/SR_Stage2.slx`, the smart damper and power chain) uses the same Track Input and Vehicle Plant; its blocks, parameters and results are described in [Stage2.md](Stage2.md).
+
 ---
 
 ## 1. How to run it
