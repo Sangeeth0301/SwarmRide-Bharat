@@ -1,0 +1,22 @@
+# MATLAB / Simulink build and cache files
+SwarmRide_Sim/work/
+slprj/
+*.slxc
+*.mexw64
+*.asv
+*.autosave
+*.slx.r20*
+*.bak
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS and editor
+Thumbs.db
+desktop.ini
+.DS_Store
+~$*
+.vscode/
+.idea/

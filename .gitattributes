@@ -1,0 +1,18 @@
+# Normalise line endings for text files
+* text=auto
+
+*.m      text diff=matlab
+*.py     text diff=python
+*.md     text diff=markdown
+*.html   text
+*.json   text
+*.txt    text
+
+# Binary files: never diff or merge as text
+*.slx    binary
+*.mat    binary
+*.png    binary
+*.jpg    binary
+*.webp   binary
+*.pdf    binary
+*.docx   binary
