@@ -10,6 +10,7 @@ This folder builds the two investor PDFs and holds the **expected-results previe
 | `sim_preview.py` | **Preview simulation**: a simplified half-coach model in Python that estimates the results SwarmRide should reach. Writes `results/*.png` and `results/summary.json` |
 | `build_results.py` | The 4-page *Simulation Results Preview* (`../SwarmRide_Simulation_Results_Preview.pdf`) from `results/` |
 | `results_preview.html` | The generated results HTML (intermediate) |
+| `build_readme_assets.py` | README visuals: banner `images/hero.jpg` and the annotated bogie `images/casnub_annotated.jpg` |
 | `photos/` | Real photographs of Indian rolling stock; see `photos/CREDITS.md` |
 
 ## Rebuild
@@ -18,6 +19,7 @@ This folder builds the two investor PDFs and holds the **expected-results previe
 python pdf/sim_preview.py      # needs numpy, scipy, matplotlib
 python pdf/build_results.py    # needs Microsoft Edge (headless print to PDF)
 python pdf/build_pitch.py
+python pdf/build_readme_assets.py   # needs Pillow
 ```
 
 ## Expected results (preview study)
