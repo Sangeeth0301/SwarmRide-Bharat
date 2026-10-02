@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/status-Stage%202%20of%204%20complete%20%C2%B7%20simulation-E07A1F?style=flat-square" alt="status">
   <img src="https://img.shields.io/badge/MATLAB%20%2F%20Simulink-R2024b-0076A8?style=flat-square" alt="MATLAB/Simulink R2024b">
   <img src="https://img.shields.io/badge/rolling%20stock-LHB%20%C2%B7%20Vande%20Bharat%20%C2%B7%20ICF%20%C2%B7%20BOXN-13233A?style=flat-square" alt="rolling stock">
-  <img src="https://img.shields.io/badge/model%20verified-0.004%25%20vs%20state--space-2A9D8F?style=flat-square" alt="verified">
+  <a href="SwarmRide_Sim/VERIFICATION.md"><img src="https://img.shields.io/badge/verification-test%20suite-2A9D8F?style=flat-square" alt="verification"></a>
   <img src="https://img.shields.io/badge/licence-proprietary-8A93A0?style=flat-square" alt="licence">
 </p>
 
@@ -144,7 +144,7 @@ sequenceDiagram
 
 ## Engineering validation
 
-The whole system is being proven in **MATLAB/Simulink** before any hardware. Every stage uses the **same coach, rail, speed and load, and changes only the damper**, so every comparison is fair.
+The whole system is being proven in **MATLAB/Simulink** before any hardware. Every stage uses the **same coach, rail, speed and load, and changes only the damper**, so every comparison is fair. A test suite (`scripts/run_all_checks.m`) checks the model against hand calculations, an independent state-space model, energy conservation and step-size convergence; see **[VERIFICATION.md](SwarmRide_Sim/VERIFICATION.md)** for what is proven and what is not.
 
 ```mermaid
 flowchart LR
@@ -276,7 +276,8 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
     ├── sr_setup.m                    start here
     ├── functions/                    physics, sensors, track, rolling stock, damper design
     ├── builders/                     shared Simulink block builders
-    ├── scripts/                      parameters, model builders, verification
+    ├── scripts/                      parameters, model builders, checks, run_all_checks
+    ├── tests/                        verification tests (physics, convergence, power chain, track)
     ├── models/                       generated Simulink models
     └── results/                      figures, reports, scope captures
 ```
@@ -305,7 +306,7 @@ The pitch and preview tooling use Python 3 (numpy, scipy, matplotlib, Pillow) an
 | [Investor pitch](SwarmRide_Bharat_Pitch.md) · [PDF](SwarmRide_Bharat_Pitch.pdf) · [Word](SwarmRide_Bharat_Pitch.docx) | Investors and Indian Railways |
 | [Technical document](SwarmRide_Bharat_Technical_Document.md) | Engineers |
 | [Complete guide](SwarmRide_Bharat_Complete_Guide.md) | Learning the project from scratch |
-| [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) | Simulation |
+| [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) · [Verification](SwarmRide_Sim/VERIFICATION.md) | Simulation |
 | [Results preview](SwarmRide_Simulation_Results_Preview.pdf) | Expected results |
 
 ---
