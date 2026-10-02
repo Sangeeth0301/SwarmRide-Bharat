@@ -1,0 +1,58 @@
+SwarmRide verification report  (2026-10-02 18:11, MATLAB 2024b)
+
+--- test_sperling ---
+PASS  Sperling Wz, 1 Hz sine vs closed form                                             0 %          (limit 0.5)  Wz 1.967 vs 1.967
+PASS  Sperling Wz, 4 Hz sine vs closed form                                             0 %          (limit 0.5)  Wz 2.259 vs 2.259
+PASS  Sperling Wz, 8 Hz sine vs closed form                                     4.136e-14 %          (limit 0.5)  Wz 2.147 vs 2.147
+PASS  Sperling Wz, 12 Hz sine vs closed form                                            0 %          (limit 0.5)  Wz 1.901 vs 1.901
+--- test_track ---
+FAIL  Track good, 100-30 m band power vs spectrum                                   19.19 %          (limit 15)  RMS in band 2.24 vs 2.05 mm
+PASS  Track good, 30-10 m band power vs spectrum                                   0.4495 %          (limit 15)  RMS in band 1.04 vs 1.04 mm
+PASS  Track good, 10-3 m band power vs spectrum                                     3.853 %          (limit 15)  RMS in band 0.42 vs 0.43 mm
+PASS  Track good, 3-1 m band power vs spectrum                                     0.1748 %          (limit 15)  RMS in band 0.09 vs 0.09 mm
+PASS  Track good, overall RMS (information)                                             0 mm         (limit 1)  RMS 2.51 mm, peak 6.7 mm
+FAIL  Track poor, 100-30 m band power vs spectrum                                   19.19 %          (limit 15)  RMS in band 3.66 vs 3.35 mm
+PASS  Track poor, 30-10 m band power vs spectrum                                   0.4495 %          (limit 15)  RMS in band 1.71 vs 1.70 mm
+PASS  Track poor, 10-3 m band power vs spectrum                                     3.853 %          (limit 15)  RMS in band 0.69 vs 0.70 mm
+PASS  Track poor, 3-1 m band power vs spectrum                                     0.1748 %          (limit 15)  RMS in band 0.15 vs 0.15 mm
+PASS  Track poor, overall RMS (information)                                             0 mm         (limit 1)  RMS 4.10 mm, peak 10.9 mm
+--- test_stage1_physics ---
+PASS  GENERIC bounce frequency vs hand formula                                     0.4994 %          (limit 5)  0.829 Hz model vs 0.834 Hz hand (bogie mass ignored by hand)
+PASS  LHB bounce frequency vs hand formula                                         0.4749 %          (limit 5)  0.894 Hz model vs 0.899 Hz hand (bogie mass ignored by hand)
+PASS  VB bounce frequency vs hand formula                                          0.4704 %          (limit 5)  0.836 Hz model vs 0.840 Hz hand (bogie mass ignored by hand)
+PASS  ICF bounce frequency vs hand formula                                         0.5158 %          (limit 5)  0.899 Hz model vs 0.903 Hz hand (bogie mass ignored by hand)
+PASS  BOXN bounce frequency vs hand formula                                      0.001602 %          (limit 5)  2.040 Hz model vs 2.040 Hz hand (bogie mass ignored by hand)
+PASS  Simulink vs state-space model (LHB, poor track)                            0.003941 % of peak  (limit 0.1)  
+PASS  Passive damper never gives energy (min F*v)                                       0 W          (limit 1e-09)  
+--- test_convergence ---
+PASS  Stage 1 LHB (1 ms vs 0.5 ms): Sperling Wz                                 0.0001272 %          (limit 1)  1.829 vs 1.829
+PASS  Stage 1 LHB (1 ms vs 0.5 ms): body RMS                                     0.000269 %          (limit 1)  0.1547 vs 0.1547 m/s^2
+PASS  Stage 1 LHB (1 ms vs 0.5 ms): damper power                                0.0009105 %          (limit 2)  73.0 vs 73.0 W
+PASS  Stage 1 BOXN friction (0.5 ms vs 0.25 ms): Sperling Wz                    0.0001495 %          (limit 1)  2.093 vs 2.093
+PASS  Stage 1 BOXN friction (0.5 ms vs 0.25 ms): body RMS                        8.31e-07 %          (limit 1)  0.3294 vs 0.3294 m/s^2
+PASS  Stage 1 BOXN friction (0.5 ms vs 0.25 ms): damper power                   0.0003305 %          (limit 2)  208.8 vs 208.8 W
+PASS  Stage 2 LHB design C (1 ms vs 0.5 ms): Sperling Wz                        3.035e-05 %          (limit 1)  1.790 vs 1.790
+PASS  Stage 2 LHB design C (1 ms vs 0.5 ms): body RMS                           6.437e-05 %          (limit 1)  0.1470 vs 0.1470 m/s^2
+PASS  Stage 2 LHB design C (1 ms vs 0.5 ms): damper power                        0.001048 %          (limit 2)  50.3 vs 50.3 W
+PASS  Stage 2 BOXN design C (0.5 ms vs 0.25 ms): Sperling Wz                    3.405e-06 %          (limit 1)  1.761 vs 1.761
+PASS  Stage 2 BOXN design C (0.5 ms vs 0.25 ms): body RMS                       2.039e-06 %          (limit 1)  0.1545 vs 0.1545 m/s^2
+PASS  Stage 2 BOXN design C (0.5 ms vs 0.25 ms): damper power                   0.0002219 %          (limit 2)  114.2 vs 114.2 W
+--- test_stage2 ---
+PASS  EM copy of today's damper: body acceleration vs Stage 1                       1.225 % of peak  (limit 3)  difference = 2 ms current loop
+PASS  EM copy of today's damper: Sperling Wz vs Stage 1                           0.07662 %          (limit 0.5)  1.830 vs 1.829
+PASS  Damping law: fitted c vs commanded                                          0.09473 %          (limit 1)  
+PASS  Power into the damper = today's damper heat                                  0.1053 %          (limit 1)  72.9 vs 73.0 W
+PASS  Coil efficiency vs 1 - c/c_max                                             0.001054 points     (limit 1)  0.716 vs 0.716
+PASS  Converter chain vs 0.95 x 0.94                                            0.0001948 points     (limit 0.5)  0.8930 vs 0.8930
+PASS  Harvest setting: coil efficiency = 0.5 (load = coil resistance)            0.002236 points     (limit 1)  0.500
+PASS  Fail-safe resistor formula gives today's damping                                  0 %          (limit 1e-06)  
+PASS  Energy balance, design A match                                            1.712e-05 %          (limit 0.1)  
+PASS  Energy balance, design A harvest                                          1.215e-05 %          (limit 0.1)  
+PASS  Energy balance, BOXN design C                                             0.0003179 %          (limit 0.1)  
+PASS  Fail-safe design A: damping after fault vs today                                  0 %          (limit 0.5)  
+PASS  Fail-safe design A: harvesting after fault                                        0 W          (limit 1e-06)  
+PASS  Fail-safe design B: damping after fault vs today                          2.287e-13 %          (limit 0.5)  
+PASS  Fail-safe design B: harvesting after fault                                        0 W          (limit 1e-06)  
+PASS  Smart damper never needs bank power (min Pgen)                              -0.1133 W          (limit 1)  small negatives only from the 2 ms current lag
+
+47 of 49 checks passed.
