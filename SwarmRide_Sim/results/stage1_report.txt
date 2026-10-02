@@ -1,14 +1,14 @@
 === 1. Modes of the coach (passive oil damper) ===
-Load  0 t: 0.87 Hz (zeta 0.11)  1.03 Hz (zeta 0.13)  5.20 Hz (zeta 0.37)  5.20 Hz (zeta 0.37)  
-Load 15 t: 0.83 Hz (zeta 0.07)  0.98 Hz (zeta 0.09)  5.46 Hz (zeta 0.35)  5.46 Hz (zeta 0.35)  
+Load  0 t: 0.87 Hz (zeta 0.11)  0.94 Hz (zeta 0.12)  5.20 Hz (zeta 0.37)  5.20 Hz (zeta 0.37)  
+Load 15 t: 0.83 Hz (zeta 0.07)  0.90 Hz (zeta 0.08)  5.46 Hz (zeta 0.35)  5.46 Hz (zeta 0.35)  
 Hand check, body bounce (crowded): sqrt(keff/m)/2pi = 0.83 Hz
 
 === 2. Simulink vs independent state-space model ===
 Max difference (body acceleration): 0.003 % of peak  -> PASS
 
 === 3. Ride on poor track, 160 km/h (passive oil damper) ===
-Load  0 t: body RMS 0.144 m/s^2, Sperling Wz 1.77, max stroke 19.2 mm
-Load 15 t: body RMS 0.165 m/s^2, Sperling Wz 1.87, max stroke 20.4 mm
+Load  0 t: body RMS 0.144 m/s^2, Sperling Wz 1.77, max stroke 18.4 mm
+Load 15 t: body RMS 0.165 m/s^2, Sperling Wz 1.87, max stroke 17.9 mm
 (Python preview study gave 0.148 empty / 0.176 crowded on its own random track)
 
 Saved results/stage1_bump.png

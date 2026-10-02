@@ -380,7 +380,7 @@ Sources 3 and 4 were read from search summaries; confirm the numbers in the full
 
 | Check | Result | Meaning |
 |---|---|---|
-| **Vibration modes** (empty → crowded) | Body bounce 0.87 → 0.83 Hz, pitch 1.03 → 0.98 Hz, bogies 5.2 → 5.5 Hz | Realistic: coach bodies are designed for about 1 Hz |
+| **Vibration modes** (empty → crowded) | Body bounce 0.87 → 0.83 Hz, pitch 0.94 → 0.90 Hz, bogies 5.2 → 5.5 Hz | Realistic: coach bodies are designed for about 1 Hz (pitch inertia I = m·L²/12, L = 24 m) |
 | **Hand check** | f = (1/2π)·√(k_eff/m) = **0.83 Hz**, the same as the model | The physics matches textbook theory |
 | **Simulink vs independent model** | Max difference **0.003%** of peak → **PASS** | The Simulink wiring is correct |
 | **Wiring re-check on LHB (Stage 1b)** | **0.004%** → **PASS** | Still correct after adding real trains |
