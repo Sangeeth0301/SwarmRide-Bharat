@@ -56,6 +56,9 @@ P.trackSeed = 7;                                   % same random track for every
 
 %% 8. Simulation settings
 P.Ts   = TB.Ts;                                    % fixed step                            [s]
+if exist('Ts_override', 'var') && ~isempty(Ts_override)
+    P.Ts = Ts_override;                            % step-size convergence checks only
+end
 P.Tend = 30;                                       % simulated time                        [s]
 
 %% 9. Stage 2: SwarmRide smart damper (sized per vehicle in functions/sr_damper_design.m)
