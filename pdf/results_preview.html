@@ -1,0 +1,133 @@
+<!doctype html><html><head><meta charset="utf-8"><title>SwarmRide Simulation Results Preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Rubik:wght@500;600;700&display=swap">
+<style>
+@page { size: 297mm 210mm; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'IBM Plex Sans', Arial, sans-serif; color: #3D4A5C; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { width:1123px; height:794px; position:relative; overflow:hidden; page-break-after:always; background:#F6F4EE; padding:30px 40px; }
+.page:last-child { page-break-after:auto; }
+.eyebrow { font-size:11.5px; letter-spacing:3px; text-transform:uppercase; font-weight:600; color:#A8520F; }
+h2 { font-family:Rubik, Arial; font-weight:600; font-size:26px; color:#13233A; margin-top:6px; }
+.lead { font-size:13.5px; margin-top:6px; color:#13233A; }
+.canvas { margin-top:12px; background:#FFFFFF; border:1px solid #D5D9E0; border-radius:8px; overflow:hidden; width:1043px; }
+.crumb { font-family:'IBM Plex Mono', Consolas, monospace; font-size:11px; color:#5E6878; background:#EEF0F3; padding:5px 10px; border-bottom:1px solid #D5D9E0; }
+.notes { display:flex; gap:14px; margin-top:12px; }
+.notes div { flex:1; font-size:12px; line-height:1.45; background:#FFFFFF; border-radius:8px; padding:9px 12px; color:#13233A; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:12px 18px; margin-top:12px; }
+.fig { background:#FFFFFF; border-radius:10px; padding:10px 12px; box-shadow:0 1px 4px rgba(19,35,58,0.08); }
+.fh { display:flex; justify-content:space-between; align-items:center; }
+.ft { font-family:Rubik, Arial; font-weight:600; font-size:13.5px; color:#13233A; }
+.fig img { width:100%; height:220px; object-fit:contain; display:block; margin:4px 0; }
+.fig p { font-size:11px; line-height:1.4; color:#13233A; }
+.fig p.pc { color:#5E6878; margin-top:2px; }
+.badge { font-size:9.5px; font-weight:700; letter-spacing:1px; color:#fff; padding:3px 8px; border-radius:10px; white-space:nowrap; }
+.score { width:100%; border-collapse:collapse; margin-top:14px; font-size:12.5px; background:#FFFFFF; border-radius:10px; overflow:hidden; }
+.score th { background:#13233A; color:#F6F4EE; text-align:left; padding:8px 12px; font-weight:600; }
+.score td { padding:7px 12px; border-top:1px solid #ECE8DE; color:#13233A; }
+.cols { display:flex; gap:18px; margin-top:14px; }
+.box { flex:1; background:#FFFFFF; border-radius:10px; padding:12px 16px; font-size:12px; line-height:1.5; color:#13233A; }
+.bh { font-size:10.5px; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; color:#A8520F; margin-bottom:4px; }
+.box ol { padding-left:18px; }
+.foot { position:absolute; left:40px; bottom:12px; width:1043px; font-size:9.5px; color:#6B7685; }
+.foot span { float:right; font-weight:600; }
+</style></head><body>
+<div class="page">
+  <div class="eyebrow">SwarmRide Bharat · simulation results preview</div>
+  <h2>What the MATLAB/Simulink model looks like</h2>
+  <p class="lead">One model, one track, four controllers. Every result on the next pages comes from running this structure; nothing is drawn by hand.</p>
+  <div class="canvas"><div class="crumb">SwarmRide_Coach ▸ top level</div><svg width="1043" height="540" viewBox="0 0 1043 540"><defs><marker id="sl-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#3B4A5E"/></marker><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#EEF0F3" stroke-width="1"/></pattern></defs><rect x="0" y="0" width="1043" height="540" fill="url(#grid)"/><rect x="643" y="63" width="160" height="66" rx="3" fill="#D9DDE3"/><rect x="640" y="60" width="160" height="66" rx="3" fill="#FFFFFF" stroke="#3B4A5E" stroke-width="1.4"/><text x="720.0" y="82" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">ŵ(t − d/v)</text><text x="720.0" y="96" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">+ timing error</text><text x="720.0" y="141" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Train Brain preview</text><rect x="33" y="203" width="130" height="70" rx="3" fill="#D9DDE3"/><rect x="30" y="200" width="130" height="70" rx="3" fill="#FFFFFF" stroke="#3B4A5E" stroke-width="1.4"/><text x="95.0" y="222" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">PSD → w(x)</text><text x="95.0" y="236" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">4 wheel delays</text><text x="95.0" y="285" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Track Input</text><rect x="203" y="188" width="180" height="100" rx="3" fill="#D9DDE3"/><rect x="200" y="185" width="180" height="100" rx="3" fill="#FFFFFF" stroke="#13233A" stroke-width="1.4"/><text x="290.0" y="207" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">half-coach</text><text x="290.0" y="221" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">4 DOF · 8 states</text><text x="290.0" y="235" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">m(load), v</text><text x="290.0" y="300" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Vehicle Plant</text><rect x="433" y="203" width="160" height="70" rx="3" fill="#D9DDE3"/><rect x="430" y="200" width="160" height="70" rx="3" fill="#FFFFFF" stroke="#3B4A5E" stroke-width="1.4"/><text x="510.0" y="222" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">m̂ (air pressure)</text><text x="510.0" y="236" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">v_rel = e / Ke</text><text x="510.0" y="285" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Sensors + Estimators</text><rect x="643" y="203" width="160" height="70" rx="3" fill="#D9DDE3"/><rect x="640" y="200" width="160" height="70" rx="3" fill="#FFFFFF" stroke="#E07A1F" stroke-width="1.4"/><text x="720.0" y="222" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">Variant:</text><text x="720.0" y="236" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">C0 | C1 | C2 | C3</text><text x="720.0" y="285" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Controller</text><rect x="853" y="203" width="160" height="70" rx="3" fill="#D9DDE3"/><rect x="850" y="200" width="160" height="70" rx="3" fill="#FFFFFF" stroke="#1F6F66" stroke-width="1.4"/><text x="930.0" y="222" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">Stateflow</text><text x="930.0" y="236" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">Comfort/Eco/Reserve</text><text x="930.0" y="285" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Energy Supervisor</text><rect x="643" y="383" width="160" height="70" rx="3" fill="#D9DDE3"/><rect x="640" y="380" width="160" height="70" rx="3" fill="#FFFFFF" stroke="#3B4A5E" stroke-width="1.4"/><text x="720.0" y="402" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">relay → R_fail</text><text x="720.0" y="416" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">if fault / low SOC</text><text x="720.0" y="465" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Fail-safe Switch</text><rect x="433" y="383" width="160" height="70" rx="3" fill="#D9DDE3"/><rect x="430" y="380" width="160" height="70" rx="3" fill="#FFFFFF" stroke="#E07A1F" stroke-width="1.4"/><text x="510.0" y="402" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">e = Ke·v</text><text x="510.0" y="416" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">F = Kf·i</text><text x="510.0" y="465" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Smart Damper ×2</text><rect x="643" y="458" width="160" height="60" rx="3" fill="#D9DDE3"/><rect x="640" y="455" width="160" height="60" rx="3" fill="#FFFFFF" stroke="#1F6F66" stroke-width="1.4"/><text x="720.0" y="477" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">H-bridge · DC-DC</text><text x="720.0" y="491" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">supercap · SOC</text><text x="720.0" y="530" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Power Chain + Bank</text><rect x="203" y="458" width="180" height="60" rx="3" fill="#D9DDE3"/><rect x="200" y="455" width="180" height="60" rx="3" fill="#FFFFFF" stroke="#3B4A5E" stroke-width="1.4"/><text x="290.0" y="477" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">Wz · RMS · stroke</text><text x="290.0" y="530" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Ride Metrics</text><rect x="33" y="458" width="130" height="60" rx="3" fill="#D9DDE3"/><rect x="30" y="455" width="130" height="60" rx="3" fill="#FFFFFF" stroke="#3B4A5E" stroke-width="1.4"/><text x="95.0" y="477" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">bearing temp</text><text x="95.0" y="491" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, Consolas, monospace" fill="#3D4A5C">alert logic</text><text x="95.0" y="530" text-anchor="middle" font-size="11.5" font-weight="600" font-family="IBM Plex Sans, Arial" fill="#13233A">Health Monitor</text><path d="M160 235 L200 235" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="162" y="228" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">w₁..w₄</text><path d="M380 235 L430 235" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="398" y="228" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">x</text><path d="M590 235 L640 235" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="594" y="228" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">x̂,m̂</text><path d="M720 126 L720 200" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="726" y="168" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">preview</text><path d="M850 235 L800 235" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="808" y="228" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">mode</text><path d="M720 270 L720 380" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="726" y="330" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">i*</text><path d="M880 270 L880 415 L800 415" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="886" y="340" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">fault</text><path d="M640 415 L590 415" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="606" y="408" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">i</text><path d="M430 425 L290 425 L290 285" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="296" y="410" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">F</text><path d="M360 285 L360 395 L430 395" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="366" y="330" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">v_rel</text><path d="M510 450 L510 485 L640 485" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="516" y="478" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">P_el</text><path d="M800 485 L980 485 L980 270" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="986" y="400" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">SOC</text><path d="M230 285 L230 455" fill="none" stroke="#3B4A5E" stroke-width="1.4" marker-end="url(#sl-arrow)"/><text x="236" y="360" font-size="10" font-family="IBM Plex Mono, Consolas, monospace" fill="#3B4A5E">a, stroke</text></svg></div>
+  <div class="notes">
+    <div><b>Same track for every case,</b> so differences come only from the damper.</div>
+    <div><b>Variant controller:</b> C0 oil damper · C1 fixed-load · C2 SwarmRide · C3 + preview.</div>
+    <div><b>Everything logged:</b> ride, stroke, force, power and charge feed the plots.</div>
+  </div>
+  <div class="foot">Preliminary results on pages 2–4 come from a Python version of this exact model with assumed coach data. The MATLAB/Simulink build replaces them.<span>1 / 4</span></div>
+</div>
+<div class="page">
+  <div class="eyebrow">Essential results 1–4</div>
+  <h2>A smoother ride than today's dampers</h2>
+  <div class="grid">
+    
+<div class="fig">
+  <div class="fh"><span class="ft">1 · One bump: the bounce dies faster</span><span class="badge" style="background:#1F6F66">PASS</span></div>
+  <img src="results/r1_bump.png">
+  <p><b>Proves:</b> after a 10 mm dip, peak body acceleration drops from 0.10 to 0.08 m/s² (17% lower) and the bounce settles sooner.</p>
+  <p class="pc"><b>Pass condition:</b> lower peak and faster settling than the oil damper.</p>
+</div>
+    
+<div class="fig">
+  <div class="fh"><span class="ft">2 · Real track: less shaking, all the time</span><span class="badge" style="background:#1F6F66">PASS</span></div>
+  <img src="results/r2_trace.png">
+  <p><b>Proves:</b> on poor track at 160 km/h with a crowded coach, body vibration falls from 0.165 to 0.125 m/s² RMS (24% lower).</p>
+  <p class="pc"><b>Pass condition:</b> lower RMS acceleration on identical track.</p>
+</div>
+    
+<div class="fig">
+  <div class="fh"><span class="ft">3 · It removes the vibration people feel</span><span class="badge" style="background:#1F6F66">PASS</span></div>
+  <img src="results/r3_psd.png">
+  <p><b>Proves:</b> in the 0.5–2 Hz band passengers feel most, vibration falls 30% (0.157 → 0.110 m/s²). Above 6 Hz it rises slightly (0.007 → 0.009 m/s²) from fast damping changes; Simulink adds command smoothing.</p>
+  <p class="pc"><b>Pass condition:</b> lower vibration in the 0.5–2 Hz band.</p>
+</div>
+    
+<div class="fig">
+  <div class="fh"><span class="ft">4 · Better at every passenger load</span><span class="badge" style="background:#1F6F66">PASS</span></div>
+  <img src="results/r4_loads.png">
+  <p><b>Proves:</b> vibration is 23%, 26% and 27% lower for empty, half and crowded coaches. Ride index Wz: 1.90 → 1.69 when crowded.</p>
+  <p class="pc"><b>Pass condition:</b> better than both the oil damper and a fixed-load harvester at every load.</p>
+</div>
+  </div>
+  <div class="foot">Poor track = high-irregularity track spectrum. Coach parameters assumed (Guide, Section 8).<span>2 / 4</span></div>
+</div>
+<div class="page">
+  <div class="eyebrow">Essential results 5–8</div>
+  <h2>Regeneration into the power bank</h2>
+  <div class="grid">
+    
+<div class="fig">
+  <div class="fh"><span class="ft">5 · Damping follows the passenger load</span><span class="badge" style="background:#1F6F66">PASS</span></div>
+  <img src="results/r5_zeta.png">
+  <p><b>Proves:</b> a fixed damper loses damping quality as people board; SwarmRide holds it at the chosen target.</p>
+  <p class="pc"><b>Pass condition:</b> constant damping ratio from empty to crowded.</p>
+</div>
+    
+<div class="fig">
+  <div class="fh"><span class="ft">6 · Comfort and power together</span><span class="badge" style="background:#1F6F66">PASS</span></div>
+  <img src="results/r6_pareto.png">
+  <p><b>Proves:</b> at the same 10–28 W, SwarmRide always rides smoother than a fixed-load harvester. Fixed-load harvesters reach 45 W only by making the ride 28% worse than today's oil damper.</p>
+  <p class="pc"><b>Pass condition:</b> SwarmRide curve below the fixed-load curve at equal power.</p>
+</div>
+    
+<div class="fig">
+  <div class="fh"><span class="ft">7 · How much power, and how to get more</span><span class="badge" style="background:#A8520F">NEEDS WORK</span></div>
+  <img src="results/r7_power.png">
+  <p><b>Proves:</b> at 160 km/h: 6 W (good track) to 15 W (poor track) per bogie with today's damper design; a stronger magnet/coil (Ke = 300) gives 15 to 40 W.</p>
+  <p class="pc"><b>Pass condition:</b> harvest above the electronics need on typical routes.</p>
+</div>
+    
+<div class="fig">
+  <div class="fh"><span class="ft">8 · The bogie keeps itself charged</span><span class="badge" style="background:#1F6F66">PASS</span></div>
+  <img src="results/r8_soc.png">
+  <p><b>Proves:</b> over a 12-minute trip with station stops, the power bank ends at 68% with 5 W electronics and the Ke = 300 design.</p>
+  <p class="pc"><b>Pass condition:</b> charge never hits zero; ends at or above the start.</p>
+</div>
+  </div>
+  <div class="foot">All power figures per bogie, after converter losses (92% assumed). Electronics need is an estimate until the bench prototype is measured.<span>3 / 4</span></div>
+</div>
+<div class="page">
+  <div class="eyebrow">Scorecard</div>
+  <h2>Where the approach stands today</h2>
+  <table class="score"><tr><th>Claim</th><th>Preliminary result</th><th>Status</th></tr><tr><td>Smoother ride on a bump</td><td>17% lower peak</td><td><span class="badge" style="background:#1F6F66">PASS</span></td></tr><tr><td>Smoother ride on real track</td><td>24% lower RMS (poor, crowded, 160 km/h)</td><td><span class="badge" style="background:#1F6F66">PASS</span></td></tr><tr><td>Better at every load</td><td>23–27% lower RMS, empty to crowded</td><td><span class="badge" style="background:#1F6F66">PASS</span></td></tr><tr><td>Better than existing harvesters</td><td>SwarmRide curve beats the fixed-load curve</td><td><span class="badge" style="background:#1F6F66">PASS</span></td></tr><tr><td>Purely regenerative (never pushes)</td><td>F·v_rel ≥ 0 in every step (minimum 0.0)</td><td><span class="badge" style="background:#1F6F66">PASS</span></td></tr><tr><td>Small high-frequency side effect</td><td>above 6 Hz: 0.007 → 0.009 m/s² (smooth the damping command)</td><td><span class="badge" style="background:#A8520F">NEEDS WORK</span></td></tr><tr><td>Stroke within limits</td><td>max 12.0 mm vs 13.4 mm today (limit ±40 mm assumed)</td><td><span class="badge" style="background:#1F6F66">PASS</span></td></tr><tr><td>Power above electronics need</td><td>good track 1–6 W (Ke 200) · 3–15 W (Ke 300)</td><td><span class="badge" style="background:#A8520F">NEEDS WORK</span></td></tr><tr><td>Power bank stays charged</td><td>ends trip at 68% (Ke 300, 5 W electronics)</td><td><span class="badge" style="background:#1F6F66">PASS</span></td></tr><tr><td>Bump preview (C3) adds comfort</td><td>to be built in Simulink (week 6)</td><td><span class="badge" style="background:#8A93A0">NEXT</span></td></tr><tr><td>Fail-safe equals passive damper</td><td>to be built in Simulink (week 5)</td><td><span class="badge" style="background:#8A93A0">NEXT</span></td></tr></table>
+  <div class="cols">
+    <div class="box"><div class="bh">To fix the power gap</div>
+      <ol><li>Stronger damper: more magnet and coil turns (higher Ke), lower coil resistance.</li>
+      <li>Low-power electronics: sensors sampled in bursts, radio duty-cycled (5 W target).</li>
+      <li>Harvest lateral and yaw dampers too on Vande Bharat bogies.</li>
+      <li>Supercap + small battery sized for the longest station stop.</li></ol></div>
+    <div class="box"><div class="bh">Shown to investors as</div>
+      <ol><li>Side-by-side animation: oil damper vs SwarmRide on the same track.</li>
+      <li>Three headline numbers: ride improvement, watts per bogie, power-bank charge.</li>
+      <li>This scorecard, updated after Simulink and the bench test.</li>
+      <li>Live dashboard built from the exported simulation results.</li></ol></div>
+  </div>
+  <div class="foot">Preliminary: simplified model, assumed parameters, bump preview not yet included. Final numbers come from the MATLAB/Simulink study and the bench prototype.<span>4 / 4</span></div>
+</div></body></html>
