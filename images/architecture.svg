@@ -1,0 +1,214 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" width="1400" height="980" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E07A1F"/></marker>
+    <marker id="aT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2A9D8F"/></marker>
+    <marker id="aG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A93A0"/></marker>
+    <style>
+      .ttl  { font-size: 26px; font-weight: 700; fill: #13233A; }
+      .sub  { font-size: 14.5px; fill: #5E6878; }
+      .band { font-size: 13px; font-weight: 700; letter-spacing: 1.4px; }
+      .bt   { font-size: 15px; font-weight: 700; fill: #13233A; text-anchor: middle; }
+      .bl   { font-size: 12.5px; fill: #4A5568; text-anchor: middle; }
+      .eq   { font-size: 12.5px; fill: #A8520F; font-weight: 600; text-anchor: middle; }
+      .box  { fill: #FFFFFF; stroke: #C3CCD8; stroke-width: 1.4; }
+      .hiO  { fill: #FFF3E6; stroke: #E07A1F; stroke-width: 2.4; }
+      .hiT  { fill: #FFFFFF; stroke: #2A9D8F; stroke-width: 2.2; }
+      .mech { fill: #F2F3F5; stroke: #8A93A0; stroke-width: 1.4; }
+      .safe { fill: #FFF5F4; stroke: #D64541; stroke-width: 2; }
+      .note { fill: #FFFFFF; stroke: #B9C2CE; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .en   { stroke: #E07A1F; stroke-width: 3; fill: none; }
+      .da   { stroke: #2A9D8F; stroke-width: 2; fill: none; stroke-dasharray: 7 5; }
+      .me   { stroke: #8A93A0; stroke-width: 3; fill: none; }
+      .fs   { stroke: #D64541; stroke-width: 2.5; fill: none; }
+      .lg   { font-size: 13px; fill: #4A5568; }
+      .tag  { font-size: 12px; font-weight: 700; fill: #1F6F66; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="980" rx="18" fill="#FFFFFF"/>
+  <text x="40" y="48" class="ttl">SwarmRide Bharat · End-to-end system architecture</text>
+  <text x="40" y="74" class="sub">Three levels. Energy is made and used on each bogie; only data travels along the train.</text>
+
+  <!-- ============ LEVEL 1: TRAIN ============ -->
+  <rect x="30" y="94" width="1340" height="186" rx="14" fill="#EEF3FA" stroke="#C9D6E8"/>
+  <text x="52" y="120" class="band" fill="#13233A">① TRAIN LEVEL · TRAIN BRAIN (LOCOMOTIVE / DRIVING CAB)</text>
+
+  <rect x="56" y="140" width="232" height="112" rx="10" class="box"/>
+  <text x="172" y="172" class="bt">Speed &amp; position</text>
+  <text x="172" y="197" class="bl">GPS · odometry</text>
+  <text x="172" y="217" class="bl">train speed v</text>
+  <text x="172" y="237" class="bl">position on the route</text>
+
+  <rect x="316" y="140" width="232" height="112" rx="10" class="box"/>
+  <text x="432" y="172" class="bt">Lead-bogie sensing</text>
+  <text x="432" y="197" class="bl">the loco meets every bump</text>
+  <text x="432" y="217" class="bl">first and measures it</text>
+  <text x="432" y="237" class="bl">(height, length, position)</text>
+
+  <rect x="576" y="140" width="232" height="112" rx="10" class="box"/>
+  <text x="692" y="172" class="bt">Fleet track map</text>
+  <text x="692" y="197" class="bl">GPS-tagged track condition</text>
+  <text x="692" y="217" class="bl">recorded by every train</text>
+  <text x="692" y="237" class="bl">→ known bumps ahead</text>
+
+  <rect x="836" y="140" width="232" height="112" rx="10" class="hiO"/>
+  <text x="952" y="172" class="bt">Bump-warning scheduler</text>
+  <text x="952" y="197" class="bl">vehicle n gets each bump</text>
+  <text x="952" y="217" class="eq">tₙ = dₙ / v  later</text>
+  <text x="952" y="237" class="bl">≈ 5 s to coach 10 at 160 km/h</text>
+
+  <rect x="1112" y="140" width="232" height="112" rx="10" class="box"/>
+  <text x="1228" y="172" class="bt">Loco pilot display</text>
+  <text x="1228" y="197" class="bl">load · ride · bearings</text>
+  <text x="1228" y="217" class="bl">train parting (exact wagon)</text>
+  <text x="1228" y="237" class="bl">track defects</text>
+
+  <path d="M288 196 H312" class="da" marker-end="url(#aT)"/>
+  <path d="M548 196 H572" class="da" marker-end="url(#aT)"/>
+  <path d="M808 196 H832" class="da" marker-end="url(#aT)"/>
+
+  <!-- ============ TRAIN DATA BUS ============ -->
+  <line x1="56" y1="310" x2="1344" y2="310" stroke="#13233A" stroke-width="5" stroke-linecap="round"/>
+  <rect x="330" y="297" width="740" height="26" rx="13" fill="#13233A"/>
+  <text x="700" y="315" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.6">TRAIN DATA BUS · Vande Bharat: TCMS Ethernet · Freight: wireless mesh · data only, no power</text>
+  <path d="M952 252 V302" class="da" marker-end="url(#aT)"/>
+  <path d="M1228 302 V256" class="da" marker-end="url(#aT)"/>
+
+  <!-- ============ LEVEL 2: VEHICLE ============ -->
+  <rect x="30" y="340" width="1340" height="186" rx="14" fill="#ECF7F5" stroke="#BFE3DC"/>
+  <text x="52" y="366" class="band" fill="#1F6F66">② VEHICLE LEVEL · VEHICLE CONTROLLER (ONE PER COACH / WAGON)</text>
+
+  <rect x="56" y="386" width="232" height="112" rx="10" class="box"/>
+  <text x="172" y="418" class="bt">Load estimation</text>
+  <text x="172" y="443" class="bl">air-spring pressure (coach)</text>
+  <text x="172" y="463" class="bl">spring deflection (wagon)</text>
+  <text x="172" y="483" class="bl">→ body mass m</text>
+
+  <rect x="316" y="386" width="232" height="112" rx="10" class="hiT"/>
+  <text x="432" y="418" class="bt">LPV damping scheduler</text>
+  <text x="432" y="443" class="bl">same ride at every load</text>
+  <text x="432" y="463" class="eq">c* = 2ζ√(k·m)</text>
+  <text x="432" y="483" class="bl">ζ held constant</text>
+
+  <rect x="576" y="386" width="232" height="112" rx="10" class="hiT"/>
+  <text x="692" y="418" class="bt">Preview feed-forward</text>
+  <text x="692" y="443" class="bl">uses the bump warning</text>
+  <text x="692" y="463" class="bl">to act before the bump</text>
+  <text x="692" y="483" class="bl">reaches this vehicle</text>
+
+  <rect x="836" y="386" width="232" height="112" rx="10" class="box"/>
+  <text x="952" y="418" class="bt">Health analytics</text>
+  <text x="952" y="443" class="bl">bearing temperature trend</text>
+  <text x="952" y="463" class="bl">wheel-flat impacts</text>
+  <text x="952" y="483" class="bl">coupler / parting check</text>
+
+  <rect x="1112" y="386" width="232" height="112" rx="10" class="box"/>
+  <text x="1228" y="418" class="bt">Report to Train Brain</text>
+  <text x="1228" y="443" class="bl">status and alerts</text>
+  <text x="1228" y="463" class="bl">track data for the map</text>
+  <text x="1228" y="483" class="bl">every few seconds</text>
+
+  <path d="M288 442 H312" class="da" marker-end="url(#aT)"/>
+  <path d="M548 442 H572" class="da" marker-end="url(#aT)"/>
+  <path d="M1068 442 H1108" class="da" marker-end="url(#aT)"/>
+  <path d="M692 323 V382" class="da" marker-end="url(#aT)"/>
+  <path d="M1228 386 V318" class="da" marker-end="url(#aT)"/>
+
+  <!-- ============ LEVEL 3: BOGIE ============ -->
+  <rect x="30" y="550" width="1340" height="356" rx="14" fill="#FDF5EC" stroke="#F0D2B4"/>
+  <text x="52" y="576" class="band" fill="#A8520F">③ BOGIE LEVEL · SELF-POWERED BOGIE UNIT (ON EVERY BOGIE)</text>
+
+  <!-- row A: the energy chain -->
+  <rect x="56" y="596" width="190" height="120" rx="10" class="mech"/>
+  <text x="151" y="628" class="bt">Track &amp; wheels</text>
+  <text x="151" y="653" class="bl">rail irregularity</text>
+  <text x="151" y="673" class="bl">→ primary suspension</text>
+  <text x="151" y="693" class="bl">→ bogie frame moves</text>
+
+  <rect x="276" y="596" width="190" height="120" rx="10" class="hiO"/>
+  <text x="371" y="628" class="bt">Smart EM damper</text>
+  <text x="371" y="653" class="bl">NdFeB magnets + coil</text>
+  <text x="371" y="673" class="eq">e = Kₑ·v    F = Kₑ·i</text>
+  <text x="371" y="693" class="bl">harvests and damps</text>
+
+  <rect x="495" y="596" width="190" height="120" rx="10" class="box"/>
+  <text x="590" y="628" class="bt">Active rectifier</text>
+  <text x="590" y="653" class="bl">H-bridge, AC → DC</text>
+  <text x="590" y="673" class="bl">tracks the command c*:</text>
+  <text x="590" y="693" class="eq">current = damping</text>
+
+  <rect x="715" y="596" width="190" height="120" rx="10" class="box"/>
+  <text x="810" y="628" class="bt">DC-DC converter</text>
+  <text x="810" y="653" class="bl">raises the voltage</text>
+  <text x="810" y="673" class="bl">to charge the bank</text>
+  <text x="810" y="693" class="bl">(adds no energy)</text>
+
+  <rect x="934" y="596" width="190" height="120" rx="10" class="box"/>
+  <text x="1029" y="628" class="bt">Power bank</text>
+  <text x="1029" y="653" class="bl">supercap: power bursts</text>
+  <text x="1029" y="673" class="bl">LiFePO4: energy store</text>
+  <text x="1029" y="693" class="bl">per bogie</text>
+
+  <rect x="1154" y="596" width="190" height="120" rx="10" class="box"/>
+  <text x="1249" y="628" class="bt">Bogie loads</text>
+  <text x="1249" y="653" class="bl">sensors · controller</text>
+  <text x="1249" y="673" class="bl">radio · gate drivers</text>
+  <text x="1249" y="693" class="eq">≈ 8 W per bogie</text>
+
+  <path d="M246 656 H270" class="me" marker-end="url(#aG)"/>
+  <path d="M466 656 H489" class="en" marker-end="url(#aO)"/>
+  <path d="M685 656 H709" class="en" marker-end="url(#aO)"/>
+  <path d="M905 656 H928" class="en" marker-end="url(#aO)"/>
+  <path d="M1124 656 H1148" class="en" marker-end="url(#aO)"/>
+
+  <!-- row B: sensing, safety and control on the bogie -->
+  <rect x="56" y="756" width="190" height="96" rx="10" class="box"/>
+  <text x="151" y="786" class="bt">Load sensing</text>
+  <text x="151" y="810" class="bl">air-spring pressure or</text>
+  <text x="151" y="830" class="bl">spring deflection</text>
+
+  <rect x="276" y="756" width="190" height="96" rx="10" class="safe"/>
+  <text x="371" y="786" class="bt">Fail-safe relay</text>
+  <text x="371" y="810" class="bl">power lost → coil on resistor</text>
+  <text x="371" y="830" class="bl">= today's passive damper</text>
+
+  <rect x="495" y="756" width="190" height="96" rx="10" class="hiT"/>
+  <text x="590" y="786" class="bt">Bogie controller</text>
+  <text x="590" y="810" class="bl">current loop · supervisor</text>
+  <text x="590" y="830" class="bl">self-test · data logging</text>
+
+  <rect x="715" y="756" width="190" height="96" rx="10" class="note"/>
+  <text x="810" y="784" class="bt" style="font-size:13px">Simulated today</text>
+  <text x="810" y="806" class="bl">30–80 W per coach bogie</text>
+  <text x="810" y="824" class="bl">≈ 210 W per loaded wagon</text>
+  <text x="810" y="842" class="bl">bogie, lost as heat</text>
+
+  <rect x="934" y="756" width="190" height="96" rx="10" class="hiT"/>
+  <text x="1029" y="786" class="bt">Energy supervisor</text>
+  <text x="1029" y="810" class="bl">charge · support · dump</text>
+  <text x="1029" y="830" class="bl">sensors always first</text>
+
+  <rect x="1154" y="756" width="190" height="96" rx="10" class="box"/>
+  <text x="1249" y="786" class="bt">Safety sensors</text>
+  <text x="1249" y="810" class="bl">bearing temp · vibration</text>
+  <text x="1249" y="830" class="bl">wheel impact · coupler</text>
+
+  <path d="M371 720 V752" class="fs"/>
+  <circle cx="371" cy="736" r="5" fill="#D64541"/>
+  <path d="M590 756 V720" class="da" marker-start="url(#aT)" marker-end="url(#aT)"/>
+  <path d="M1029 756 V720" class="da" marker-start="url(#aT)" marker-end="url(#aT)"/>
+  <path d="M1249 716 V752" class="en" marker-end="url(#aO)"/>
+
+  <!-- cross-level data paths -->
+  <path d="M56 804 H40 V442 H52" class="da" marker-end="url(#aT)"/>
+  <path d="M692 498 V538 H590 V592" class="da" marker-end="url(#aT)"/>
+  <text x="600" y="581" class="tag">c* damping command</text>
+  <path d="M1344 804 H1360 V536 H952 V502" class="da" marker-end="url(#aT)"/>
+
+  <!-- legend -->
+  <line x1="44" y1="940" x2="84" y2="940" class="en"/><text x="94" y="945" class="lg">Electrical energy</text>
+  <line x1="244" y1="940" x2="284" y2="940" class="da"/><text x="294" y="945" class="lg">Data and control</text>
+  <line x1="444" y1="940" x2="484" y2="940" class="me"/><text x="494" y="945" class="lg">Mechanical motion</text>
+  <line x1="654" y1="940" x2="694" y2="940" class="fs"/><text x="704" y="945" class="lg">Fail-safe path</text>
+  <text x="1356" y="945" class="lg" text-anchor="end">Simulated in MATLAB/Simulink: SwarmRide_Sim</text>
+</svg>
