@@ -15,3 +15,10 @@ Files ending in `_crop` or `_zoom` are crops of the originals listed here.
 | `icf_coach.webp`, `icf_coach.jpg`, `icf_coach_crop.jpg`, `icf_bogie_zoom.jpg` | ICF coaches and bogie | Supplied by the project author | – | **Source to be confirmed** |
 
 **Before any public release:** CC BY-SA images need the author name and licence shown next to the image (or on a credits page), and changes (crops) must be stated. Confirm the source and licence of the two author-supplied images, or replace them.
+
+## Derived images
+
+| File | Made from | Changes |
+|---|---|---|
+| `images/hero.jpg` | `casnub.jpg`, `vande_bharat.jpg`, `air_spring.jpg` | Cropped and placed on a designed banner (`pdf/build_readme_assets.py`) |
+| `images/casnub_annotated.jpg` | `casnub.jpg` | Labels and leader lines added (`pdf/build_readme_assets.py`) |
