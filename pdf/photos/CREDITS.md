@@ -22,3 +22,4 @@ Files ending in `_crop` or `_zoom` are crops of the originals listed here.
 |---|---|---|
 | `images/hero.jpg` | `casnub.jpg`, `vande_bharat.jpg`, `air_spring.jpg` | Cropped and placed on a designed banner (`pdf/build_readme_assets.py`) |
 | `images/casnub_annotated.jpg` | `casnub.jpg` | Labels and leader lines added (`pdf/build_readme_assets.py`) |
+| `images/pitch/*.jpg` | Pages 2–5 of `SwarmRide_Bharat_Pitch.pdf` | Exported as images; contain the photos above with their credits in each page footer |

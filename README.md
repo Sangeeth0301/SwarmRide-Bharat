@@ -57,6 +57,16 @@ Every coach and wagon on Indian Railways carries **secondary dampers** that turn
 | **Protect** | The bank powers bearing, wheel, coupler and track sensors on every bogie, with no wiring | P_harvest > P_sensors |
 | **Fail-safe** | On any fault a relay puts a resistor across the coil, and the damper behaves like today's | c_failsafe = c_today |
 
+<p align="center">
+  <img src="images/pitch/smart_damper_concept.jpg" alt="The smart damper: a magnet moving through a coil gives power and ride control in one part" width="100%">
+</p>
+<p align="center"><sub>The smart damper: a bump moves the magnet stack through the fixed coil, which makes power, sets the ride and fails safe.</sub></p>
+
+<p align="center">
+  <img src="images/pitch/train_preview_concept.jpg" alt="The locomotive warns every coach before the bump arrives; today's bogie compared with the SwarmRide bogie" width="100%">
+</p>
+<p align="center"><sub>Train Brain preview: the front bogie feels the bump first and every coach behind is warned t = d / v in advance. Below, today's bogie compared with the SwarmRide bogie.</sub></p>
+
 ---
 
 ## System architecture
@@ -80,18 +90,31 @@ Every coach and wagon on Indian Railways carries **secondary dampers** that turn
 </p>
 <p align="center"><sub>Casnub bogie of a BOXNM1 wagon, annotated with where each SwarmRide part goes.</sub></p>
 
-<table>
-  <tr>
-    <td width="50%"><img src="pdf/photos/air_spring.jpg" alt="Air spring on an LHB coach bogie"></td>
-    <td width="50%">
-      <b>Passenger coaches (LHB, Vande Bharat)</b><br><br>
-      The air spring carries the coach; the vertical dampers beside it are what SwarmRide replaces. The air-spring pressure already measures the coach load, which drives the load-adaptive control.<br><br>
-      <b>Goods wagons (BOXN, Casnub bogie)</b><br><br>
-      Friction wedges in the spring nest do the damping today. SwarmRide either works beside them (hybrid) or replaces them with a geared electromagnetic damper.<br><br>
-      <sub>Photo: Apurv013, CC0, via Wikimedia Commons</sub>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="images/pitch/real_bogies.jpg" alt="Same bogie: SwarmRide swaps one part and adds a small power bank" width="100%">
+</p>
+<p align="center"><sub>Same bogie, one part swapped: LHB air-spring bogie, ICF coach bogie and Casnub wagon bogie. No new bogie, no new cables, fits today's mounts.</sub></p>
+
+| Vehicle | What SwarmRide replaces | Load signal for the control |
+|---|---|---|
+| **LHB / Vande Bharat coach** | The vertical secondary dampers beside the air springs | Air-spring pressure (already on board) |
+| **ICF coach** | The secondary dampers on the bolster springs | Spring deflection sensor |
+| **BOXN wagon (Casnub)** | Works beside the friction wedges (hybrid) or replaces them with a geared smart damper | Spring-nest deflection sensor |
+
+---
+
+## Two products, one technology
+
+<p align="center">
+  <img src="images/pitch/two_products.jpg" alt="SwarmRide Passenger and SwarmRide Freight" width="100%">
+</p>
+
+| | **SwarmRide Passenger** | **SwarmRide Freight** |
+|---|---|---|
+| Rolling stock | Vande Bharat, LHB, ICF | BOXN wagons, DFC rakes |
+| Main value | Ride tuned to the live load and to the bump ahead | Every axle watched; train parting found at the exact wagon |
+| Power today | Train power exists; SwarmRide removes new wiring | None; SwarmRide makes the wagon self-powered |
+| Track data | Recorded on every trip | Recorded on every run |
 
 ---
 
@@ -225,7 +248,7 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
 ├── SwarmRide_Bharat_Technical_Document.md
 ├── SwarmRide_Bharat_Complete_Guide.md
 ├── SwarmRide_Simulation_Results_Preview.pdf
-├── images/                           architecture, roadmap, banner, annotated bogie
+├── images/                           banner, architecture, annotated bogie, pitch sketches, roadmap
 ├── pdf/                              pitch builder, preview study, photographs and credits
 └── SwarmRide_Sim/                    MATLAB/Simulink simulation
     ├── sr_setup.m                    start here
