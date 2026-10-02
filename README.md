@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-Stage%202%20of%204%20%C2%B7%20simulation-E07A1F?style=flat-square" alt="status">
+  <img src="https://img.shields.io/badge/status-Stage%202%20of%204%20complete%20%C2%B7%20simulation-E07A1F?style=flat-square" alt="status">
   <img src="https://img.shields.io/badge/MATLAB%20%2F%20Simulink-R2024b-0076A8?style=flat-square" alt="MATLAB/Simulink R2024b">
   <img src="https://img.shields.io/badge/rolling%20stock-LHB%20%C2%B7%20Vande%20Bharat%20%C2%B7%20ICF%20%C2%B7%20BOXN-13233A?style=flat-square" alt="rolling stock">
   <img src="https://img.shields.io/badge/model%20verified-0.004%25%20vs%20state--space-2A9D8F?style=flat-square" alt="verified">
@@ -30,7 +30,7 @@ Every coach and wagon on Indian Railways carries **secondary dampers** that turn
 | **Replaces** | The passive secondary damper: one part, same mounting points |
 | **Adds** | Energy harvesting · load-adaptive damping · train-wide bump preview · self-powered safety sensing |
 | **Markets** | Freight wagons (BOXN, Dedicated Freight Corridors) · Vande Bharat trainsets |
-| **Stage** | Architecture complete · Simulink test rig verified · smart damper and power chain in progress |
+| **Stage** | Architecture complete · Simulink test rig verified · smart damper and power chain verified · control (Stage 3) next |
 
 ---
 
@@ -156,9 +156,9 @@ flowchart LR
     classDef done fill:#2A9D8F,stroke:#1F6F66,color:#ffffff
     classDef now fill:#E07A1F,stroke:#A8520F,color:#ffffff
     classDef next fill:#EEF3FA,stroke:#9AA8BC,color:#13233A
-    class S1 done
-    class S2 now
-    class S3,S4 next
+    class S1,S2 done
+    class S3 now
+    class S4 next
 ```
 
 ### Stage 1: the baseline to beat (complete)
@@ -188,6 +188,28 @@ The Simulink model matches an independent state-space model within **0.004%**, a
 </table>
 
 Full report, block by block: **[SwarmRide_Sim/Stage1.md](SwarmRide_Sim/Stage1.md)**
+
+### Stage 2: the smart damper and power chain (complete)
+
+Today's damper is replaced by an electromagnetic damper, an active rectifier, a DC-DC converter and a supercapacitor + LiFePO4 bank on every bogie. All four checks pass: **same ride as today** (Wz 1.830 vs 1.829), **damping law** (0.09%), **energy balance** (< 0.001%) and **fail-safe** (exactly today's damping after a fault).
+
+| Same ride as today, crowded, top speed | Poor track: into the bank | Good track: into the bank | Bogie loads |
+|---|---|---|---|
+| LHB, 160 km/h | **47–50 W** per bogie | 17–18 W | 8 W |
+| Vande Bharat, 160 km/h | **51–57 W** | 19–20 W | 8 W |
+| ICF, 110 km/h | **24–26 W** | 8.5–10 W | 8 W |
+| BOXN, 100 km/h (wedges replaced) | **98–114 W** | 37–42 W | 8 W |
+
+<table>
+  <tr>
+    <td width="50%"><img src="SwarmRide_Sim/results/stage2_power_chain.png" alt="Where the smart damper's power goes"><br><sub><b>Where the power goes</b> (LHB): 73 W in, 47 W into the bank, 8 W used, 39 W surplus.</sub></td>
+    <td width="50%"><img src="SwarmRide_Sim/results/stage2_failsafe.png" alt="Fail-safe test"><br><sub><b>Fail-safe:</b> after a fault the damper follows today's damper exactly, and harvesting stops.</sub></td>
+  </tr>
+</table>
+
+**Key findings:** the bogie powers itself on normal track. Smooth track is the weak case (ICF only just covers its load). Maximising power transfer is the wrong goal, because it burns half the power in the coil. For freight the friction wedges must be replaced, which also cuts wagon body vibration by about half (to be confirmed). **Design C (geared rotary)** leads.
+
+Full report: **[SwarmRide_Sim/Stage2.md](SwarmRide_Sim/Stage2.md)**
 
 ### Expected performance
 
@@ -230,8 +252,8 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
 |---|---|---|
 | Concept | Problem evidence, architecture, pitch, technical design | Done |
 | Simulation 1 | Test rig, verification, baseline of LHB, Vande Bharat, ICF, BOXN | Done |
-| Simulation 2 | Smart damper (A/B/C), rectifier, DC-DC, power bank, fail-safe | **In progress** |
-| Simulation 3 | LPV and preview control, head-to-head comparison | Planned |
+| Simulation 2 | Smart damper (A/B/C), rectifier, DC-DC, power bank, fail-safe | Done |
+| Simulation 3 | LPV and preview control, head-to-head comparison | **Next** |
 | Simulation 4 | Self-powered health sensing, investor dashboard | Planned |
 | Prototype | Bench test of one smart damper | Planned |
 | Pilot | Freight wagons, then Vande Bharat, with RDSO | Planned |
@@ -266,7 +288,8 @@ cd SwarmRide_Sim
 sr_setup                                                   % paths + opens the model
 trainType = 'LHB';  v_kmh = 160;  mload_t = 12;  trackType = 'poor';
 % press Run: live scopes open and the 30 s run plays in real time
-run('scripts/check_stage1b.m')                             % reproduce the Stage 1 baseline
+designType = 'C';  cmdMode = 'match';                      % Stage 2: smart damper design and setting
+run('scripts/check_stage2.m')                              % reproduce the Stage 2 study
 ```
 
 Requires MATLAB R2024b with Simulink, Control System Toolbox, Simscape and Simscape Electrical.
@@ -282,7 +305,7 @@ The pitch and preview tooling use Python 3 (numpy, scipy, matplotlib, Pillow) an
 | [Investor pitch](SwarmRide_Bharat_Pitch.md) · [PDF](SwarmRide_Bharat_Pitch.pdf) · [Word](SwarmRide_Bharat_Pitch.docx) | Investors and Indian Railways |
 | [Technical document](SwarmRide_Bharat_Technical_Document.md) | Engineers |
 | [Complete guide](SwarmRide_Bharat_Complete_Guide.md) | Learning the project from scratch |
-| [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) | Simulation |
+| [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) | Simulation |
 | [Results preview](SwarmRide_Simulation_Results_Preview.pdf) | Expected results |
 
 ---

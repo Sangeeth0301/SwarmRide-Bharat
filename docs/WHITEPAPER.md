@@ -3,7 +3,7 @@
 **Self-powered, load-adaptive, train-synchronised suspension for Indian Railways**
 
 Version 0.1 · October 2026 · Sangeeth
-Status: concept defined, simulation Stage 1 complete (test rig and baseline of today's trains)
+Status: concept defined; simulation Stages 1–2 complete (baseline of today's trains; smart damper and power chain verified)
 
 > **Confidential.** This document describes an invention that has not yet been filed for patent protection. Do not publish or present it openly before a provisional patent application is filed.
 
@@ -137,6 +137,21 @@ Model verified against an independent state-space model to within **0.004%**, an
 3. Every bump reaches each later wheel after d/v (0.34 s within a coach, about 5 s from the locomotive to the tenth coach at 160 km/h). This is the window for preview.
 4. Goods wagons ride hardest and waste the most energy, yet have no power today. This is the strongest case for self-powered sensing.
 
+## 5b. Results so far: the smart damper and power chain (Stage 2)
+
+Today's damper was replaced by the electromagnetic damper, active rectifier, DC-DC converter and supercapacitor + LiFePO4 bank, with designs A (direct-drive), B (hybrid) and C (geared rotary) sized per vehicle. Verification: same ride as today (Wz 1.830 vs 1.829), damping law within 0.09%, energy balance within 0.001%, fail-safe exactly equal to today's damping.
+
+| Same ride as today, crowded, top speed | Poor track: into the bank | Good track | Bogie loads |
+|---|---|---|---|
+| LHB | 47–50 W per bogie | 17–18 W | 8 W |
+| Vande Bharat | 51–57 W | 19–20 W | 8 W |
+| ICF | 24–26 W | 8.5–10 W | 8 W |
+| BOXN (wedges replaced) | 98–114 W | 37–42 W | 8 W |
+
+![Where the power goes](../SwarmRide_Sim/results/stage2_power_chain.png)
+
+**Findings:** each bogie powers itself on normal track; smooth track is the weak case; harvesting at "maximum power transfer" delivers less to the bank because it heats the coil; on freight the friction wedges must be replaced (an EM damper beside them sees almost no motion), which also roughly halves wagon body vibration in this model. Design C leads on energy and size. Full report: [`SwarmRide_Sim/Stage2.md`](../SwarmRide_Sim/Stage2.md).
+
 ## 6. Expected results (preview study)
 
 From a simplified Python model; **targets until confirmed in Simulink Stages 2–3.** Crowded coach, poor track, 160 km/h.
@@ -170,8 +185,8 @@ Prior art to distinguish: energy-harvesting dampers in research, OMRS, EoTT, Tra
 | Stage | Content | Status |
 |---|---|---|
 | Simulation 1 / 1b | Test rig and baseline of today's trains | **Done** |
-| Simulation 2 | Smart damper (A/B/C), power chain, fail-safe, harvested watts per train | Next |
-| Simulation 3 | LPV and preview controllers, head-to-head comparison | Planned |
+| Simulation 2 | Smart damper (A/B/C), power chain, fail-safe, harvested watts per train | **Done** |
+| Simulation 3 | LPV and preview controllers, head-to-head comparison | Next |
 | Simulation 4 | Self-powered health sensors demo, investor dashboard | Planned |
 | Bench prototype | One damper on a test rig | After simulation |
 | Field pilot | Freight wagons, then Vande Bharat | After RDSO engagement |
@@ -193,3 +208,4 @@ Prior art to distinguish: energy-harvesting dampers in research, OMRS, EoTT, Tra
 | [`SwarmRide_Bharat_Complete_Guide.md`](../SwarmRide_Bharat_Complete_Guide.md) | From-scratch understanding and simulation guide |
 | [`SwarmRide_Simulation_Results_Preview.pdf`](../SwarmRide_Simulation_Results_Preview.pdf) | Expected results preview |
 | [`SwarmRide_Sim/Stage1.md`](../SwarmRide_Sim/Stage1.md) | Stage 1 simulation report |
+| [`SwarmRide_Sim/Stage2.md`](../SwarmRide_Sim/Stage2.md) | Stage 2 simulation report |
