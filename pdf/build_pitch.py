@@ -1,8 +1,9 @@
 """Builds the SwarmRide Bharat 6-page pitch (HTML -> PDF via headless Edge)."""
 import math
 import random
-import subprocess
 from pathlib import Path
+
+from edge_pdf import print_pdf
 
 HERE = Path(__file__).resolve().parent
 R = random.Random(7)
@@ -650,10 +651,7 @@ def main():
     out_html = HERE / "pitch.html"
     out_html.write_text(html, encoding="utf-8")
     pdf = HERE.parent / "SwarmRide_Bharat_Pitch.pdf"
-    edge = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-    subprocess.run([edge, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-                    "--virtual-time-budget=15000", f"--print-to-pdf={pdf}", out_html.as_uri()],
-                   check=True, timeout=180)
+    print_pdf(out_html, pdf)                  # waits until Edge has finished writing
     print("wrote", pdf)
 
 

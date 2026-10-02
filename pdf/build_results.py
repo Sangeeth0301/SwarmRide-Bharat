@@ -1,7 +1,8 @@
 """Builds the 4-page Simulation Results Preview PDF from results/summary.json + plots."""
 import json
-import subprocess
 from pathlib import Path
+
+from edge_pdf import print_pdf
 
 HERE = Path(__file__).resolve().parent
 RES = HERE / "results"
@@ -224,10 +225,7 @@ h2 {{ font-family:Rubik, Arial; font-weight:600; font-size:26px; color:{NAVY}; m
     out_html = HERE / "results_preview.html"
     out_html.write_text(html, encoding="utf-8")
     pdf = HERE.parent / "SwarmRide_Simulation_Results_Preview.pdf"
-    edge = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-    subprocess.run([edge, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-                    "--virtual-time-budget=15000", f"--print-to-pdf={pdf}", out_html.as_uri()],
-                   check=True, timeout=180)
+    print_pdf(out_html, pdf)                  # waits until Edge has finished writing
     print("wrote", pdf)
 
 
