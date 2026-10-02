@@ -32,15 +32,7 @@ P.ab = TB.ab;                                      % half bogie wheelbase       
 P.mbg = TB.mbg;                                    % per bogie                             [kg]
 
 %% 4. Secondary suspension, per bogie
-switch TB.springType
-    case 'air'      % air spring stiffens in proportion to load (constant bounce frequency)
-        P.ks = TB.ks0 * P.m / P.m_tare;
-    case 'coil'     % steel coil springs: constant stiffness, coach sags and softens relatively
-        P.ks = TB.ks0;
-    case 'casnub'   % two-stage spring nest: inner springs take part as the wagon is loaded
-        frac = min(P.m_load / (max(TB.loads_t) * 1e3), 1);
-        P.ks = TB.ks0 + frac * (TB.ks_loaded - TB.ks0);
-end
+P.ks   = sr_spring_rate(TB, P.m_load);             % air: rises with load; coil: constant; Casnub: two-stage
 
 P.cs   = TB.cs;                                    % today's viscous damper                [N s/m]
 P.Ffr  = TB.mu_fric * P.m * 9.81 / 2;              % friction-wedge force (Casnub only)    [N]
@@ -65,3 +57,52 @@ P.trackSeed = 7;                                   % same random track for every
 %% 8. Simulation settings
 P.Ts   = TB.Ts;                                    % fixed step                            [s]
 P.Tend = 30;                                       % simulated time                        [s]
+
+%% 9. Stage 2: SwarmRide smart damper (sized per vehicle in functions/sr_damper_design.m)
+%   designType  'A' direct-drive linear | 'B' hybrid | 'C' geared rotary
+%   cmdMode     'match'   : electromagnetic copy of today's damping (same ride, plus energy)
+%               'harvest' : fixed-load harvester, coil load = coil resistance (most power per speed)
+%   t_fault     time of a test fault that drops the fail-safe relay [s] (Inf = no fault)
+if ~exist('designType', 'var'), designType = 'A';     end
+if ~exist('cmdMode', 'var'),    cmdMode = 'match';    end
+if ~exist('t_fault', 'var'),    t_fault = Inf;        end
+D = sr_damper_design(TB, P, designType);
+Pinfo.designName = D.name;
+Pinfo.cmdMode    = cmdMode;
+
+P.nd       = D.nd;                                 % EM dampers per bogie
+P.Ke       = D.Ke;                                 % machine constant per damper           [V s/m = N/A]
+P.Rc       = D.Rc;                                 % coil resistance per damper            [ohm]
+P.cmax_emd = D.cmax_emd;                           % most EM damping per bogie (coil shorted) [N s/m]
+P.c_oil    = D.c_oil;                              % passive oil damper kept (design B)    [N s/m]
+P.Ffr2     = D.keepFriction * P.Ffr;               % Casnub wedge friction kept (design B) [N]
+P.Fc       = D.Fc;                                 % ball-screw friction per damper (C)    [N]
+P.b_in     = D.b_in;                               % inertance per damper (C)              [kg]
+P.imax     = D.imax;                               % current limit per damper              [A]
+P.R_fs     = D.R_fs;                               % fail-safe resistor                    [ohm]
+P.c_today  = D.c_today;                            % today's damping, per bogie            [N s/m]
+P.tau_i    = 2e-3;                                 % converter current-loop time constant  [s]
+P.tau_d    = 2e-3;                                 % filter for relative acceleration      [s]
+P.t_fault  = min(t_fault, 1e6);                    % test fault time                       [s]
+switch cmdMode
+    case 'match',   P.c_cmd_emd = D.c_match_emd;   % same total damping as today
+    case 'harvest', P.c_cmd_emd = D.cmax_emd / 2;  % load resistance = coil resistance
+    otherwise, error('sr_params:cmdMode', 'cmdMode must be match or harvest');
+end
+
+%% 10. Stage 2: power electronics, power bank and bogie loads (per bogie)
+P.eta_rect = 0.95;                                 % active rectifier (H-bridge) efficiency
+P.eta_dcdc = 0.94;                                 % DC-DC converter efficiency
+P.Csc      = 10;                                   % supercapacitor                        [F]
+P.Vmax     = 48;  P.Vmin = 12;                     % supercapacitor voltage window          [V]
+P.Vchg     = 40;  P.Vdis = 20;                     % charge battery above / support from battery below [V]
+P.Esc0     = 0.5 * P.Csc * 30^2;                   % start at 30 V                         [J]
+P.Ebat_Wh  = 120;                                  % LiFePO4, 24 V x 5 Ah                  [Wh]
+P.SOC0     = 0.6;  P.SOCmin = 0.10;  P.SOCmax = 0.95;
+P.eta_ch   = 0.95; P.eta_dis = 0.95;               % battery charge / discharge efficiency
+P.Pch_max  = 300;  P.Pdis_max = 100;               % battery power limits                  [W]
+P.Kv       = 50;                                   % supervisor gain                       [W/V]
+P.P_sens   = 4;                                    % safety sensors: bearing temp, vibration, wheel [W]
+P.P_mcu    = 2;                                    % bogie controller                      [W]
+P.P_radio  = 1;                                    % radio link to the Train Brain         [W]
+P.P_aux    = 1;                                    % gate drivers, housekeeping            [W]
