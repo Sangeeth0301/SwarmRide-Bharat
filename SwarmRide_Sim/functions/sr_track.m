@@ -2,6 +2,7 @@ function TR = sr_track(P, trackType)
 %SR_TRACK Vertical track irregularity w(x) used by the Track Input subsystem.
 %   'good' / 'poor' : random track from the vertical track spectrum (sum of sines)
 %   'bump'          : flat track with one 10 mm, 4 m long dip at x = 200 m
+%   'settlement'    : flat track with one 20 mm, 20 m long sag at x = 300 m (e.g. bridge approach)
 %   Returns TR.x [m], TR.w [m], TR.dwdx [-] (slope, used for wheel velocity) and
 %   TR.period [m] (the random rail repeats every TR.period metres).
 %
@@ -35,8 +36,13 @@ switch trackType
         at = 200;  len = 4;  depth = 0.010;
         k  = x >= at & x <= at + len;
         w(k) = -depth * 0.5 * (1 - cos(2*pi*(x(k) - at)/len));
+    case 'settlement'                                    % long, gentle sag, e.g. at a bridge approach
+        w  = zeros(size(x));
+        at = 300;  len = 20;  depth = 0.020;
+        k  = x >= at & x <= at + len;
+        w(k) = -depth * 0.5 * (1 - cos(2*pi*(x(k) - at)/len));
     otherwise
-        error('sr_track:type', 'trackType must be good, poor or bump');
+        error('sr_track:type', 'trackType must be good, poor, bump or settlement');
 end
 
 TR.x      = x;
