@@ -1,5 +1,5 @@
 === A. Wiring check: Simulink vs independent state-space model (LHB, crowded, poor track) ===
-Max difference: 0.004 % of peak -> PASS
+Max difference: 0.003 % of peak -> PASS
 
 === B. Modes, damping ratio and sag (today's damper) ===
 LHB coach (FIAT bogie)       load   0.0 t: body mode 0.93 Hz, zeta 0.14, static sag levelled (air spring)
@@ -13,11 +13,11 @@ BOXN wagon (Casnub bogie)    load  67.2 t: body mode 2.04 Hz, zeta 0.00, static 
 (BOXN damping comes from friction wedges, so its viscous zeta is not meaningful)
 
 === C. Ride on poor track at top service speed, today's damper ===
-LHB coach (FIAT bogie)         0.0 t @ 160 km/h: body RMS 0.138 m/s^2, Wz 1.73, max stroke  17.3 mm, heat   67.1 W per bogie
-LHB coach (FIAT bogie)        12.0 t @ 160 km/h: body RMS 0.155 m/s^2, Wz 1.83, max stroke  20.2 mm, heat   73.0 W per bogie
-Vande Bharat trailer coach     0.0 t @ 160 km/h: body RMS 0.138 m/s^2, Wz 1.74, max stroke  16.7 mm, heat   78.4 W per bogie
-Vande Bharat trailer coach     7.6 t @ 160 km/h: body RMS 0.146 m/s^2, Wz 1.79, max stroke  16.8 mm, heat   80.1 W per bogie
-ICF coach (coil springs)       0.0 t @ 110 km/h: body RMS 0.096 m/s^2, Wz 1.54, max stroke  11.9 mm, heat   28.8 W per bogie
-ICF coach (coil springs)      15.0 t @ 110 km/h: body RMS 0.079 m/s^2, Wz 1.42, max stroke  12.2 mm, heat   35.1 W per bogie
-BOXN wagon (Casnub bogie)      0.0 t @ 100 km/h: body RMS 0.385 m/s^2, Wz 2.21, max stroke   3.9 mm, heat   34.1 W per bogie
-BOXN wagon (Casnub bogie)     67.2 t @ 100 km/h: body RMS 0.329 m/s^2, Wz 2.09, max stroke   3.5 mm, heat  208.8 W per bogie
+LHB coach (FIAT bogie)         0.0 t @ 160 km/h: body RMS 0.148 m/s^2, Wz 1.73, max stroke  20.0 mm, heat   64.0 W per bogie
+LHB coach (FIAT bogie)        12.0 t @ 160 km/h: body RMS 0.174 m/s^2, Wz 1.84, max stroke  25.2 mm, heat   72.7 W per bogie
+Vande Bharat trailer coach     0.0 t @ 160 km/h: body RMS 0.151 m/s^2, Wz 1.75, max stroke  23.3 mm, heat   82.3 W per bogie
+Vande Bharat trailer coach     7.6 t @ 160 km/h: body RMS 0.159 m/s^2, Wz 1.79, max stroke  24.9 mm, heat   87.3 W per bogie
+ICF coach (coil springs)       0.0 t @ 110 km/h: body RMS 0.085 m/s^2, Wz 1.45, max stroke   9.6 mm, heat   23.3 W per bogie
+ICF coach (coil springs)      15.0 t @ 110 km/h: body RMS 0.070 m/s^2, Wz 1.38, max stroke  13.5 mm, heat   31.2 W per bogie
+BOXN wagon (Casnub bogie)      0.0 t @ 100 km/h: body RMS 0.405 m/s^2, Wz 2.28, max stroke   3.2 mm, heat   35.8 W per bogie
+BOXN wagon (Casnub bogie)     67.2 t @ 100 km/h: body RMS 0.344 m/s^2, Wz 2.15, max stroke   2.8 mm, heat  214.1 W per bogie
