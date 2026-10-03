@@ -22,7 +22,7 @@ A **Train Brain** in the locomotive or driving cab shares the track ahead with e
 
 A verified MATLAB/Simulink model of today's Indian trains (LHB, Vande Bharat, ICF, BOXN) shows the baseline problem:
 - fixed dampers lose **17–30% of their damping ratio** as load rises
-- they turn **30–80 W per bogie** (coaches) and up to about **210 W per bogie** (loaded BOXN) into heat
+- they turn **20–90 W per bogie** (coaches) and up to about **210 W per bogie** (loaded BOXN) into heat
 
 A preview study estimates **about 24% lower body vibration** with self-sufficient bogie power. That estimate is to be confirmed in the next simulation stages.
 
@@ -120,37 +120,37 @@ Details: [`SwarmRide_Sim/Stage1.md`](../SwarmRide_Sim/Stage1.md).
 
 ## 5. Results so far: baseline of today's Indian trains (Stage 1)
 
-Model verified against an independent state-space model to within **0.004%**, and against a hand calculation of the bounce frequency.
+Model verified against an independent state-space model to within **0.003%**, and against a hand calculation of the bounce frequency.
 
 | Vehicle | Load | Damping ζ | Sperling Wz | Max stroke | Heat wasted per bogie |
 |---|---|---|---|---|---|
-| LHB, 160 km/h | empty → 12 t | 0.14 → **0.10** | 1.73 → 1.83 | 17 → 20 mm | 67 → 73 W |
-| Vande Bharat, 160 km/h | empty → 7.6 t | 0.12 → **0.10** | 1.74 → 1.79 | 17 mm | 78 → 80 W |
-| ICF, 110 km/h | empty → 15 t | 0.08 → **0.06** | 1.54 → 1.42 | 12 mm | 29 → 35 W |
-| BOXN, 100 km/h | empty → 67 t | friction | 2.21 → 2.09 | 4 mm | 34 → **209 W** |
+| LHB, 160 km/h | empty → 12 t | 0.14 → **0.10** | 1.73 → 1.84 | 20 → 25 mm | 64 → 73 W |
+| Vande Bharat, 160 km/h | empty → 7.6 t | 0.12 → **0.10** | 1.75 → 1.79 | 23 → 25 mm | 82 → 87 W |
+| ICF, 110 km/h | empty → 15 t | 0.08 → **0.06** | 1.45 → 1.38 | 10 → 14 mm | 23 → 31 W |
+| BOXN, 100 km/h | empty → 67 t | friction | 2.28 → 2.15 | 3 mm | 36 → **214 W** |
 
 ![Damping ratio vs load](../SwarmRide_Sim/results/stage1b_zeta_vs_load.png)
 
 **Findings:**
 1. Fixed dampers weaken as load rises on every coach type. This is the gap load-adaptive control closes.
-2. Damper power arrives in short bursts (about 1.4 kW peaks against a 73 W average on LHB). A supercapacitor is required.
+2. Damper power arrives in short bursts (peaks around 1 kW against a 73 W average on LHB). A supercapacitor is required.
 3. Every bump reaches each later wheel after d/v (0.34 s within a coach, about 5 s from the locomotive to the tenth coach at 160 km/h). This is the window for preview.
 4. Goods wagons ride hardest and waste the most energy, yet have no power today. This is the strongest case for self-powered sensing.
 
 ## 5b. Results so far: the smart damper and power chain (Stage 2)
 
-Today's damper was replaced by the electromagnetic damper, active rectifier, DC-DC converter and supercapacitor + LiFePO4 bank, with designs A (direct-drive), B (hybrid) and C (geared rotary) sized per vehicle. Verification: same ride as today (Wz 1.830 vs 1.829), damping law within 0.09%, energy balance within 0.001%, fail-safe exactly equal to today's damping.
+Today's damper was replaced by the electromagnetic damper, active rectifier, DC-DC converter and supercapacitor + LiFePO4 bank, with designs A (direct-drive), B (hybrid) and C (geared rotary) sized per vehicle. Verification: same ride as today (Wz 1.846 vs 1.844), damping law within 0.09%, energy balance within 0.001%, fail-safe exactly equal to today's damping.
 
 | Same ride as today, crowded, top speed | Poor track: into the bank | Good track | Bogie loads |
 |---|---|---|---|
-| LHB | 47–50 W per bogie | 17–18 W | 8 W |
-| Vande Bharat | 51–57 W | 19–20 W | 8 W |
-| ICF | 24–26 W | 8.5–10 W | 8 W |
-| BOXN (wedges replaced) | 98–114 W | 37–42 W | 8 W |
+| LHB | 46–51 W per bogie | 17–18 W | 8 W |
+| Vande Bharat | 55–62 W | 21–22 W | 8 W |
+| ICF | 21–23 W | 7.3–8.6 W | 8 W |
+| BOXN (wedges replaced) | 78–90 W | 29–33 W | 8 W |
 
 ![Where the power goes](../SwarmRide_Sim/results/stage2_power_chain.png)
 
-**Findings:** each bogie powers itself on normal track; smooth track is the weak case; harvesting at "maximum power transfer" delivers less to the bank because it heats the coil; on freight the friction wedges must be replaced (an EM damper beside them sees almost no motion), which also roughly halves wagon body vibration in this model. Design C leads on energy and size. Full report: [`SwarmRide_Sim/Stage2.md`](../SwarmRide_Sim/Stage2.md).
+**Findings:** each bogie powers itself on normal track; smooth track is the weak case; harvesting at "maximum power transfer" delivers less to the bank because it heats the coil; on freight the friction wedges must be replaced (an EM damper beside them sees almost no motion), which also cuts wagon body vibration by more than half in this model. Design C leads on energy and size. Full report: [`SwarmRide_Sim/Stage2.md`](../SwarmRide_Sim/Stage2.md).
 
 ## 6. Expected results (preview study)
 

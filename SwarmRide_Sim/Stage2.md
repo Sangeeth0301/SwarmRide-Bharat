@@ -4,7 +4,7 @@
 **Model:** `models/SR_Stage2.slx` (built by `scripts/build_stage2.m`)
 **Status:** complete and verified (4 of 4 checks passed)
 
-> **In one line:** we replaced today's damper with an electromagnetic smart damper, a rectifier, a DC-DC converter and a power bank on every bogie. With the **same ride as today**, a crowded LHB bogie at 160 km/h on poor track puts **about 47–50 W into its bank**, which is **about 6× the 8 W its sensors, controller and radio need**.
+> **In one line:** we replaced today's damper with an electromagnetic smart damper, a rectifier, a DC-DC converter and a power bank on every bogie. With the **same ride as today**, a crowded LHB bogie at 160 km/h on poor track puts **about 46–51 W into its bank**, which is **about 6× the 8 W its sensors, controller and radio need**.
 
 ---
 
@@ -258,7 +258,7 @@ These are **average models**: they keep the power flow and losses but skip 20 kH
 4. Supercap full (48 V) **and** battery full: **dump** the surplus into a resistor.
 5. Both empty: loads cannot be served, and the relay drops to fail-safe.
 
-**Why two stores:** the damper's power comes in **bursts**: peaks above 300 W against an average of about 38 W. A supercapacitor takes bursts without wear; a battery stores energy for stops and smooth track.
+**Why two stores:** the damper's power comes in **bursts**: peaks above 300 W against an average of about 36 W. A supercapacitor takes bursts without wear; a battery stores energy for stops and smooth track.
 
 ---
 
@@ -310,10 +310,10 @@ Today's dampers deliver only 22–36% of c_req on coaches. That is why their ζ 
 
 | Check | Result | Meaning |
 |---|---|---|
-| **A1 Same ride as today** (design A, match) | Body acceleration within **1.23%** of peak; Wz **1.830 vs 1.829** | The EM copy of today's damper rides like today's damper. The small difference is the 2 ms current loop → **PASS** |
+| **A1 Same ride as today** (design A, match) | Body acceleration within **1.10%** of peak; Wz **1.846 vs 1.844** | The EM copy of today's damper rides like today's damper. The small difference is the 2 ms current loop → **PASS** |
 | **A2 Damping law** | Fitted c = 34,967 vs commanded 35,000 N·s/m (**0.09%**) | The H-bridge really sets the damping through the current → **PASS** |
 | **A3 Energy balance** (design A match, design C harvest) | Residual **< 0.001%** | Every joule is accounted for: coil + converters + loads + bank + dump → **PASS** |
-| **A4 Fail-safe** (designs A and B, fault at 15 s) | Damping after the fault = **35,000 N·s/m = today (0.00%)**; harvest 55.8 W → **0 W** | On any fault the damper becomes today's damper instantly → **PASS** |
+| **A4 Fail-safe** (designs A and B, fault at 15 s) | Damping after the fault = **35,000 N·s/m = today (0.00%)**; harvest 35.3 W → **0 W** | On any fault the damper becomes today's damper instantly → **PASS** |
 
 ![Fail-safe](results/stage2_failsafe.png)
 
@@ -325,12 +325,12 @@ Today's dampers deliver only 22–36% of c_req on coaches. That is why their ζ 
 
 | Step | Power per bogie |
 |---|---|
-| Power the coach puts into the damper | **72.9 W** (same as the heat today's damper makes) |
-| Lost in the coil copper | 20.7 W |
+| Power the coach puts into the damper | **72.6 W** (same as the heat today's damper makes, 72.7 W) |
+| Lost in the coil copper | 20.6 W |
 | Lost in the rectifier and DC-DC | 5.6 W |
-| **Into the bank** | **46.6 W** (64% of the input) |
+| **Into the bank** | **46.4 W** (64% of the input) |
 | Bogie loads | 8.0 W |
-| **Surplus stored** | **38.6 W** (about 39 Wh per hour of running; the 120 Wh battery fills in about 3 hours) |
+| **Surplus stored** | **38.4 W** (about 38 Wh per hour of running; the 120 Wh battery fills in about 3 hours) |
 
 ### 13.3 All vehicles and designs (crowded, top speed, per bogie)
 
@@ -340,14 +340,14 @@ Today's dampers deliver only 22–36% of c_req on coaches. That is why their ζ 
 
 | Vehicle | Track | Today: heat | A | B | C | Loads |
 |---|---|---|---|---|---|---|
-| LHB, 160 km/h | poor | 73 W | **47 W** | 27 W | **50 W** | 8 W |
+| LHB, 160 km/h | poor | 73 W | **46 W** | 27 W | **51 W** | 8 W |
 | LHB, 160 km/h | good | 27 W | 17 W | 10 W | 18 W | 8 W |
-| Vande Bharat, 160 km/h | poor | 80 W | **51 W** | 30 W | **57 W** | 8 W |
-| Vande Bharat, 160 km/h | good | 30 W | 19 W | 11 W | 20 W | 8 W |
-| ICF, 110 km/h | poor | 35 W | 26 W | 14 W | 24 W | 8 W |
-| ICF, 110 km/h | good | 13 W | **10 W** | **5 W** | **8.5 W** | 8 W |
-| BOXN, 100 km/h | poor | 209 W | **98 W** | 4 W | **114 W** | 8 W |
-| BOXN, 100 km/h | good | 83 W | 37 W | 1 W | 42 W | 8 W |
+| Vande Bharat, 160 km/h | poor | 87 W | **55 W** | 32 W | **62 W** | 8 W |
+| Vande Bharat, 160 km/h | good | 33 W | 21 W | 12 W | 22 W | 8 W |
+| ICF, 110 km/h | poor | 31 W | 23 W | 13 W | 21 W | 8 W |
+| ICF, 110 km/h | good | 12 W | **8.6 W** | **4.7 W** | **7.3 W** | 8 W |
+| BOXN, 100 km/h | poor | 214 W | **78 W** | 4 W | **90 W** | 8 W |
+| BOXN, 100 km/h | good | 85 W | 29 W | 1 W | 33 W | 8 W |
 
 **Ride versus power with one fixed setting:**
 
@@ -355,16 +355,16 @@ Today's dampers deliver only 22–36% of c_req on coaches. That is why their ζ 
 
 | Vehicle | Today Wz | Match A / B / C | Harvest A / B / C |
 |---|---|---|---|
-| LHB | 1.83 | 1.83 / 1.83 / **1.79** | 1.69 / 1.67 / **1.65** |
-| Vande Bharat | 1.79 | 1.79 / 1.79 / 1.76 | 1.67 / 1.64 / **1.59** |
-| ICF | 1.42 | 1.42 / 1.42 / 1.39 | 1.39 / 1.39 / 1.51 |
-| BOXN | 2.09 | **1.77** / 2.10 / **1.76** | 1.76 / 2.10 / 1.80 |
+| LHB | 1.84 | 1.85 / 1.85 / **1.81** | 1.70 / 1.67 / **1.64** |
+| Vande Bharat | 1.79 | 1.79 / 1.79 / 1.76 | 1.66 / 1.64 / **1.58** |
+| ICF | 1.38 | 1.38 / 1.38 / 1.35 | 1.31 / 1.32 / 1.42 |
+| BOXN | 2.15 | **1.73** / 2.16 / **1.73** | 1.75 / 2.16 / 1.83 |
 
 **The power bank over a run:**
 
 ![Power bank](results/stage2_bank.png)
 
-The power arrives in **bursts above 300 W** against an average of 38 W. The supercapacitor rises smoothly from 30 V to 32.8 V in 30 s; at this rate the battery starts charging after about 2 minutes.
+The power arrives in **bursts above 300 W** against an average of 36 W (front bogie). The supercapacitor rises smoothly from 30 V to 32.6 V in 30 s; at this rate the battery starts charging after about 2 minutes.
 
 ---
 
@@ -372,14 +372,14 @@ The power arrives in **bursts above 300 W** against an average of 38 W. The supe
 
 | # | Finding | Evidence | Meaning |
 |---|---|---|---|
-| 1 | **Same ride, plus power** | Wz 1.830 vs 1.829; 47–57 W into the bank per coach bogie on poor track | The smart damper can replace today's damper with **no comfort penalty** |
-| 2 | **Self-powered bogie on normal track** | LHB, VB and BOXN put 2–14× their 8 W load into the bank | The bogie can run its own sensors, controller and radio |
-| 3 | **Smooth track is the weak case** | ICF on good track: 8.5–10 W against 8 W of load; B falls short | The battery must cover long smooth stretches; ICF needs the efficient designs or a smaller load |
-| 4 | **"Maximum power transfer" is the wrong goal** | Harvest setting takes more mechanical power (84 vs 73 W) but delivers less to the bank (37 vs 47 W) | Half the power then heats the coil. Keeping c well below c_max harvests more. **This is a design rule for Stage 3** |
-| 5 | **More damping helps crowded coaches** | Harvest setting improves Wz on LHB 1.83 → 1.65–1.69 and VB 1.79 → 1.59–1.67 | Today's crowded coaches are under-damped (Stage 1). Stage 3's load-adaptive control can **improve comfort and keep efficiency high** at the same time |
+| 1 | **Same ride, plus power** | Wz 1.846 vs 1.844; 46–62 W into the bank per LHB and Vande Bharat bogie on poor track | The smart damper can replace today's damper with **no comfort penalty** |
+| 2 | **Self-powered bogie on normal track** | LHB, VB and BOXN put 2–11× their 8 W load into the bank | The bogie can run its own sensors, controller and radio |
+| 3 | **Smooth track is the weak case** | ICF on good track: 7.3–8.6 W against 8 W of load; B and C fall short | The battery must cover long smooth stretches; ICF needs the efficient designs or a smaller load |
+| 4 | **"Maximum power transfer" is the wrong goal** | Harvest setting takes more mechanical power (82 vs 73 W) but delivers less to the bank (36 vs 46 W) | Half the power then heats the coil. Keeping c well below c_max harvests more. **This is a design rule for Stage 3** |
+| 5 | **More damping helps crowded coaches** | Harvest setting improves Wz on LHB 1.84 → 1.64–1.70 and VB 1.79 → 1.58–1.66 | Today's crowded coaches are under-damped (Stage 1). Stage 3's load-adaptive control can **improve comfort and keep efficiency high** at the same time |
 | 6 | **For freight, the wedges must go** | BOXN B (EM damper beside the wedges): 4 W in, net −4 W, because the wedges lock the suspension | The freight product must **replace** the friction wedges, not sit beside them |
-| 7 | **Replacing the wedges transforms the wagon ride** | BOXN A/C: RMS 0.329 → 0.154 m/s² (−53%), Wz 2.09 → 1.76, with 98–114 W into the bank | A very strong freight result, **to be confirmed with better Casnub data** (Section 15) |
-| 8 | **Design C is the lead candidate** | Most power on LHB, Vande Bharat and BOXN (50–114 W), chain efficiency 61–71%, slightly better ride, compact (27–71 N·m generator) | **C for both products**, A as the reference, B as a low-risk coach retrofit |
+| 7 | **Replacing the wedges transforms the wagon ride** | BOXN A/C: RMS 0.344 → 0.140 m/s² (−59%), Wz 2.15 → 1.73, with 78–90 W into the bank | A very strong freight result, **to be confirmed with better Casnub data** (Section 15) |
+| 8 | **Design C is the lead candidate** | Most power on LHB, Vande Bharat and BOXN (51–90 W), chain efficiency 61–71%, slightly better ride, compact (27–71 N·m generator) | **C for both products**, A as the reference, B as a low-risk coach retrofit |
 | 9 | **Design A is heavy** | 26–37 kg copper per coach damper, 72 kg for BOXN | Direct-drive is not practical for freight |
 | 10 | **It is safe** | Fail-safe gives exactly today's damping (0.00% error) | A failed SwarmRide damper is never worse than today's |
 

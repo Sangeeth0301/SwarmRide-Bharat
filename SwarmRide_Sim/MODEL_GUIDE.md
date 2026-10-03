@@ -43,7 +43,7 @@ Track Input ──► Scope 4
 | **Rail height w(x)** (lookup table) | Rail irregularity under each wheel | The disturbance that shakes the coach | `TR.w` from `sr_track.m` |
 | **Rail slope dw_dx** × **x speed** | Wheel vertical velocity ẇ = slope × v | Needed by the primary dampers | `TR.dwdx`, `P.v` |
 
-Track types (`functions/sr_track.m`): `good` and `poor` use the vertical track spectrum (roughness constants 4.032e-7 and 1.08e-6 m·rad, wavelengths 1–100 m, fixed seed so every controller sees the same rail). `bump` is a single 10 mm, 4 m dip.
+Track types (`functions/sr_track.m`): `good` and `poor` use the vertical track spectrum (roughness constants 4.032e-7 and 1.08e-6 m·rad, wavelengths 1–100 m as 1,981 sines on the harmonics of a 2 km period, random phases with a fixed seed so every train and controller sees the same rail; the rail follows the spectrum within 3.4% in every wavelength band). `bump` is a single 10 mm, 4 m dip.
 
 ### 2.2 Vehicle Plant (half-coach, 4 DOF, 8 states)
 
@@ -118,22 +118,22 @@ Produced by `scripts/check_stage1b.m` (full text in `results/stage1b_baseline_re
 
 | Vehicle | Load | Body mode | Damping ζ | Body RMS [m/s²] | Sperling Wz | Max stroke | Heat wasted per bogie |
 |---|---|---|---|---|---|---|---|
-| LHB, 160 km/h | empty | 0.93 Hz | 0.14 | 0.138 | 1.73 | 17.3 mm | 67 W |
-| LHB, 160 km/h | 12 t | 0.90 Hz | 0.10 | 0.155 | 1.83 | 20.2 mm | 73 W |
-| Vande Bharat, 160 km/h | empty | 0.86 Hz | 0.12 | 0.138 | 1.74 | 16.7 mm | 78 W |
-| Vande Bharat, 160 km/h | 7.6 t | 0.84 Hz | 0.10 | 0.146 | 1.79 | 16.8 mm | 80 W |
-| ICF, 110 km/h | empty | 1.08 Hz | 0.08 | 0.096 | 1.54 | 11.9 mm | 29 W |
-| ICF, 110 km/h | 15 t | 0.90 Hz | 0.06 | 0.079 | 1.42 | 12.2 mm | 35 W |
-| BOXN, 100 km/h | empty | 4.07 Hz | friction | 0.385 | 2.21 | 3.9 mm | 34 W |
-| BOXN, 100 km/h | 67 t | 2.04 Hz | friction | 0.329 | 2.09 | 3.5 mm | 209 W |
+| LHB, 160 km/h | empty | 0.93 Hz | 0.14 | 0.148 | 1.73 | 20.0 mm | 64 W |
+| LHB, 160 km/h | 12 t | 0.90 Hz | 0.10 | 0.174 | 1.84 | 25.2 mm | 73 W |
+| Vande Bharat, 160 km/h | empty | 0.86 Hz | 0.12 | 0.151 | 1.75 | 23.3 mm | 82 W |
+| Vande Bharat, 160 km/h | 7.6 t | 0.84 Hz | 0.10 | 0.159 | 1.79 | 24.9 mm | 87 W |
+| ICF, 110 km/h | empty | 1.08 Hz | 0.08 | 0.085 | 1.45 | 9.6 mm | 23 W |
+| ICF, 110 km/h | 15 t | 0.90 Hz | 0.06 | 0.070 | 1.38 | 13.5 mm | 31 W |
+| BOXN, 100 km/h | empty | 4.07 Hz | friction | 0.405 | 2.28 | 3.2 mm | 36 W |
+| BOXN, 100 km/h | 67 t | 2.04 Hz | friction | 0.344 | 2.15 | 2.8 mm | 214 W |
 
-Wiring check (LHB): Simulink vs independent state-space model differ by 0.004 % → PASS.
+Wiring check (LHB): Simulink vs independent state-space model differ by 0.003 % → PASS.
 
 **What the baseline shows**
 
 1. **Today's fixed damper weakens with load on every coach type:** ζ falls 0.14 → 0.10 (LHB), 0.12 → 0.10 (Vande Bharat), 0.08 → 0.06 (ICF). Figure: `results/stage1b_zeta_vs_load.png`.
 2. **ICF coil springs sag** from 147 mm to 214 mm under a crowded load (67 mm extra); air-spring coaches stay levelled.
-3. **Energy wasted as heat** by today's dampers: about 30–80 W per bogie on coaches and up to about 210 W per bogie on a loaded BOXN wagon (friction wedges). This is the ceiling on what SwarmRide can recover. Figure: `results/stage1b_heat.png`.
+3. **Energy wasted as heat** by today's dampers: about 20–90 W per bogie on coaches and up to about 210 W per bogie on a loaded BOXN wagon (friction wedges). This is the ceiling on what SwarmRide can recover. Figure: `results/stage1b_heat.png`.
 4. **Goods wagons ride hardest** (Wz 2.1–2.2), and they have no power for sensors, which is where self-power matters most.
 
 **Cautions:** many parameters are assumed (Section 3); Casnub friction is smoothed, so its heat figure is approximate; Wz uses the frequency-domain method (same record length for all cases).

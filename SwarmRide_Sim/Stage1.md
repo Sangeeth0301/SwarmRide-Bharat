@@ -59,8 +59,8 @@ Then it **proves** the rig is physically correct and **measures** today's trains
 
 | Step | What was built | Proof or result |
 |---|---|---|
-| **Stage 1** | Track generator, 4-DOF coach physics, passive oil damper, logging, automatic checks (generic coach) | Bounce frequency 0.83 Hz equals the hand calculation; Simulink and an independent model agree within **0.003%** |
-| **Stage 1b** | Real Indian vehicles (LHB, Vande Bharat, ICF, BOXN) with their real spring types (air, coil, Casnub), friction-wedge model, 4 live scopes, real-time playback, baseline study | Wiring re-checked on LHB: **0.004%** difference. Baseline table and 3 figures (Section 10) |
+| **Stage 1** | Track generator, 4-DOF coach physics, passive oil damper, logging, automatic checks (generic coach) | Bounce frequency 0.83 Hz equals the hand calculation; Simulink and an independent model agree within **0.002%** |
+| **Stage 1b** | Real Indian vehicles (LHB, Vande Bharat, ICF, BOXN) with their real spring types (air, coil, Casnub), friction-wedge model, 4 live scopes, real-time playback, baseline study | Wiring re-checked on LHB: **0.003%** difference. Baseline table and 3 figures (Section 10) |
 
 ### Files
 
@@ -177,14 +177,15 @@ The rail is built **before** each run (in the model's InitFcn).
 
 | trackType | How it is made | Used for |
 |---|---|---|
-| **poor** | Sum of **400 sine waves**, wavelengths **1 m to 100 m**, sized by the standard vertical track spectrum S(Ω) = A_v·Ω_c² / ((Ω² + Ω_r²)(Ω² + Ω_c²)), with **A_v = 1.08e-6** m·rad, Ω_c = 0.8246 rad/m, Ω_r = 0.0206 rad/m | Main comfort comparison (realistic worn track) |
+| **poor** | Sum of **1,981 sine waves**, one on every harmonic of a 2 km period with wavelength **1 m to 100 m**, sized by the standard vertical track spectrum S(Ω) = A_v·Ω_c² / ((Ω² + Ω_r²)(Ω² + Ω_c²)), with **A_v = 1.08e-6** m·rad, Ω_c = 0.8246 rad/m, Ω_r = 0.0206 rad/m | Main comfort comparison (realistic worn track) |
 | **good** | Same, with **A_v = 4.032e-7** (smoother) | Good-track comparison |
 | **bump** | Flat rail with a single **10 mm deep, 4 m long** dip at x = 200 m | Watching one clear event; the preview demo later |
 
 - **Long waves are big and short waves are small**, like a real rail.
 - **Fixed random seed (7):** every damper we test drives over **exactly the same rail**, so the comparison is fair.
 - **Coverage at 160 km/h:** a 100 m wave shakes at 0.44 Hz and a 1 m wave at 44 Hz. That covers both the body bounce (~1 Hz) and the bogie vibrations (~5 Hz).
-- **Track length** is computed automatically: s0 + v·T + coach length + 100 m.
+- **Every band carries the right power:** each sine sits on a harmonic of the 2 km period, so the sines are exactly independent and the rail follows the spectrum within 3.4% in every wavelength band (checked by `tests/test_track.m`).
+- **Same rail for every speed:** the rail repeats every 2 km, independent of train or speed; the run uses about the first 1.6 km at 160 km/h.
 
 ---
 
@@ -382,8 +383,8 @@ Sources 3 and 4 were read from search summaries; confirm the numbers in the full
 |---|---|---|
 | **Vibration modes** (empty → crowded) | Body bounce 0.87 → 0.83 Hz, pitch 0.94 → 0.90 Hz, bogies 5.2 → 5.5 Hz | Realistic: coach bodies are designed for about 1 Hz (pitch inertia I = m·L²/12, L = 24 m) |
 | **Hand check** | f = (1/2π)·√(k_eff/m) = **0.83 Hz**, the same as the model | The physics matches textbook theory |
-| **Simulink vs independent model** | Max difference **0.003%** of peak → **PASS** | The Simulink wiring is correct |
-| **Wiring re-check on LHB (Stage 1b)** | **0.004%** → **PASS** | Still correct after adding real trains |
+| **Simulink vs independent model** | Max difference **0.002%** of peak → **PASS** | The Simulink wiring is correct |
+| **Wiring re-check on LHB (Stage 1b)** | **0.003%** → **PASS** | Still correct after adding real trains |
 | **Damping drops with load** | Body bounce ζ 0.11 → 0.07 | First sign of the fixed-damper problem |
 
 #### Single-bump test (10 mm dip, crowded coach, 130 km/h, oil damper)
@@ -397,7 +398,7 @@ Sources 3 and 4 were read from search summaries; confirm the numbers in the full
 
 ### 10.2 The four live scopes: what each one means
 
-These are from the default run: **LHB coach, 12 t crowded, 160 km/h, poor track**, showing the window 20–30 s.
+These are from the default run: **LHB coach, 12 t crowded, 160 km/h, poor track**, showing the window 20–30 s. They are drawn from the logged signals by `scripts/plot_scopes_stage1.m` (same signals as the live scopes), so they always match the current model and track.
 
 #### Scope 1: Body vibration (comfort)
 
@@ -405,15 +406,15 @@ These are from the default run: **LHB coach, 12 t crowded, 160 km/h, poor track*
 
 | Line | Where | Seen |
 |---|---|---|
-| az:1 (yellow) | Floor at the **centre** | About ±0.35 m/s² |
-| az:2 (blue) | Floor over the **front bogie** | Up to about ±0.6 m/s² |
-| az:3 (orange) | Floor over the **rear bogie** | Up to about ±0.78 m/s² |
+| centre (yellow) | Floor at the **centre** | Up to about ±0.68 m/s² |
+| over front bogie (blue) | Floor over the **front bogie** | Up to about ±0.94 m/s² |
+| over rear bogie (orange) | Floor over the **rear bogie** | Up to about ±1.24 m/s² |
 
 **What it means:**
 - Passengers **above the bogies feel about twice the shaking** of passengers in the middle. That is the **pitch** motion added on top of bounce, and it's why the model needs pitch (4 DOF), not just bounce.
 - The slow, big waves (about 1 s period) are the **body bounce mode**. SwarmRide's adaptive damping targets these.
 - The blue (front) and orange (rear) peaks are offset in time, because the rear bogie meets each bump about 0.34 s later.
-- Over the whole run, the centre RMS is **0.155 m/s²** and Sperling **Wz = 1.83** (Section 10.3).
+- Over the whole run, the centre RMS is **0.174 m/s²** and Sperling **Wz = 1.84** (Section 10.3).
 
 #### Scope 2: Suspension stroke (safety)
 
@@ -421,11 +422,11 @@ These are from the default run: **LHB coach, 12 t crowded, 160 km/h, poor track*
 
 | Line | Meaning | Seen |
 |---|---|---|
-| stroke:1 (yellow) | Front secondary spring stretch | About ±13 mm |
-| stroke:2 (blue) | Rear secondary spring stretch | About ±17 mm |
+| front (yellow) | Front secondary spring stretch | Within about ±25 mm |
+| rear (blue) | Rear secondary spring stretch | Within about ±25 mm |
 
 **What it means:**
-- The stroke stays **well inside the ±40 mm limit**. The largest in the full run is **20.2 mm**, about half the allowed travel.
+- The stroke stays **well inside the ±40 mm limit**. The largest in the full run is **25.2 mm**, about 60% of the allowed travel.
 - This spare travel is **room SwarmRide can use**. The controller can let the suspension move a little more freely, giving a softer ride, without hitting the bump stops.
 - The stroke is also what drives the generator in Stage 2: **more stroke speed means more voltage** (e = Kₑ·v).
 - Front and rear often move in **opposite directions**, which is pitch again.
@@ -436,12 +437,12 @@ These are from the default run: **LHB coach, 12 t crowded, 160 km/h, poor track*
 
 | Line | Meaning | Seen |
 |---|---|---|
-| Fd:1 (yellow) | Front damper force | About ±6 kN |
-| Fd:2 (blue) | Rear damper force | About ±7 kN peak |
+| front (yellow) | Front damper force | Up to about ±6 kN |
+| rear (blue) | Rear damper force | Up to about ±6 kN |
 
 **What it means:**
-- For the oil damper, Fd = 35,000 × vrel, so this graph is simply the **stroke speed scaled up**. A 7 kN peak means the damper is moving at 0.2 m/s.
-- **Every newton here makes heat.** The instantaneous power is Fd × vrel: at the 7 kN peak that is about **1.4 kW** for a moment, but the **average is only about 73 W per bogie**. The power comes in **short bursts**, so Stage 2 needs a **supercapacitor** to catch the peaks before the battery.
+- For the oil damper, Fd = 35,000 × vrel, so this graph is simply the **stroke speed scaled up**. A 6.1 kN peak means the damper is moving at about 0.17 m/s.
+- **Every newton here makes heat.** The instantaneous power is Fd × vrel: at the 6.1 kN peak that is about **1 kW** for a moment, but the **average is only about 73 W per bogie**. The power comes in **short bursts**, so Stage 2 needs a **supercapacitor** to catch the peaks before the battery.
 - This is the force SwarmRide's smart damper will **produce electrically** (F = Kₑ·i) while **harvesting** the energy instead of burning it.
 
 #### Scope 4: Rail under the wheels
@@ -450,13 +451,13 @@ These are from the default run: **LHB coach, 12 t crowded, 160 km/h, poor track*
 
 | Line | Wheel | Delay behind wheel 1 at 160 km/h |
 |---|---|---|
-| Track Input/1:1 (yellow) | Wheel 1, front bogie | 0 |
-| Track Input/1:2 (blue) | Wheel 2, front bogie | 2.56 m ÷ 44.4 m/s = **0.058 s** |
-| Track Input/1:3 (orange) | Wheel 3, rear bogie | 14.9 m ÷ 44.4 m/s = **0.335 s** |
-| Track Input/1:4 (green) | Wheel 4, rear bogie | 17.46 m ÷ 44.4 m/s = **0.393 s** |
+| wheel 1 (yellow) | Wheel 1, front bogie | 0 |
+| wheel 2 (blue) | Wheel 2, front bogie | 2.56 m ÷ 44.4 m/s = **0.058 s** |
+| wheel 3 (orange) | Wheel 3, rear bogie | 14.9 m ÷ 44.4 m/s = **0.335 s** |
+| wheel 4 (green) | Wheel 4, rear bogie | 17.46 m ÷ 44.4 m/s = **0.393 s** |
 
 **What it means:**
-- All 4 lines have the **same shape, shifted in time**. Every wheel rolls over the same rail, just later. The rail moves about ±10 mm (poor track).
+- All 4 lines have the **same shape, shifted in time**. Every wheel rolls over the same rail, just later. The rail moves up to about ±15 mm (poor track).
 - Wheels 1 and 2 almost overlap (same bogie). Wheels 3 and 4 are clearly delayed (the other bogie).
 - **This is the key to SwarmRide's "Train Brain" preview.** If the front of the train already knows the bump, every point behind it receives that bump after **t = d / v**. Within one coach the warning is 0.34 s; from the locomotive to coach 10 it is about **5 s** at 160 km/h, which is plenty of time to prepare.
 
@@ -466,14 +467,14 @@ Poor track, top service speed, today's damper. Full text: `results/stage1b_basel
 
 | Vehicle | Load | Body mode | Damping ζ | Static sag | Body RMS [m/s²] | Sperling Wz | Max stroke | Heat wasted per bogie |
 |---|---|---|---|---|---|---|---|---|
-| LHB, 160 km/h | empty | 0.93 Hz | 0.14 | levelled (air) | 0.138 | 1.73 | 17.3 mm | 67 W |
-| LHB, 160 km/h | 12 t | 0.90 Hz | **0.10** | levelled (air) | 0.155 | 1.83 | 20.2 mm | 73 W |
-| Vande Bharat, 160 km/h | empty | 0.86 Hz | 0.12 | levelled (air) | 0.138 | 1.74 | 16.7 mm | 78 W |
-| Vande Bharat, 160 km/h | 7.6 t | 0.84 Hz | **0.10** | levelled (air) | 0.146 | 1.79 | 16.8 mm | 80 W |
-| ICF, 110 km/h | empty | 1.08 Hz | 0.08 | 147 mm | 0.096 | 1.54 | 11.9 mm | 29 W |
-| ICF, 110 km/h | 15 t | 0.90 Hz | **0.06** | **214 mm** | 0.079 | 1.42 | 12.2 mm | 35 W |
-| BOXN, 100 km/h | empty | 4.07 Hz | friction | 14.7 mm | 0.385 | **2.21** | 3.9 mm | 34 W |
-| BOXN, 100 km/h | 67 t | 2.04 Hz | friction | 57.7 mm | 0.329 | 2.09 | 3.5 mm | **209 W** |
+| LHB, 160 km/h | empty | 0.93 Hz | 0.14 | levelled (air) | 0.148 | 1.73 | 20.0 mm | 64 W |
+| LHB, 160 km/h | 12 t | 0.90 Hz | **0.10** | levelled (air) | 0.174 | 1.84 | 25.2 mm | 73 W |
+| Vande Bharat, 160 km/h | empty | 0.86 Hz | 0.12 | levelled (air) | 0.151 | 1.75 | 23.3 mm | 82 W |
+| Vande Bharat, 160 km/h | 7.6 t | 0.84 Hz | **0.10** | levelled (air) | 0.159 | 1.79 | 24.9 mm | 87 W |
+| ICF, 110 km/h | empty | 1.08 Hz | 0.08 | 147 mm | 0.085 | 1.45 | 9.6 mm | 23 W |
+| ICF, 110 km/h | 15 t | 0.90 Hz | **0.06** | **214 mm** | 0.070 | 1.38 | 13.5 mm | 31 W |
+| BOXN, 100 km/h | empty | 4.07 Hz | friction | 14.7 mm | 0.405 | **2.28** | 3.2 mm | 36 W |
+| BOXN, 100 km/h | 67 t | 2.04 Hz | friction | 57.7 mm | 0.344 | 2.15 | 2.8 mm | **214 W** |
 
 #### Figure 1: Fixed damper gets weaker as passengers board
 
@@ -490,7 +491,7 @@ Poor track, top service speed, today's damper. Full text: `results/stage1b_basel
 ![ride](results/stage1b_ride.png)
 
 **What it means:**
-- Coaches score **Wz 1.4–1.8**; the scale runs 1 = very good, 2 = good, 3 = satisfactory, 4 = limit. The **BOXN goods wagon is worst (2.1–2.2)**: stiff springs and friction wedges.
+- Coaches score **Wz 1.38–1.84**; the scale runs 1 = very good, 2 = good, 3 = satisfactory, 4 = limit. The **BOXN goods wagon is worst (2.15–2.28)**: stiff springs and friction wedges.
 - LHB and Vande Bharat get worse when loaded, because their damping drops (Figure 1).
 - ICF scores slightly better loaded in this model. Its heavier body moves its bounce frequency lower (1.08 → 0.90 Hz), away from the band people feel most, but it **sags 67 mm** to do it.
 - **Honest note:** today's coaches already score "good" on this vertical-only model, so SwarmRide's comfort gain will be a **reduction** in Wz and RMS, measured in Stage 3. The bigger wins are **consistency at all loads, recovered energy, and self-powered safety**.
@@ -500,7 +501,7 @@ Poor track, top service speed, today's damper. Full text: `results/stage1b_basel
 ![heat](results/stage1b_heat.png)
 
 **What it means:**
-- Today's dampers turn about **30–80 W per bogie** (coaches) and up to about **210 W per bogie** (loaded BOXN) into heat.
+- Today's dampers turn about **20–90 W per bogie** (coaches) and up to about **210 W per bogie** (loaded BOXN) into heat.
 - This is the **upper limit** of what can be harvested. The real figure after the coil, rectifier, DC-DC and battery losses is measured in **Stage 2**.
 - It is **small power**. It cannot run the train, and it does not need to. It is enough to run the bogie's own control and **sensors** (a few watts each).
 - **Goods wagons have the most energy and no power supply today.** That makes self-powered safety sensors (hot axle, wheel flat, train parting) a strong case for freight.
@@ -513,12 +514,12 @@ Poor track, top service speed, today's damper. Full text: `results/stage1b_basel
 |---|---|---|---|
 | Fixed damper weakens with load | ζ falls 0.14 → 0.10 (LHB), 0.12 → 0.10 (VB), 0.08 → 0.06 (ICF) | LPV load-adaptive damping, ζ held constant | Stage 3 |
 | Body keeps swinging after bumps | Bump test: more than 5 slow swings | Adaptive damping + preview | Stage 3 |
-| Passengers over bogies get double the shaking | Scope 1: 0.78 vs 0.35 m/s² | Control front and rear dampers separately | Stage 3 |
+| Passengers over bogies get nearly double the shaking | Scope 1: 1.24 vs 0.68 m/s² | Control front and rear dampers separately | Stage 3 |
 | Every bump reaches every wheel later | Scope 4: 0.34 s inside a coach, about 5 s from the locomotive to coach 10 | Train Brain preview (t = d/v) | Stage 3 |
-| Energy becomes heat | 30–80 W per bogie (coach), up to 210 W (BOXN) | Electromagnetic damper + power bank | Stage 2 |
-| Power arrives in short bursts | Peaks about 1.4 kW vs 73 W average | Supercapacitor buffer | Stage 2 |
-| Spare suspension travel | Max stroke 20 mm of about 40 mm | Room for softer controlled ride | Stage 3 |
-| Goods wagons ride worst, no power | Wz 2.1–2.2, 210 W wasted | Self-powered sensors + smart damper | Stage 2 + 4 |
+| Energy becomes heat | 20–90 W per bogie (coach), up to 210 W (BOXN) | Electromagnetic damper + power bank | Stage 2 |
+| Power arrives in short bursts | Peaks around 1 kW vs 73 W average | Supercapacitor buffer | Stage 2 |
+| Spare suspension travel | Max stroke 25 mm of about 40 mm | Room for softer controlled ride | Stage 3 |
+| Goods wagons ride worst, no power | Wz 2.15–2.28, 210 W wasted | Self-powered sensors + smart damper | Stage 2 + 4 |
 
 ---
 
