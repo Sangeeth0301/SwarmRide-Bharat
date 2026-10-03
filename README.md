@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-Stage%202%20of%204%20complete%20%C2%B7%20simulation-E07A1F?style=flat-square" alt="status">
+  <img src="https://img.shields.io/badge/status-Stage%203%20of%204%20complete%20%C2%B7%20simulation-E07A1F?style=flat-square" alt="status">
   <img src="https://img.shields.io/badge/MATLAB%20%2F%20Simulink-R2024b-0076A8?style=flat-square" alt="MATLAB/Simulink R2024b">
   <img src="https://img.shields.io/badge/rolling%20stock-LHB%20%C2%B7%20Vande%20Bharat%20%C2%B7%20ICF%20%C2%B7%20BOXN-13233A?style=flat-square" alt="rolling stock">
   <a href="SwarmRide_Sim/VERIFICATION.md"><img src="https://img.shields.io/badge/verification-test%20suite-2A9D8F?style=flat-square" alt="verification"></a>
@@ -30,7 +30,7 @@ Every coach and wagon on Indian Railways carries **secondary dampers** that turn
 | **Replaces** | The passive secondary damper: one part, same mounting points |
 | **Adds** | Energy harvesting · load-adaptive damping · train-wide bump preview · self-powered safety sensing |
 | **Markets** | Freight wagons (BOXN, Dedicated Freight Corridors) · Vande Bharat trainsets |
-| **Stage** | Architecture complete · Simulink test rig verified · smart damper and power chain verified · control (Stage 3) next |
+| **Stage** | Architecture complete · Simulink test rig, smart damper, power chain and controllers verified · health sensing and dashboard (Stage 4) next |
 
 ---
 
@@ -156,9 +156,8 @@ flowchart LR
     classDef done fill:#2A9D8F,stroke:#1F6F66,color:#ffffff
     classDef now fill:#E07A1F,stroke:#A8520F,color:#ffffff
     classDef next fill:#EEF3FA,stroke:#9AA8BC,color:#13233A
-    class S1,S2 done
-    class S3 now
-    class S4 next
+    class S1,S2,S3 done
+    class S4 now
 ```
 
 ### Stage 1: the baseline to beat (complete)
@@ -211,9 +210,36 @@ Today's damper is replaced by an electromagnetic damper, an active rectifier, a 
 
 Full report: **[SwarmRide_Sim/Stage2.md](SwarmRide_Sim/Stage2.md)**
 
-### Expected performance
+### Stage 3: the SwarmRide controllers (complete)
 
-Targets from a simplified preview model; to be confirmed in Stages 2–3. Crowded coach, poor track, 160 km/h.
+The fixed damping command is replaced by the **SwarmRide Controller**: an LPV (load-scheduled) LQR running at 100 Hz, plus the **Train Brain** preview of the rail ahead. It is tested head to head against today's damper and a fixed-setting harvester at empty, half and full load.
+
+| Sperling Wz, poor track (lower = better) | Empty | Half | Full | Into the bank (full) |
+|---|---|---|---|---|
+| LHB, today's damper | 1.73 | 1.78 | 1.84 | 0 W |
+| **LHB, SwarmRide (C3)** | **1.44** | **1.44** | **1.44** | 28 W |
+| Vande Bharat, today's damper | 1.75 | 1.77 | 1.79 | 0 W |
+| **Vande Bharat, SwarmRide (C3)** | **1.40** | **1.41** | **1.42** | 30 W |
+
+<table>
+  <tr>
+    <td width="50%"><img src="SwarmRide_Sim/results/stage3_ride_vs_load.png" alt="Ride at every load"><br><sub><b>Same ride at every load:</b> today's ride worsens as passengers board; SwarmRide's stays flat and about 20% better.</sub></td>
+    <td width="50%"><img src="SwarmRide_Sim/results/stage3_comfort_vs_power.png" alt="Comfort vs power"><br><sub><b>Comfort vs power:</b> no fixed setting reaches SwarmRide's comfort; a damping floor trades comfort for power on one dial.</sub></td>
+  </tr>
+</table>
+
+**Key findings:**
+- Ride about **20% better** on LHB and Vande Bharat (worst seat −24%), body vibration **halved**, suspension travel halved, still **28–30 W per bogie** into the bank.
+- Robust to a ±20 ms late warning and a ±10% load-estimate error, and the fail-safe still works.
+- **Honest limits:**
+  - The preview adds only 1–2%, because a damper that can only resist cannot act before the motion starts. Making the warning count needs brief active pushing, which is the next experiment.
+  - The empty goods wagon does not ride better.
+
+Full report: **[SwarmRide_Sim/Stage3.md](SwarmRide_Sim/Stage3.md)**
+
+### Early estimate (preview study)
+
+Before the Simulink stages, a simplified Python model estimated the gains below. Stage 3 has now measured them in Simulink: a ride improvement of about 22% and body vibration down 51% on a crowded LHB coach, at 28 W per bogie (Section *Stage 3* above). Crowded coach, poor track, 160 km/h.
 
 | Measure | Today's damper | Research harvester (fixed load) | **SwarmRide (target)** |
 |---|---|---|---|
@@ -253,8 +279,8 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
 | Concept | Problem evidence, architecture, pitch, technical design | Done |
 | Simulation 1 | Test rig, verification, baseline of LHB, Vande Bharat, ICF, BOXN | Done |
 | Simulation 2 | Smart damper (A/B/C), rectifier, DC-DC, power bank, fail-safe | Done |
-| Simulation 3 | LPV and preview control, head-to-head comparison | **Next** |
-| Simulation 4 | Self-powered health sensing, investor dashboard | Planned |
+| Simulation 3 | LPV and preview control, head-to-head comparison | Done |
+| Simulation 4 | Self-powered health sensing, active preview, investor dashboard | **Next** |
 | Prototype | Bench test of one smart damper | Planned |
 | Pilot | Freight wagons, then Vande Bharat, with RDSO | Planned |
 
@@ -289,8 +315,8 @@ cd SwarmRide_Sim
 sr_setup                                                   % paths + opens the model
 trainType = 'LHB';  v_kmh = 160;  mload_t = 12;  trackType = 'poor';
 % press Run: live scopes open and the 30 s run plays in real time
-designType = 'C';  cmdMode = 'match';                      % Stage 2: smart damper design and setting
-run('scripts/check_stage2.m')                              % reproduce the Stage 2 study
+designType = 'C';  ctrlMode = 'C3';                        % Stage 3: damper design and controller
+run('scripts/check_stage3.m')                              % reproduce the Stage 3 study
 ```
 
 Requires MATLAB R2024b with Simulink, Control System Toolbox, Simscape and Simscape Electrical.
@@ -306,7 +332,7 @@ The pitch and preview tooling use Python 3 (numpy, scipy, matplotlib, Pillow) an
 | [Investor pitch](SwarmRide_Bharat_Pitch.md) · [PDF](SwarmRide_Bharat_Pitch.pdf) · [Word](SwarmRide_Bharat_Pitch.docx) | Investors and Indian Railways |
 | [Technical document](SwarmRide_Bharat_Technical_Document.md) | Engineers |
 | [Complete guide](SwarmRide_Bharat_Complete_Guide.md) | Learning the project from scratch |
-| [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) · [Verification](SwarmRide_Sim/VERIFICATION.md) | Simulation |
+| [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Stage 3 report](SwarmRide_Sim/Stage3.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) · [Verification](SwarmRide_Sim/VERIFICATION.md) | Simulation |
 | [Results preview](SwarmRide_Simulation_Results_Preview.pdf) | Expected results |
 
 ---
