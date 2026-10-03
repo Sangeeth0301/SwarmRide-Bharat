@@ -12,8 +12,10 @@ for tt = {'good', 'poor'}
     TR = sr_track(P, tt{1});
     if strcmp(tt{1}, 'good'), Av = P.Av_good; else, Av = P.Av_poor; end
     S = @(Om) Av * Oc^2 ./ ((Om.^2 + Or^2) .* (Om.^2 + Oc^2));
-    w = TR.w - mean(TR.w);
-    N = numel(w);  dx = TR.x(2) - TR.x(1);
+    dx = TR.x(2) - TR.x(1);
+    w = TR.w(1:round(TR.period / dx));                     % exactly one period of the rail
+    w = w - mean(w);
+    N = numel(w);
     W = fft(w);
     Om = 2*pi * (0:N-1)' / (N * dx);                       % spatial frequency [rad/m]
     pw = 2 * abs(W).^2 / N^2;                              % power of each one-sided bin [m^2]
@@ -25,7 +27,7 @@ for tt = {'good', 'poor'}
         got = sum(pw(k));
         want = integral(S, lo, hi);
         R = [R; sr_check(sprintf('Track %s, %g-%g m band power vs spectrum', tt{1}, bands(b, 1), bands(b, 2)), ...
-            100 * abs(got - want) / want, 15, '%', sprintf('RMS in band %.2f vs %.2f mm', 1e3*sqrt(got), 1e3*sqrt(want)))]; %#ok<AGROW>
+            100 * abs(got - want) / want, 5, '%', sprintf('RMS in band %.2f vs %.2f mm', 1e3*sqrt(got), 1e3*sqrt(want)))]; %#ok<AGROW>
     end
     R = [R; sr_check(sprintf('Track %s, overall RMS (information)', tt{1}), 0, 1, 'mm', ...
         sprintf('RMS %.2f mm, peak %.1f mm', 1e3 * std(w), 1e3 * max(abs(w))))]; %#ok<AGROW>
