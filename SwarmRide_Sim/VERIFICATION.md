@@ -26,28 +26,24 @@ Latest report: [`results/verification_report.txt`](results/verification_report.t
 | **Energy conservation** | `test_stage2` | Generated energy = coil + converter + battery losses + loads + dump + stored energy | Within 0.0003% |
 | **Fail-safe** | `test_stage2` | Damping after a fault against today's damping; harvesting after the fault | 0.00%, 0 W |
 | **Self-sufficiency** | `test_stage2` | The smart damper never draws power from the bank in normal running | Only −0.1 W blips from the current-loop lag |
-| **Rail input** | `test_track` | Power of the generated rail in each wavelength band against the track spectrum | 3 of 4 bands within 5%; **see Section 2** |
+| **Rail input** | `test_track` | Power of the generated rail in each wavelength band against the track spectrum | Within 3.4% in every band (Section 2) |
 | **Documents** | `tools/check_docs.py` | Every image and link in every Markdown file exists | 70 of 70 present |
 | **README diagrams** | Rendered with Mermaid 11 | Both diagrams render | OK |
 | **Python tooling** | Fresh run in a clean copy | Preview simulation, both PDF builders, README visuals | All run; preview results identical to the committed ones |
 
 ---
 
-## 2. Known issue found by the audit (open)
+## 2. Issue found by the audit (resolved)
 
-**The generated rail has about 19% too much power at the longest wavelengths (30–100 m).**
+**The generated rail did not carry the right power at the longest wavelengths.**
 
-- **Cause.** `functions/sr_track.m` builds the rail from 400 sines spaced evenly from 1 m to 100 m wavelength. Each sine takes the spectrum value at the *left edge* of its slice. The spectrum is steep at long wavelengths, so those slices are over-weighted: +19% power in the 30–100 m band, +14% over 1–100 m in total (RMS about +7%).
-- **Effect.**
-  - The rail is a little **rougher** than the standard, in the band that excites the 1 Hz body bounce at 160 km/h.
-  - Comparisons stay fair, because today's train and SwarmRide always ride the same rail.
-  - **Absolute** numbers (heat today, watts into the bank, Wz) are likely somewhat high; how much is measured once the fix is in.
-- **Fix (tested, not yet applied).**
-  - Use log-spaced sines at the centre of each slice. That matches the spectrum within 1.4% in every band (total 1.000).
-  - It changes the rail, so every published number would be regenerated (Stage 1b and Stage 2) and the documents updated.
-  - Waiting for approval.
+| Version | How the sines were placed | 30–100 m band power vs spectrum | Why |
+|---|---|---|---|
+| Original | 400 sines, evenly spaced, spectrum taken at the left edge of each slice | **+19%** | The spectrum is steepest at long wavelengths, so left-edge values over-weight them |
+| First fix | 400 log-spaced sines at slice centres | **−18%** (this rail) | Correct on average, but long-wave sines closer than a 1.6 km record can separate interfere, so the actual rail drifts randomly |
+| **Final** | **1,981 sines on the harmonics of a fixed 2 km period** | **+3.4%** (other bands within 0.6%) | Harmonics of one period are exactly independent, so each band gets the spectrum's power; the 3.4% is half a sine at the band edge |
 
----
+The test limit is now 5% per band. **All results (Stage 1b, Stage 2, figures and documents) were regenerated on the final rail.** Comparisons were always fair (today's train and SwarmRide share the rail); the absolute figures changed by a few percent to about 20%, as listed in the reports.
 
 ## 3. Corrected during the audit
 
@@ -56,6 +52,7 @@ Latest report: [`results/verification_report.txt`](results/verification_report.t
 | Stage 1 report showed the generic coach's pitch frequency from before Stage 1b (1.03 → 0.98 Hz) | Re-run: 0.94 → 0.90 Hz (pitch inertia now m·L²/12 for every vehicle). Bounce frequency and all checks unchanged |
 | PDF builders printed "wrote" before Edge had finished writing the PDF | Shared helper `pdf/edge_pdf.py` waits until the PDF is complete |
 | Track test counted the 100 m wave outside its band (floating-point edge) | Half-bin shift in the band selection |
+| Rail power wrong at 30–100 m wavelengths | Sines on the harmonics of a 2 km period; all results regenerated (Section 2) |
 
 ---
 
@@ -70,4 +67,4 @@ Latest report: [`results/verification_report.txt`](results/verification_report.t
 | Damper designs are first estimates | Copper mass, torque and inertia are rough | Electromagnetic design (FEA) and a bench prototype |
 | No field data | The model has not been compared with a real train | Instrumented run with accelerometers on a coach |
 
-**In short:** the model is internally consistent, numerically converged and matches hand calculations everywhere it can be checked. Its absolute numbers are only as good as the assumed parameters, and the rail-input issue in Section 2 should be fixed before figures are shown outside the team.
+**In short:** the model is internally consistent, numerically converged and matches hand calculations everywhere it can be checked. Its absolute numbers are only as good as the assumed parameters (Section 4).
