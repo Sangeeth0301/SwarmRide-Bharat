@@ -10,6 +10,7 @@ v = struct('trainType', train, 'designType', 'A', 'cmdMode', 'match', 'trackType
 for k = 1:2:numel(varargin)
     v.(varargin{k}) = varargin{k + 1};
 end
+evalin('base', 'clear ctrlMode load_err preview_dt rw c_fix_override c_floor_frac');   % Stage 3 options fall back to their defaults
 f = fieldnames(v);
 for k = 1:numel(f)
     assignin('base', f{k}, v.(f{k}));
