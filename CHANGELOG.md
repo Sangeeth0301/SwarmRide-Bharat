@@ -1,5 +1,17 @@
 # Changelog
 
+## Simulation Stage 3: SwarmRide controllers
+- LPV (load-scheduled) LQR with Train Brain preview, designed at five loads per vehicle and cached (`functions/sr_controller_design.m`)
+- Stage 3 model: Train Brain (rail around the train), SwarmRide Controller (100 Hz feedback + preview, semi-active conversion with passivity and efficiency limits, command smoothing)
+- Head to head: today's damper, fixed harvester, LPV, LPV + preview; 4 vehicles x 3 loads; good and poor track; short dip and track settlement; comfort-vs-power sweeps with a damping floor
+- Results: ride the same at every load and about 20% better on LHB / Vande Bharat, body vibration halved, 28-30 W per coach bogie
+- Stage 3 checks in the verification suite; Stage 3 report
+
+## Audit and track fix
+- Verification suite (`scripts/run_all_checks.m`) and `VERIFICATION.md`
+- Rail generator corrected (sines on the harmonics of a 2 km period); all results regenerated
+- PDF builders wait for Edge to finish; document link checker
+
 ## Simulation Stage 2: smart damper and power chain
 - Electromagnetic smart damper: Faraday/Lorentz machine, H-bridge current control (current sets damping), current loop, passive part (oil, friction, inertance)
 - Damper design library: A direct-drive linear, B hybrid, C geared rotary, sized per vehicle for zeta = 0.25 at full load
