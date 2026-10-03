@@ -66,7 +66,7 @@ P.Tend = 30;                                       % simulated time             
 %   cmdMode     'match'   : electromagnetic copy of today's damping (same ride, plus energy)
 %               'harvest' : fixed-load harvester, coil load = coil resistance (most power per speed)
 %   t_fault     time of a test fault that drops the fail-safe relay [s] (Inf = no fault)
-if ~exist('designType', 'var'), designType = 'A';     end
+if ~exist('designType', 'var'), designType = 'C';     end    % C = lead design (Stage 2)
 if ~exist('cmdMode', 'var'),    cmdMode = 'match';    end
 if ~exist('t_fault', 'var'),    t_fault = Inf;        end
 D = sr_damper_design(TB, P, designType);
