@@ -1,5 +1,5 @@
 /* host_test.c - checks every firmware function against the numbers MATLAB computed.
- * Vectors: test/vectors/*.csv, written by SwarmRide_Sim/scripts/bench_export.m.
+ * Vectors: the CSV files in test/vectors, written by SwarmRide_Sim/scripts/bench_export.m.
  * Build and run (from the firmware folder):  make test
  * The double build must match MATLAB to rounding; the float build (-DSR_USE_FLOAT, as on a
  * Cortex-M4F) must match within the tolerances below, which are far below sensor accuracy. */
@@ -34,14 +34,11 @@ static double *read_csv(const char *path, int *rows, int *cols)
     FILE *fh = fopen(path, "r");
     int r = 0, ncol = -1, cap = 0;
     double *M = NULL;
-    if (!fh) { printf("cannot open %s
-", path); return NULL; }
+    if (!fh) { printf("cannot open %s\n", path); return NULL; }
     while (fgets(line, (int)sizeof line, fh)) {
         int c = 0;
-        char *tok = strtok(line, ",
-");
-        while (tok && c < 4096) { tmp[c++] = strtod(tok, NULL); tok = strtok(NULL, ",
-"); }
+        char *tok = strtok(line, ",\r\n");
+        while (tok && c < 4096) { tmp[c++] = strtod(tok, NULL); tok = strtok(NULL, ",\r\n"); }
         if (c == 0) continue;
         if (ncol < 0) ncol = c;
         if (c != ncol) { fclose(fh); free(M); return NULL; }
