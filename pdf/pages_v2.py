@@ -50,7 +50,7 @@ def page2():
        <span class="n t">7</span><b>Axle box</b> → bearing temperature + vibration sensor.</p>
   </div>
   <div class="pill" style="left:40px;top:690px">No new bogie · no new cables · fits today's mounts</div>
-  <div class="foot">Photos: air spring on LHB coach — Apurv013, CC0 (Wikimedia Commons) · ICF coach bogie and Casnub wagon bogie — supplied by the author<span>2 / 6</span></div>
+  <div class="foot">Photos: air spring on LHB coach — Apurv013, CC0 (Wikimedia Commons) · ICF coach bogie and Casnub wagon bogie — supplied by the author<span>2 / 7</span></div>
 </div>"""
 
 
@@ -102,7 +102,7 @@ def page5():
   <div class="resrow">{rc}</div>
   <div class="road">{road}</div>
   <div class="msg" style="top:722px">One damper. Two markets. <span>Every bogie powers itself.</span></div>
-  <div class="foot">Photos: ICF coaches — supplied by the author · BOXN freight train — Adityamadhav83, CC BY-SA 3.0 (Wikimedia Commons) · expected results, to be proven<span>5 / 6</span></div>
+  <div class="foot">Photos: ICF coaches — supplied by the author · BOXN freight train — Adityamadhav83, CC BY-SA 3.0 (Wikimedia Commons) · expected results, to be proven<span>5 / 7</span></div>
 </div>"""
 
 
@@ -220,7 +220,7 @@ def page6():
       <p class="sm">Fail-safe relay makes it a normal damper. Safety never depends on software. To be tested to EN 50155 · EN 61373 · EN 50121.</p>
     </div>
   </div>
-  <div class="foot">SwarmRide Bharat · system architecture<span>6 / 6</span></div>
+  <div class="foot">SwarmRide Bharat · system architecture<span>6 / 7</span></div>
 </div>"""
 
 

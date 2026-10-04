@@ -1,4 +1,4 @@
-"""Builds the SwarmRide Bharat 6-page pitch (HTML -> PDF via headless Edge)."""
+"""Builds the SwarmRide Bharat 7-page pitch (HTML -> PDF via headless Edge)."""
 import math
 import random
 from pathlib import Path
@@ -187,7 +187,7 @@ def page1():
   </div>
   <div class="stats">{st}</div>
   <div class="msg">The energy is already in every bump. Today it becomes heat. <span>We turn it into safety and comfort.</span></div>
-  <div class="foot">Photos (Wikimedia Commons): Vande Bharat Express — Ravi Dwivedi, CC BY-SA 4.0 · BOXN freight train at Rajahmundry — Adityamadhav83, CC BY-SA 3.0<span>1 / 6</span></div>
+  <div class="foot">Photos (Wikimedia Commons): Vande Bharat Express — Ravi Dwivedi, CC BY-SA 4.0 · BOXN freight train at Rajahmundry — Adityamadhav83, CC BY-SA 3.0<span>1 / 7</span></div>
 </div>"""
 
 
@@ -231,7 +231,7 @@ def page2():
     <p><span class="n">5</span><b>Goods bogie:</b> compact smart damper beside the spring nest. <span class="n">6</span><b>Axle box:</b> bearing sensor.</p>
   </div>
   <div class="pill" style="left:40px;top:680px">No new bogie · no new cables · fits today's mounts</div>
-  <div class="foot">Photos (Wikimedia Commons): air spring on LHB coach — Apurv013, CC0 · Duranto LHB coach — Universalashic, CC BY-SA 3.0 · goods-wagon bogie model — Destination8infinity, CC BY-SA 3.0<span>2 / 6</span></div>
+  <div class="foot">Photos (Wikimedia Commons): air spring on LHB coach — Apurv013, CC0 · Duranto LHB coach — Universalashic, CC BY-SA 3.0 · goods-wagon bogie model — Destination8infinity, CC BY-SA 3.0<span>2 / 7</span></div>
 </div>"""
 
 
@@ -308,7 +308,7 @@ def page3():
   <div class="sketch" style="left:40px;top:108px;width:480px;height:630px">{damper_sketch()}</div>
   <div class="cards">{cards}</div>
   <div class="pill" style="left:550px;top:706px">Fits existing damper mounts · no oil · no gears</div>
-  <div class="foot">Concept sketches, not to scale<span>3 / 6</span></div>
+  <div class="foot">Concept sketches, not to scale<span>3 / 7</span></div>
 </div>"""
 
 
@@ -388,7 +388,7 @@ def page4():
   <div class="stitle orange" style="left:575px;top:416px">SwarmRide bogie</div>
   <div class="sketch" style="left:40px;top:446px;width:505px;height:300px">{bogie_sketch(False)}</div>
   <div class="sketch" style="left:575px;top:446px;width:505px;height:300px">{bogie_sketch(True)}</div>
-  <div class="foot">Orange rings: SwarmRide on every coach and wagon bogie · concept sketches, not to scale<span>4 / 6</span></div>
+  <div class="foot">Orange rings: SwarmRide on every coach and wagon bogie · concept sketches, not to scale<span>4 / 7</span></div>
 </div>"""
 
 
@@ -465,7 +465,7 @@ def page5():
   <div class="resrow">{rc}</div>
   <div class="road">{road}</div>
   <div class="msg" style="top:722px">One damper. Two markets. <span>Every bogie powers itself.</span></div>
-  <div class="foot">Expected results, to be proven in simulation, bench tests and pilots<span>5 / 6</span></div>
+  <div class="foot">Expected results, to be proven in simulation, bench tests and pilots<span>5 / 7</span></div>
 </div>"""
 
 
@@ -568,7 +568,7 @@ def page6():
       <p class="sm">Fail-safe relay makes it a normal damper. Safety never depends on software. Tested to EN 50155 · EN 61373 · EN 50121.</p>
     </div>
   </div>
-  <div class="foot">SwarmRide Bharat · system architecture<span>6 / 6</span></div>
+  <div class="foot">SwarmRide Bharat · system architecture<span>6 / 7</span></div>
 </div>"""
 
 
@@ -644,10 +644,12 @@ h2 {{ position:absolute; left:40px; top:46px; font-family:Rubik, Arial; font-wei
 
 def main():
     import pages_v2
-    pages = page1() + pages_v2.page2() + page3() + page4() + pages_v2.page5() + pages_v2.page6()
+    import pages_v3
+    pages = (page1() + pages_v2.page2() + page3() + page4() + pages_v2.page5() + pages_v2.page6()
+             + pages_v3.page7())
     html = f"""<!doctype html><html><head><meta charset="utf-8"><title>SwarmRide Bharat — Pitch</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=Rubik:wght@500;600;700&display=swap">
-<style>{CSS}{pages_v2.EXTRA_CSS}</style></head><body>{pages}</body></html>"""
+<style>{CSS}{pages_v2.EXTRA_CSS}{pages_v3.EXTRA_CSS}</style></head><body>{pages}</body></html>"""
     out_html = HERE / "pitch.html"
     out_html.write_text(html, encoding="utf-8")
     pdf = HERE.parent / "SwarmRide_Bharat_Pitch.pdf"
