@@ -103,14 +103,14 @@ for k = 1:numel(R.T2.c_cmd)
 end
 say('      Friction fitted %.0f N (model %.0f N); inertance fitted %.0f kg (model %.0f kg)\n', R.T2.Fc_fit, Bd.Fc, R.T2.b_fit, Bd.b_in);
 
-[os, Bst] = bench_run(mb, 'step', 'real');
+[os, Bst] = bench_run(mb, 'step', 'real', struct('Tlog', 1e-4));
 R.T4 = test_step(os, Bst);
 say('T4 Current loop: 63 %% rise time %.2f ms (designed %.2f ms); overshoot %.1f %%\n', 1e3 * R.T4.tau, 1e3 * Bst.tau_cl, R.T4.overshoot);
 
 [ov, Bv] = bench_run(mb, 'vlimit', 'real');
 R.T5 = test_vlimit(ov, Bv);
-say('T5 Voltage limit at full design damping: the drive runs out of voltage at %.3f m/s (formula Umax / (Ke - Rc c / Ke) = %.3f m/s); simulated damper speeds stay below %.3f m/s\n', ...
-    R.T5.v_sat, R.T5.v_formula, U.v_max);
+say('T5 Voltage limit at full design damping: the drive runs out of voltage at %.3f m/s (formula %.3f m/s); the current limit caps the force above %.3f m/s; simulated damper speeds stay below %.3f m/s\n', ...
+    R.T5.v_sat, R.T5.v_formula, R.T5.v_ilim, U.v_max);
 
 [ofs, Bf] = bench_run(mb, 'failsafe', 'real');
 R.T6 = test_failsafe(ofs, Bf);
@@ -201,12 +201,18 @@ end
 function EB = bench_energy(o, BP)
 % rig work = friction + copper + fail-safe + terminals + stored (rotor kinetic, coil magnetic);
 % terminals = inverter + DC-DC + bank
-E = squeeze(o.E.Data);  E = E(:, end);          % [Pmech Pfric Pcu Pfs Pterm Pinv Pdcdc Pbank]
+E = energies(o);  E = E(:, end);                % [Pmech Pfric Pcu Pfs Pterm Pinv Pdcdc Pbank]
 v = squeeze(o.v.Data);  i = squeeze(o.i.Data);
 dKE = 0.5 * BP.b_in * (v(end)^2 - v(1)^2) + 0.5 * BP.L * (i(end)^2 - i(1)^2);
 res1 = E(1) - (E(2) + E(3) + E(4) + E(5) + dKE);
 res2 = E(5) - (E(6) + E(7) + E(8));
 EB = struct('Emech', E(1), 'res', res1 + res2, 'rel', (abs(res1) + abs(res2)) / sum(abs(E(1:5))));
+end
+
+function E = energies(o)
+% energy meters as 8 x samples (a vector signal may be logged as samples x 8)
+E = squeeze(o.E.Data);
+if size(E, 1) ~= 8, E = E.'; end
 end
 
 function T = test_emf(o, BP)
@@ -217,37 +223,44 @@ end
 
 function T = test_damping(o, BP)
 t = o.F_lc.Time;  F = squeeze(o.F_lc.Data);  v = squeeze(o.v.Data);  c = squeeze(o.c.Data);
-a = gradient(v, t);  E = squeeze(o.E.Data);
+a = gradient(v, t);
 Pm = squeeze(o.Pmech.Data);  Pt = squeeze(o.Pterm.Data);  Fe = squeeze(o.F_em.Data);  Pb = squeeze(o.Pbank.Data);
+% first segment, zero current: friction and inertance alone (the current loop's lag would
+% otherwise look like a smaller inertance)
+z = find(c == 0);  z = z(t(z) > 0.5);
+th = [tanh(v(z) / BP.veps), a(z)] \ F(z);
+T.Fc_fit = th(1);  T.b_fit = th(2);
+Fres = F - T.Fc_fit * tanh(v / BP.veps) - T.b_fit * a;
 [lev, ~, ic] = unique(round(c));  cnt = accumarray(ic, 1);
 lev = lev(lev > 0 & cnt > 500);                      % the commanded levels (not the 1 ms ramps between them)
 T.c_cmd = lev';  T.c_fit = 0 * T.c_cmd;  T.eta_coil = T.c_fit;  T.eta_total = T.c_fit;
-Fcs = [];  bs = [];
 for k = 1:numel(lev)
     sel = find(abs(c - lev(k)) < 1);
     sel = sel(t(sel) > t(sel(1)) + 0.5);             % let each level settle
-    X = [v(sel), tanh(v(sel) / BP.veps), a(sel)];
-    th = X \ F(sel);
-    T.c_fit(k) = th(1);  Fcs(end+1) = th(2);  bs(end+1) = th(3); %#ok<AGROW>
+    T.c_fit(k) = (v(sel)' * Fres(sel)) / (v(sel)' * v(sel));
     T.eta_coil(k) = trapz(t(sel), Pt(sel)) / trapz(t(sel), Fe(sel) .* v(sel));
     T.eta_total(k) = trapz(t(sel), Pb(sel)) / trapz(t(sel), Pm(sel));
 end
-T.Fc_fit = mean(Fcs);  T.b_fit = mean(bs);
 end
 
 function T = test_step(o, BP)
-t = o.i.Time;  i = squeeze(o.i.Data);  t0 = 0.3;
-k = t >= t0;  ti = t(k) - t0;  ii = i(k);
+% first-order lag: the area between reference and current equals tau x the step
+t = o.i.Time;  i = squeeze(o.i.Data);  ir = squeeze(o.iref.Data);  t0 = 0.3 - 0.002;
+k = t >= t0 & t < t0 + 0.05;
 ifin = BP.c_req * 0.05 / BP.Ke;
-T.tau = interp1(ii(1:find(ii > 0.9 * ifin, 1)), ti(1:find(ii > 0.9 * ifin, 1)), 0.632 * ifin);
-T.overshoot = 100 * max(0, max(ii) / ifin - 1);
+T.tau = trapz(t(k), ir(k) - i(k)) / ifin;
+T.overshoot = 100 * max(0, max(i(k)) / ifin - 1);
 end
 
 function T = test_vlimit(o, BP)
 v = squeeze(o.v.Data);  s = squeeze(o.sat.Data);
 k = find(s > 0.5, 1);
 if isempty(k), T.v_sat = NaN; else, T.v_sat = abs(v(k)); end
-T.v_formula = BP.Umax / (BP.Ke - BP.Rc * BP.c_req / BP.Ke);
+T.v_formula = BP.Umax / (BP.Ke - BP.Rc * BP.c_req / BP.Ke);      % current below its limit
+if BP.c_req * T.v_formula / BP.Ke > BP.i_lim
+    T.v_formula = (BP.Umax + BP.Rc * BP.i_lim) / BP.Ke;            % current held at its limit
+end
+T.v_ilim = BP.i_lim * BP.Ke / BP.c_req;                           % above this speed the force is capped
 end
 
 function T = test_failsafe(o, BP)
@@ -266,7 +279,7 @@ function q = test_replay(o, BP, Rv)
 t = o.F_lc.Time;  k = t > 3 & t < t(end) - 0.01;
 g = @(n) squeeze(o.(n).Data);
 Pm = g('Pmech');  Pc = g('Pcu');  Pb = g('Pbank');  i = g('i');  s = g('sat');  Fe = g('F_em');  act = g('act');
-E = g('E');  T = t(end);
+E = energies(o);  T = t(end);
 q.Pmech = mean(Pm(k));  q.Pcu = mean(Pc(k));  q.Pbank = mean(Pb(k));
 q.Pinv = E(6, end) / T;  q.Pdcdc = E(7, end) / T;
 q.i_rms = rms(i(k));  q.i_max = max(abs(i(k)));  q.sat_frac = mean(s(k) > 0.5);
