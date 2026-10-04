@@ -406,6 +406,26 @@ Two further results go beyond Gate A:
 
 Details: `SwarmRide_Sim/Stage1.md` to `Stage4.md`, `SwarmRide_Sim/VERIFICATION.md`, and the dashboard in `dashboard/index.html`.
 
+### 8.2 Gate B: the bench prototype is designed
+
+The design-C damper has been sized for real hardware from its duty in the coach simulation:
+- a 48 V-class servo motor, Kt 0.40 N m/A rms, 14 N m peak;
+- a Ø25 mm × 10 mm-lead ball screw;
+- 8 kN peak force;
+- a 60 V / 46 A four-quadrant drive;
+- 3 × 1.0 Ω fail-safe resistors on a changeover contactor;
+- a 10 F supercapacitor and a 128 Wh LiFePO4 battery per bogie.
+
+A bench model (`SwarmRide_Sim/models/SR_Bench.slx`) predicts what the lab must measure:
+- 14.4 W into the bank on the damper's own replayed motion (the vehicle model says 14.5 W);
+- today's damping after a fault, with a 20 ms gap while the contactor moves;
+- an 800 W push for 95 J;
+- a winding at 42 °C.
+
+The controller, drive and bank supervisor are written in C and checked against the MATLAB code.
+
+The test plan (T1–T10), budget, schedule and Gate B criteria are in `Bench_Prototype/`. The report is `SwarmRide_Sim/Stage5_Bench.md`.
+
 ---
 
 ## 9. How we will prove it
