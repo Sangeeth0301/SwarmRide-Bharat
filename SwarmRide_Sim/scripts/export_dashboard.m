@@ -1,5 +1,6 @@
 %% EXPORT_DASHBOARD  Writes dashboard/data.js (the investor dashboard's data) from the saved results.
-%   Needs results/stage3_results.mat, stage4_results.mat and verification_report.txt.
+%   Needs results/stage3_results.mat, stage4_results.mat and verification_report.txt
+%   (and results/bench_results.mat for the bench-prototype cards, if present).
 %   Open dashboard/index.html in a browser afterwards (works offline from the file).
 
 root = fileparts(fileparts(mfilename('fullpath')));
@@ -75,6 +76,31 @@ W = S4.W;  k = W(1).f >= 5 & W(1).f <= 55;
 D.wheel = struct('f', round(W(1).f(k), 2), 'healthy', round(W(1).Ef(k), 4), 'ecc', round(W(2).Ef(k), 4), ...
     'lobe3', round(W(3).Ef(k), 4), 'fw', round([W.fw], 2), 'front', round([W.peak_f], 3), 'rear', round([W.peak_r], 3), ...
     'cases', {{W.case}});
+
+%% bench prototype (Stage 5)
+bf = fullfile(resdir, 'bench_results.mat');
+if isfile(bf)
+    B = load(bf);  B = B.R;  T = B.traces.poor;
+    t = double(T.t);  dt = t(2) - t(1);  w = round(1 / dt);
+    pb = movmean(double(T.Pbank), w);  pm = movmean(double(T.Pmech), w);
+    k = find(t > 3, 1):round(0.25 / dt):numel(t);
+    D.bench.replay = struct('t', round(t(k)', 2), 'Pbank', round(pb(k)', 1), 'Pmech', round(pm(k)', 1), ...
+        'mean_bank', round(B.replay_poor.Pbank, 1), 'vehicle', round(B.Ust.poor.Pdc, 1), ...
+        'mean_good', round(B.replay_good.Pbank, 1), 'vehicle_good', round(B.Ust.good.Pdc, 1));
+    D.bench.pred = {
+        {'T1', 'Machine constant', sprintf('%.1f V s/m', B.T1.Ke)}
+        {'T2', 'Damping = command', sprintf('within %.1f %% (20-100 %% of c_req)', 100 * max(abs(B.T2.c_fit ./ B.T2.c_cmd - 1)))}
+        {'T3', 'Rig work to the bank', sprintf('%.2f to %.2f', max(B.T2.eta_total), min(B.T2.eta_total))}
+        {'T4', 'Current loop', sprintf('%.2f ms time constant', 1e3 * B.T4.tau)}
+        {'T5', 'Controlled up to', sprintf('%.2f m/s (coach needs %.2f)', B.T5.v_sat, B.U.v_max)}
+        {'T6', 'Fail-safe damping', sprintf('%.0f N s/m (today %.0f), %.0f ms gap', B.T6.c_after, B.HW.c_today, 1e3 * B.T6.gap)}
+        {'T7', 'Into the bank, rough track', sprintf('%.1f W (vehicle model %.1f W)', B.replay_poor.Pbank, B.Ust.poor.Pdc)}
+        {'T8', 'Push at a settlement', sprintf('%.0f W peak, %.0f J, %.1f %% tracking error', B.replay_settle.Ppush, B.replay_settle.Epush, B.replay_settle.F_track)}
+        {'T9', 'Winding temperature', sprintf('%.0f C at 35 C ambient', B.T9.Tss)}
+        };
+    D.bench.hw = struct('motor', sprintf('%.2f N m/A rms, %.0f N m peak', B.HW.Kt_rms, B.HW.T_peak), ...
+        'force', sprintf('%.0f kN peak', B.HW.F_peak / 1e3), 'drive', sprintf('%.0f V, %.0f A', B.HW.Vdc, B.HW.i_lim));
+end
 
 out = fullfile(repo, 'dashboard', 'data.js');
 if ~isfolder(fileparts(out)), mkdir(fileparts(out)); end
