@@ -59,7 +59,7 @@ subplot(1, 2, 2); hold on
 histogram(min(H.track.T_detect, H.opt.T_fail + 20), 30, 'FaceColor', grey, 'EdgeColor', 'w');
 xline(H.self.T_detect, '-', 'SwarmRide', 'Color', teal, 'LineWidth', 2.5);
 xline(H.opt.T_fail, '--', 'failure risk', 'Color', red, 'LineWidth', 1.4);
-grid on; xlabel('bearing temperature when the alarm is raised [C]'); ylabel('faults (2000 random cases)');
+grid on; xlabel('bearing temperature when the alarm is raised [C] (last bar: 200 C or more)'); ylabel(sprintf('faults (%d random cases)', H.opt.n_mc));
 title(sprintf('Trackside checkpoints every %d km: %.0f%% of faults pass %d C first', H.opt.spacing_km, ...
     100 * H.track.p_missed, H.opt.T_fail));
 exportgraphics(fig, fullfile(resdir, 'stage4_hot_axle.png'), 'Resolution', 150); close(fig);
@@ -76,8 +76,10 @@ xlim([5 55]); grid on; xlabel('frequency [Hz]'); ylabel('front-bogie coil voltag
 legend({W.case}, 'Location', 'northeast'); title('The damper''s own coil signal shows the wheel defect');
 subplot(1, 2, 2);
 Y = [[W.peak_f]; [W.peak_r]]';
-b = bar(categorical({W.case}, {W.case}), Y, 'grouped');  b(1).FaceColor = navy;  b(2).FaceColor = light_or(grey);
-grid on; ylabel('coil voltage at the defect frequency [V]'); legend({'front bogie (defective wheelset)', 'rear bogie'}, 'Location', 'northwest');
+lbl = strrep({W.case}, ' 0', '\newline0');                       % two-line labels so they do not overlap
+b = bar(Y, 'grouped');  b(1).FaceColor = navy;  b(2).FaceColor = light_or(grey);
+set(gca, 'XTick', 1:numel(W), 'XTickLabel', lbl, 'TickLabelInterpreter', 'tex');  ylim([0 1.35 * max(Y(:))]);
+grid on; ylabel('coil voltage at the defect frequency [V]'); legend({'front bogie (defective wheelset)', 'rear bogie'}, 'Location', 'north');
 title('The front bogie lights up: the defect is located to its wheelset');
 exportgraphics(fig, fullfile(resdir, 'stage4_wheel_defect.png'), 'Resolution', 150); close(fig);
 
