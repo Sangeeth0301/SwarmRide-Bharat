@@ -7,10 +7,11 @@ Simulation of SwarmRide Bharat, built stage by stage. Every stage keeps the same
 ## Quick start
 
 ```matlab
-sr_setup                                              % paths + opens models/SR_Stage3.slx (stage = 1 or 2 for earlier models)
+sr_setup                                              % paths + opens models/SR_Stage4.slx (stage = 1, 2 or 3 for earlier models)
 trainType = 'LHB';                                    % LHB | VB | ICF | BOXN | GENERIC
-v_kmh = 160;  mload_t = 12;  trackType = 'poor';      % speed, load [t], track: good | poor | bump
-designType = 'C';  ctrlMode = 'C3';  t_fault = Inf;   % Stage 3: damper design, controller (C1/C2/C3), test fault
+v_kmh = 160;  mload_t = 12;  trackType = 'poor';      % speed, load [t], track: good | poor | bump | settlement
+designType = 'C';  ctrlMode = 'C3';  t_fault = Inf;   % damper design, controller (C0..C4), test fault
+act_window_s = 1;  wheel_runout = 0;                  % Stage 4: push window around known bad spots, wheel defect [m]
 % press Run: live scopes open and the 30 s run plays in real time
 ```
 
@@ -21,6 +22,8 @@ run('scripts/check_stage1.m')     % physics and wiring checks
 run('scripts/check_stage1b.m')    % baseline of today's Indian trains
 run('scripts/check_stage2.m')     % smart damper and power chain: checks + full study
 run('scripts/check_stage3.m')     % controllers: checks + head-to-head study
+run('scripts/check_stage4.m')     % active push, full-day journeys, health sensing
+run('scripts/export_dashboard.m') % write ../dashboard/data.js for the investor dashboard
 run('scripts/regenerate_all.m')   % rebuild every model, result and report (about 1 hour)
 run('scripts/run_all_checks.m')   % full verification suite -> results/verification_report.txt
 ```
@@ -30,15 +33,16 @@ run('scripts/run_all_checks.m')   % full verification suite -> results/verificat
 | Folder / file | Contents |
 |---|---|
 | `sr_setup.m` | Session setup |
-| `functions/` | Physics (`sr_eom`), sensors (`sr_measure`), track (`sr_track`), state-space model (`sr_linear_model`), ride index (`sr_sperling`), train library (`sr_trains`), damper sizing (`sr_damper_design`), energy balance (`sr_energy_balance`), controller design (`sr_controller_design`) |
+| `functions/` | Physics (`sr_eom`), sensors (`sr_measure`), track (`sr_track`), state-space model (`sr_linear_model`), ride index (`sr_sperling`), train library (`sr_trains`), damper sizing (`sr_damper_design`), energy balance (`sr_energy_balance`), controller design (`sr_controller_design`), bank step and full-day journey (`sr_bank_step`, `sr_journey`), hot-axle model (`sr_hot_axle`) |
 | `builders/` | Shared Simulink block builders: track, coach, scopes, logs, MATLAB Function blocks |
 | `tests/` | Verification tests run by `scripts/run_all_checks.m` |
-| `scripts/` | Parameters (`sr_params`, `sr_params_stage3`), model builders (`build_stage1..3`), checks (`check_stage1`, `check_stage1b`, `check_stage2`, `check_stage3`), figures (`plot_*`), `regenerate_all`, `run_all_checks` |
-| `models/` | Generated Simulink models `SR_Stage1.slx`, `SR_Stage2.slx`, `SR_Stage3.slx` |
+| `scripts/` | Parameters (`sr_params`, `sr_params_stage3`, `sr_params_stage4`), model builders (`build_stage1..4`), checks (`check_stage1`, `check_stage1b`, `check_stage2`, `check_stage3`, `check_stage4`), figures (`plot_*`), `export_dashboard`, `regenerate_all`, `run_all_checks` |
+| `models/` | Generated Simulink models `SR_Stage1.slx`, `SR_Stage2.slx`, `SR_Stage3.slx`, `SR_Stage4.slx` |
 | `results/` | Figures, reports, scope captures |
 | `Stage1.md` | **Stage 1 report**: objective, every block, parameters, flow and results |
 | `Stage2.md` | **Stage 2 report**: smart damper, power chain, designs A/B/C, verification and results |
 | `Stage3.md` | **Stage 3 report**: LPV and preview controllers, head-to-head results |
+| `Stage4.md` | **Stage 4 report**: active push, full-day power bank, hot axle and wheel defect |
 | `MODEL_GUIDE.md` | Block-by-block reference and parameter sources |
 | `VERIFICATION.md` | What is proven, how, the open issues, and what is not verified |
 
@@ -50,4 +54,6 @@ run('scripts/run_all_checks.m')   % full verification suite -> results/verificat
 | 1b | Today's Indian trains (LHB, Vande Bharat, ICF, BOXN), live scopes, baseline | Done |
 | 2 | Electromagnetic smart damper (designs A/B/C), rectifier, DC-DC, power bank, fail-safe | Done |
 | 3 | Controllers: fixed harvester, LPV load-adaptive, LPV + Train Brain preview | Done |
-| 4 | Self-powered health sensors, active preview, investor dashboard | Next |
+| 4 | Active push at known bad spots (C4), full-day journeys, self-powered health sensing, investor dashboard | Done |
+
+All 73 verification checks pass. Next: a bench prototype of design C.
