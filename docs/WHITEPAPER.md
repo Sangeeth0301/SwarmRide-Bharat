@@ -107,7 +107,7 @@ Energy priority: safety sensors, then communication, ride control, reserve, and 
 | C1 | Fixed-load harvester (research approach) | Competitor benchmark |
 | C2 | **LPV load-adaptive**: gridded LQR scheduled on measured load, with a passivity limiter (the damper can only resist motion) | SwarmRide core |
 | C3 | **C2 + Train Brain preview** feed-forward | SwarmRide full |
-| C4 | Model predictive control | Offline upper bound |
+| C4 | **C3 + active push** at known bad spots: inside a short window the H-bridge drives the coil as a motor from the bogie bank | Makes the Train Brain warning pay off |
 
 The key equation: to keep the damping ratio ζ constant at any load,
 
@@ -180,9 +180,39 @@ An LPV (load-scheduled) LQR at 100 Hz, with an optional Train Brain preview of t
 
 Full report: [`SwarmRide_Sim/Stage3.md`](../SwarmRide_Sim/Stage3.md).
 
+## 5d. Results: active push, a full day and health sensing (Stage 4)
+
+**Active push (C4).** Inside a 1 s window around a known bad spot from the fleet track map, the coil current follows the ideal controller force directly. The coil then runs as a motor from the bogie bank. Crowded LHB coach at 160 km/h:
+
+| Event | Worst seat: today → C3 → **C4** | Bank energy | Peak push |
+|---|---|---|---|
+| Track settlement, 20 mm over 20 m | 0.967 → 0.764 → **0.196 m/s²** (−80% vs today) | 345 J (0.1 Wh) | 1.5 kW |
+| Short dip, 10 mm over 4 m | 0.246 → 0.205 → **0.082 m/s²** (−67%) | 20 J | 0.13 kW |
+
+The push window length (0.5–2 s) hardly matters. With no known bad spots, C4 is identical to C3.
+
+**A full day.** A journey simulator steps the bogie bank (the same supervisor rules as Simulink, checked to 0.02 mV) through a whole day. It uses power tables measured in Simulink, a mix of good and poor track and a 10 h night parked. Electronics left on at 8 W drain the battery to its floor on every vehicle. With a **1 W sleep after 5 min parked**, nothing is ever unserved:
+
+| Vehicle and day | Harvested | Battery, start → end |
+|---|---|---|
+| LHB, passenger day | 45 Wh | 60% → 60% |
+| Vande Bharat, passenger day | 56 Wh | 60% → 69% |
+| ICF, passenger day | 28 Wh | 60% → 36% |
+| BOXN, freight round trip | 104 Wh | 60% → 80% |
+
+The slow ICF coach and all-smooth track still drain slowly, so they need a small top-up or a lower sensing rate.
+
+**Health sensing.**
+- **Hot axle:** the on-bogie sensor (read every 10 s) alarms at 90 °C, 30 min before the 180 °C failure risk. Trackside checkpoints every 250 km see the fault a median 77 min late, and **82%** of faults pass 180 °C first.
+- **Wheel defect:** an out-of-round front wheel shows in the damper's own coil voltage at n × the wheel-turn frequency. It stands ×5 (eccentric, 0.5 mm) to ×204 (three-lobed, 0.3 mm) above healthy, and only on the front bogie.
+
+![Active push at known bad spots](../SwarmRide_Sim/results/stage4_active_push.png)
+
+Full report: [`SwarmRide_Sim/Stage4.md`](../SwarmRide_Sim/Stage4.md). Investor dashboard: [`dashboard/index.html`](../dashboard/index.html).
+
 ## 6. Expected results (preview study)
 
-From a simplified Python model; **targets until confirmed in Simulink Stages 2–3.** Crowded coach, poor track, 160 km/h.
+From a simplified Python model, written before the Simulink stages and **now superseded by Sections 5b–5d**. Crowded coach, poor track, 160 km/h.
 
 | Measure | Today | Fixed-load harvester | SwarmRide |
 |---|---|---|---|
@@ -215,8 +245,8 @@ Prior art to distinguish: energy-harvesting dampers in research, OMRS, EoTT, Tra
 | Simulation 1 / 1b | Test rig and baseline of today's trains | **Done** |
 | Simulation 2 | Smart damper (A/B/C), power chain, fail-safe, harvested watts per train | **Done** |
 | Simulation 3 | LPV and preview controllers, head-to-head comparison | **Done** |
-| Simulation 4 | Self-powered health sensors demo, investor dashboard | Planned |
-| Bench prototype | One damper on a test rig | After simulation |
+| Simulation 4 | Active push, full-day power, self-powered health sensing, investor dashboard | **Done** |
+| Bench prototype | One design-C damper with its H-bridge and bank on a test rig | **Next** |
 | Field pilot | Freight wagons, then Vande Bharat | After RDSO engagement |
 
 ## 9. Limits and risks
@@ -225,6 +255,8 @@ Prior art to distinguish: energy-harvesting dampers in research, OMRS, EoTT, Tra
 - The model is vertical only; lateral dynamics and wheel–rail contact come later.
 - Harvested power is small (tens of watts per bogie). It is sized for the bogie's own needs, not for traction or HVAC.
 - A direct-drive damper with enough force may be large and heavy. Designs B and C address this.
+- The active push peaks at about 1.5 kW for under a second; the coil, H-bridge and supercapacitor must be rated for it.
+- Self-power through the night depends on the bogie electronics sleeping when parked.
 - Railway approval (RDSO) and safety certification are long processes.
 
 ## 10. Documents
@@ -238,3 +270,5 @@ Prior art to distinguish: energy-harvesting dampers in research, OMRS, EoTT, Tra
 | [`SwarmRide_Sim/Stage1.md`](../SwarmRide_Sim/Stage1.md) | Stage 1 simulation report |
 | [`SwarmRide_Sim/Stage2.md`](../SwarmRide_Sim/Stage2.md) | Stage 2 simulation report |
 | [`SwarmRide_Sim/Stage3.md`](../SwarmRide_Sim/Stage3.md) | Stage 3 simulation report |
+| [`SwarmRide_Sim/Stage4.md`](../SwarmRide_Sim/Stage4.md) | Stage 4 simulation report |
+| [`dashboard/index.html`](../dashboard/index.html) | Investor dashboard of all results |
