@@ -24,6 +24,7 @@ run('scripts/check_stage2.m')     % smart damper and power chain: checks + full 
 run('scripts/check_stage3.m')     % controllers: checks + head-to-head study
 run('scripts/check_stage4.m')     % active push, full-day journeys, health sensing
 run('scripts/export_dashboard.m') % write ../dashboard/data.js for the investor dashboard
+run('scripts/check_bench.m')      % bench prototype: sizing, bench model, predicted T1-T9, margins, exports
 run('scripts/regenerate_all.m')   % rebuild every model, result and report (about 1 hour)
 run('scripts/run_all_checks.m')   % full verification suite -> results/verification_report.txt
 ```
@@ -37,12 +38,13 @@ run('scripts/run_all_checks.m')   % full verification suite -> results/verificat
 | `builders/` | Shared Simulink block builders: track, coach, scopes, logs, MATLAB Function blocks |
 | `tests/` | Verification tests run by `scripts/run_all_checks.m` |
 | `scripts/` | Parameters (`sr_params`, `sr_params_stage3`, `sr_params_stage4`), model builders (`build_stage1..4`), checks (`check_stage1`, `check_stage1b`, `check_stage2`, `check_stage3`, `check_stage4`), figures (`plot_*`), `export_dashboard`, `regenerate_all`, `run_all_checks` |
-| `models/` | Generated Simulink models `SR_Stage1.slx`, `SR_Stage2.slx`, `SR_Stage3.slx`, `SR_Stage4.slx` |
+| `models/` | Generated Simulink models `SR_Stage1.slx`, `SR_Stage2.slx`, `SR_Stage3.slx`, `SR_Stage4.slx`, `SR_Bench.slx` (one damper on a test rig) |
 | `results/` | Figures, reports, scope captures |
 | `Stage1.md` | **Stage 1 report**: objective, every block, parameters, flow and results |
 | `Stage2.md` | **Stage 2 report**: smart damper, power chain, designs A/B/C, verification and results |
 | `Stage3.md` | **Stage 3 report**: LPV and preview controllers, head-to-head results |
 | `Stage4.md` | **Stage 4 report**: active push, full-day power bank, hot axle and wheel defect |
+| `Stage5_Bench.md` | **Stage 5 report**: the bench-prototype model, predicted bench results, hardware margins, firmware |
 | `MODEL_GUIDE.md` | Block-by-block reference and parameter sources |
 | `VERIFICATION.md` | What is proven, how, the open issues, and what is not verified |
 
@@ -55,5 +57,6 @@ run('scripts/run_all_checks.m')   % full verification suite -> results/verificat
 | 2 | Electromagnetic smart damper (designs A/B/C), rectifier, DC-DC, power bank, fail-safe | Done |
 | 3 | Controllers: fixed harvester, LPV load-adaptive, LPV + Train Brain preview | Done |
 | 4 | Active push at known bad spots (C4), full-day journeys, self-powered health sensing, investor dashboard | Done |
+| 5 | Bench prototype: hardware sizing, bench model (`SR_Bench`), C firmware, rig drive files, test plan | Done (hardware next) |
 
 All 73 verification checks pass. Next: a bench prototype of design C.
