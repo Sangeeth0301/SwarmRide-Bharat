@@ -158,16 +158,16 @@ An LPV (load-scheduled) LQR at 100 Hz, with an optional Train Brain preview of t
 
 | Sperling Wz, poor track | Empty | Half | Full | Into the bank (full) |
 |---|---|---|---|---|
-| LHB today → SwarmRide | 1.73 → 1.44 | 1.78 → 1.44 | 1.84 → 1.44 | 28 W |
-| Vande Bharat today → SwarmRide | 1.75 → 1.40 | 1.77 → 1.41 | 1.79 → 1.42 | 30 W |
-| ICF today → SwarmRide | 1.45 → 1.36 | 1.34 → 1.28 | 1.38 → 1.24 | 13 W |
-| BOXN today → SwarmRide | 2.28 → 2.31 | 2.15 → 1.79 | 2.15 → 1.66 | 56 W |
+| LHB today → SwarmRide | 1.73 → 1.49 | 1.78 → 1.50 | 1.84 → 1.53 | 33 W |
+| Vande Bharat today → SwarmRide | 1.75 → 1.47 | 1.77 → 1.48 | 1.79 → 1.50 | 38 W |
+| ICF today → SwarmRide | 1.45 → 1.35 | 1.34 → 1.28 | 1.38 → 1.23 | 13 W |
+| BOXN today → SwarmRide | 2.28 → 2.32 | 2.15 → 1.79 | 2.15 → 1.66 | 55 W |
 
 ![Ride at every load](../SwarmRide_Sim/results/stage3_ride_vs_load.png)
 
 **Findings:**
-- The ride is the same at every load and about 20% better on LHB and Vande Bharat.
-- Body vibration is halved, and the bogie stays self-powered.
+- The ride is better at every load: 15–17% on crowded LHB and Vande Bharat coaches, 23% on a loaded wagon.
+- Body vibration is about 40% lower, and the bogie stays self-powered.
 - No fixed setting reaches this comfort.
 - The Train Brain preview adds only 1–2% with a resist-only damper; using it fully needs brief active pushing.
 - The empty goods wagon does not ride better.
