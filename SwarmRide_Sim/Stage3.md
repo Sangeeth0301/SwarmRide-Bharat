@@ -157,7 +157,7 @@ Train Brain ──p──► SwarmRide Controller ────┘          (powe
 | `P.Tc` | Controller sample time | 10 ms (100 Hz) | Realistic bogie microcontroller rate |
 | `P.Na`, `P.Nb` | Preview samples ahead / behind | 100 / 120 | 1 s ahead; behind covers the rear wheels down to about 50 km/h |
 | `P.m_hat` | Load estimate | m × (1 + 0.02) | 2% weighing error assumed |
-| `P.a0`, `P.s0`, `P.F0` | Reference acceleration, stroke, force | 0.1 m/s², 20 mm, 5 kN | Normalise the LQR weights |
+| `P.a_ref`, `P.s_ref`, `P.F_ref` | Reference acceleration, stroke, force | 0.1 m/s², 20 mm, 5 kN | Normalise the LQR weights |
 | `P.rw` | Force weight | 3 | Best comfort in the sweep (Section 9.4) for both C2 and C3 |
 | `P.c_floor` | Damping floor | 0 (default) | Raising it trades comfort for power (Section 9.4) |
 | `P.c_cap` | Efficiency limit on the EM damping | c_req (ζ = 0.25 damping) | Keeps the coil at least 60% efficient for design C |

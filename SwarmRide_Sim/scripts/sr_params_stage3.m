@@ -29,9 +29,9 @@ P.preview_dt = preview_dt;                        % warning timing error        
 P.m_hat = P.m * (1 + load_err);                   % body mass the controller believes [kg]
 
 %% 3. LQR weights (normalised: acceleration, stroke, force)
-P.a0 = 0.1;                                       % reference body acceleration       [m/s^2]
-P.s0 = 0.02;                                      % reference stroke                  [m]
-P.F0 = 5e3;                                       % reference damper force            [N]
+P.a_ref = 0.1;                                    % reference body acceleration       [m/s^2]
+P.s_ref = 0.02;                                   % reference stroke (not P.s0, the start position) [m]
+P.F_ref = 5e3;                                    % reference damper force            [N]
 P.rw = rw;                                        % force weight
 
 %% 4. Semi-active conversion: the damper can only resist motion
@@ -45,7 +45,7 @@ P.tau_c = 0.005;                                  % command smoothing           
 %% 5. LPV gains (load grid) for this vehicle and speed
 %   The design depends only on the vehicle, speed and weights, so it is cached in work/ and reused.
 key = jsonencode(struct('TB', TB, 'v', P.v, 'dist', P.dist, 'kp', P.kp, 'cp', P.cp, 'mbg', P.mbg, ...
-    'w', [P.a0 P.s0 P.F0 P.rw], 'K3', K3));
+    'w', [P.a_ref P.s_ref P.F_ref P.rw], 'K3', K3));
 md = java.security.MessageDigest.getInstance('MD5');
 md.update(uint8(key));
 hash = sprintf('%02x', typecast(md.digest(), 'uint8'));

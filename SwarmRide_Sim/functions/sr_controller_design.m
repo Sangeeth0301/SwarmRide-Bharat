@@ -11,7 +11,7 @@ function CD = sr_controller_design(TB, P)
 %   Kx is the feedback (C2, LPV); Kp is the preview feed-forward (C3).
 %   Cost: body acceleration over both bogies (comfort, includes pitch), secondary stroke
 %   (safety) and damper force (effort):
-%       J = sum( (az_f/a0)^2 + (az_r/a0)^2 + (d1/s0)^2 + (d2/s0)^2 + rw (|F|/F0)^2 )
+%       J = sum( (az_f/a_ref)^2 + (az_r/a_ref)^2 + (d1/s_ref)^2 + (d2/s_ref)^2 + rw (|F|/F_ref)^2 )
 %   Returns CD.m (load grid, total body mass [kg]), CD.Kx (nL x 16), CD.Kp (nL x 2 Np),
 %   CD.rho (closed-loop spectral radius, < 1 = stable) and CD.G (wheel-input map).
 
@@ -47,8 +47,8 @@ for l = 1:K3.nL
     Cy = [Ac(1, :) + Pm.lb * Ac(2, :);  Ac(1, :) - Pm.lb * Ac(2, :); ...
           1  Pm.lb -1 0 0 0 0 0;        1 -Pm.lb 0 -1 0 0 0 0];
     Dy = [Bc(1, :) + Pm.lb * Bc(2, :);  Bc(1, :) - Pm.lb * Bc(2, :);  0 0;  0 0];
-    Qy = diag([1 / P.a0^2, 1 / P.a0^2, 1 / P.s0^2, 1 / P.s0^2]);
-    Q  = Cy' * Qy * Cy;   N = Cy' * Qy * Dy;   R = Dy' * Qy * Dy + P.rw / P.F0^2 * eye(2);
+    Qy = diag([1 / P.a_ref^2, 1 / P.a_ref^2, 1 / P.s_ref^2, 1 / P.s_ref^2]);
+    Q  = Cy' * Qy * Cy;   N = Cy' * Qy * Dy;   R = Dy' * Qy * Dy + P.rw / P.F_ref^2 * eye(2);
 
     Aa = [Ad, Bud * G; zeros(Np, 8), S];
     Ba = [Bfd; zeros(Np, 2)];
