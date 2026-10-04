@@ -284,7 +284,7 @@ The next proof must come from hardware: **one real design-C damper on a test rig
 | **Firmware in C** | Controller, drive and bank supervisor, ported from MATLAB. **10 of 10 host checks pass** in double and in float (microcontroller) arithmetic |
 | **Test plan** | T1–T10 with drive files for the rig, predicted values and pass bands; budget ≈ ₹4.4–13.5 lakh; 16 weeks to Gate B |
 
-**Finding:** the ball screw makes rotor inertia look like hundreds of kilograms at the rod, but the coach model shows the ride does not get worse even at 8× the assumed inertia. Friction is the budget to control: 600 N would cost a fifth of the harvest.
+**Finding:** the ball screw makes rotor inertia look like hundreds of kilograms at the rod. But the coach model shows the ride gets slightly better up to 16× the assumed inertia, and stays within 2% at 32×, so standard servo motors fit. Friction is the budget to control: 600 N would cost a fifth of the harvest.
 
 Package: **[Bench_Prototype/](Bench_Prototype/README.md)** · Bench model report: **[SwarmRide_Sim/Stage5_Bench.md](SwarmRide_Sim/Stage5_Bench.md)**
 
