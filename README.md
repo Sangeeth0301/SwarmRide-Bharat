@@ -332,7 +332,8 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
 | Simulation 2 | Smart damper (A/B/C), rectifier, DC-DC, power bank, fail-safe | Done |
 | Simulation 3 | LPV and preview control, head-to-head comparison | Done |
 | Simulation 4 | Active push at known bad spots, full-day power, self-powered health sensing, investor dashboard | Done |
-| Prototype | Bench test of one smart damper (design C) with its H-bridge and power bank | **Next** |
+| Bench prototype design | Hardware ratings, bench model, C firmware, rig drive files, test plan T1–T10, budget | Done |
+| Prototype | Build one design-C damper and test it on a rig (Gate B) | **Next** |
 | Pilot | Freight wagons, then Vande Bharat, with RDSO | Planned |
 
 ---
