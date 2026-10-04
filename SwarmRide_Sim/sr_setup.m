@@ -1,6 +1,7 @@
 %% SR_SETUP  Run this first every time you open the SwarmRide project in MATLAB.
 %   >> sr_setup              opens the newest model (Stage 4: active push, health sensing)
 %   >> stage = 1; sr_setup   opens the Stage 1 model (today's damper); 2 smart damper; 3 controllers
+%   >> stage = 'bench'; sr_setup   opens the bench-prototype model (one damper on a test rig)
 %   Adds the project folders to the path, keeps Simulink's build files in /work,
 %   and opens the model.
 root = fileparts(mfilename('fullpath'));
@@ -11,6 +12,14 @@ Simulink.fileGenControl('set', 'CacheFolder', fullfile(root, 'work'), ...
     'CodeGenFolder', fullfile(root, 'work'), 'createDir', true);
 cd(root);
 if ~exist('stage', 'var'), stage = 4; end
+if ischar(stage) && strcmpi(stage, 'bench')
+    open_system(fullfile(root, 'models', 'SR_Bench.slx'));
+    fprintf(['\nSwarmRide bench prototype ready. Pick a bench test, then press Run in Simulink:\n' ...
+             '   benchTest = ''replay_poor'';   %% emf | damping | step | vlimit | failsafe | replay_poor | replay_good | replay_settle\n' ...
+             '   benchMode = ''real'';          %% real hardware | simequiv (simplified like the vehicle model)\n' ...
+             'Needs results/bench_drive.mat (run scripts/check_bench.m once).\n\n']);
+    return
+end
 open_system(fullfile(root, 'models', sprintf('SR_Stage%d.slx', stage)));
 fprintf(['\nSwarmRide ready (Stage %d). Pick a train and scenario, then press Run in Simulink:\n' ...
          '   trainType = ''LHB'';   %% LHB | VB | ICF | BOXN\n' ...
