@@ -152,11 +152,14 @@ flowchart LR
     S2["<b>Stage 2</b><br/>Smart damper<br/>designs A/B/C · power chain · fail-safe"]
     S3["<b>Stage 3</b><br/>Control<br/>LPV load-adaptive · Train Brain preview"]
     S4["<b>Stage 4</b><br/>Push, day, health<br/>active push · full-day power · sensing · dashboard"]
-    S1 --> S2 --> S3 --> S4
+    S5["<b>Stage 5</b><br/>Bench prototype<br/>sizing · bench model · firmware · test plan"]
+    S6["<b>Gate B</b><br/>Build and test<br/>one damper on a rig"]
+    S1 --> S2 --> S3 --> S4 --> S5 --> S6
     classDef done fill:#2A9D8F,stroke:#1F6F66,color:#ffffff
     classDef now fill:#E07A1F,stroke:#A8520F,color:#ffffff
     classDef next fill:#EEF3FA,stroke:#9AA8BC,color:#13233A
-    class S1,S2,S3,S4 done
+    class S1,S2,S3,S4,S5 done
+    class S6 now
 ```
 
 ### Stage 1: the baseline to beat (complete)
