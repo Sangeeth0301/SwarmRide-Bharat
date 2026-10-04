@@ -390,6 +390,22 @@ These are the results the project is designed to show. Each one is a **hypothesi
 2. Energy balance is **positive** on the chosen track profiles.
 3. Ride limits are never exceeded, including with preview timing errors up to ±20 ms.
 
+### 8.1 Gate A: what the simulation showed (Stages 1–4)
+
+The MATLAB/Simulink programme in `SwarmRide_Sim/` has now tested each Gate A criterion. Today's damper and SwarmRide ran on the same rail, and an automatic test suite verified the results.
+
+| Gate A criterion | Result | Verdict |
+|---|---|---|
+| SwarmRide beats the fixed damper and the fixed-load harvester on comfort vs watts, at every load | Crowded LHB: Wz 1.84 (today) → 1.53, at 33 W. The best fixed-harvester setting reaches only 1.635. At equal power (about 40 W), SwarmRide rides better (1.57). It is better at every load on LHB, Vande Bharat and ICF, and on loaded wagons | **Met** (except the empty goods wagon, which gains no comfort) |
+| Energy balance positive | Positive while running: 33–38 W per coach bogie on rough track and 11–14 W on smooth track at speed, against 8 W. Over a full day with a 10 h night parked, electronics left on at 8 W drain the battery to its floor. If they sleep at 1 W when parked, the LHB ends the day at 60% (start 60%), Vande Bharat at 69% and a freight wagon at 80%, with no load ever unserved. The slow ICF coach (36%) and all-smooth track need a small top-up | **Met with a design rule:** the bogie electronics sleep when parked |
+| Ride limits never exceeded, including ±20 ms preview timing | Stroke ≤ 16 mm of about 40 mm; ±20 ms timing error changes Wz by less than 0.01 | **Met** |
+
+Two further results go beyond Gate A:
+- **Active push at known bad spots:** pushing briefly with banked energy cuts the worst-seat jolt at a track settlement by about 80% for about 0.1 Wh.
+- **Self-powered health sensing:** a hot axle is seen within seconds instead of hours; an out-of-round wheel is visible in the damper's own coil signal.
+
+Details: `SwarmRide_Sim/Stage1.md` to `Stage4.md`, `SwarmRide_Sim/VERIFICATION.md`, and the dashboard in `dashboard/index.html`.
+
 ---
 
 ## 9. How we will prove it
