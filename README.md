@@ -217,19 +217,19 @@ The fixed damping command is replaced by the **SwarmRide Controller**: an LPV (l
 | Sperling Wz, poor track (lower = better) | Empty | Half | Full | Into the bank (full) |
 |---|---|---|---|---|
 | LHB, today's damper | 1.73 | 1.78 | 1.84 | 0 W |
-| **LHB, SwarmRide (C3)** | **1.44** | **1.44** | **1.44** | 28 W |
+| **LHB, SwarmRide (C3)** | **1.49** | **1.50** | **1.53** | 33 W |
 | Vande Bharat, today's damper | 1.75 | 1.77 | 1.79 | 0 W |
-| **Vande Bharat, SwarmRide (C3)** | **1.40** | **1.41** | **1.42** | 30 W |
+| **Vande Bharat, SwarmRide (C3)** | **1.47** | **1.48** | **1.50** | 38 W |
 
 <table>
   <tr>
-    <td width="50%"><img src="SwarmRide_Sim/results/stage3_ride_vs_load.png" alt="Ride at every load"><br><sub><b>Same ride at every load:</b> today's ride worsens as passengers board; SwarmRide's stays flat and about 20% better.</sub></td>
+    <td width="50%"><img src="SwarmRide_Sim/results/stage3_ride_vs_load.png" alt="Ride at every load"><br><sub><b>Better at every load:</b> today's ride worsens as passengers board; SwarmRide's stays nearly flat and 14–17% better.</sub></td>
     <td width="50%"><img src="SwarmRide_Sim/results/stage3_comfort_vs_power.png" alt="Comfort vs power"><br><sub><b>Comfort vs power:</b> no fixed setting reaches SwarmRide's comfort; a damping floor trades comfort for power on one dial.</sub></td>
   </tr>
 </table>
 
 **Key findings:**
-- Ride about **20% better** on LHB and Vande Bharat (worst seat −24%), body vibration **halved**, suspension travel halved, still **28–30 W per bogie** into the bank.
+- Ride **15–17% better** on crowded LHB and Vande Bharat coaches (worst seat −19%), body vibration **about 40% lower**, suspension travel down by a third, still **33–38 W per bogie** into the bank.
 - Robust to a ±20 ms late warning and a ±10% load-estimate error, and the fail-safe still works.
 - **Honest limits:**
   - The preview adds only 1–2%, because a damper that can only resist cannot act before the motion starts. Making the warning count needs brief active pushing, which is the next experiment.
@@ -239,7 +239,7 @@ Full report: **[SwarmRide_Sim/Stage3.md](SwarmRide_Sim/Stage3.md)**
 
 ### Early estimate (preview study)
 
-Before the Simulink stages, a simplified Python model estimated the gains below. Stage 3 has now measured them in Simulink: a ride improvement of about 22% and body vibration down 51% on a crowded LHB coach, at 28 W per bogie (Section *Stage 3* above). Crowded coach, poor track, 160 km/h.
+Before the Simulink stages, a simplified Python model estimated the gains below. Stage 3 has now measured them in Simulink: a ride improvement of 17% and body vibration down 41% on a crowded LHB coach, at 33 W per bogie (Section *Stage 3* above). Crowded coach, poor track, 160 km/h.
 
 | Measure | Today's damper | Research harvester (fixed load) | **SwarmRide (target)** |
 |---|---|---|---|
