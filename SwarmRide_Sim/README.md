@@ -59,4 +59,4 @@ run('scripts/run_all_checks.m')   % full verification suite -> results/verificat
 | 4 | Active push at known bad spots (C4), full-day journeys, self-powered health sensing, investor dashboard | Done |
 | 5 | Bench prototype: hardware sizing, bench model (`SR_Bench`), C firmware, rig drive files, test plan | Done (hardware next) |
 
-All 73 verification checks pass. Next: a bench prototype of design C.
+All 85 verification checks pass (Stages 1–4 and the bench prototype). Next: build and test the bench prototype (Gate B).
