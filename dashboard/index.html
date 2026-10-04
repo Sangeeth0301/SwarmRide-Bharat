@@ -44,6 +44,9 @@
   .stat b { display: block; font-size: 20px; color: var(--navy); } .stat span { font-size: 12.5px; color: var(--muted); }
   .arch { width: 100%; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
   ul.tight { margin: 6px 0 0 18px; padding: 0; font-size: 14px; } ul.tight li { margin: 4px 0; }
+  table.pred { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 6px; }
+  table.pred td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.pred td.tid { color: var(--orange); font-weight: 700; width: 36px; }
   footer { color: var(--muted); font-size: 12.5px; padding: 10px 0 30px; }
   @media (max-width: 980px) { .kpis { grid-template-columns: repeat(2, 1fr); } .grid { grid-template-columns: 1fr; } }
 </style>
@@ -110,6 +113,19 @@
       <div class="note" id="wheel-note"></div>
     </div>
 
+    <div class="card" id="bench-card">
+      <h2>Bench prototype: the rig replays the coach</h2>
+      <div class="why">One design-C damper on a test rig, driven by its own motion from the coach simulation (rough track, crowded LHB, 160 km/h). Bench model with real current control, losses and limits.</div>
+      <div class="chart"><canvas id="c-bench"></canvas></div>
+      <div class="note" id="bench-note"></div>
+    </div>
+
+    <div class="card" id="bench-pred-card">
+      <h2>What the lab must measure (Gate B)</h2>
+      <div class="why">Predictions of the bench model; each test has a pass band in the test plan.</div>
+      <table class="pred" id="bench-pred"></table>
+    </div>
+
     <div class="card wide">
       <h2>System architecture</h2>
       <div class="why">Energy is made and used on each bogie; only data travels along the train.</div>
@@ -121,7 +137,7 @@
       <ul class="tight">
         <li><b>Proven in simulation:</b> physics against hand calculations, an independent model, energy conservation, step-size convergence, fail-safe behaviour and controller stability, all in an automatic test suite (<span id="checks-inline"></span>).</li>
         <li><b>Assumed:</b> many vehicle parameters are engineering estimates pending RDSO data; the model is vertical only; power electronics are average models; the hot-axle model is illustrative.</li>
-        <li><b>Next:</b> bench prototype of one smart damper, then an instrumented field run.</li>
+        <li><b>Next:</b> the bench prototype is designed (hardware ratings, bench model, C firmware checked against MATLAB, test plan); build and test it (Gate B), then an instrumented field run.</li>
       </ul>
     </div>
   </section>
@@ -246,6 +262,23 @@ new Chart(document.getElementById('c-wheel'), { type: 'line', data: { datasets: 
   { label: Wd.cases[2], data: Wd.f.map((f, i) => ({ x: f, y: Wd.lobe3[i] })), borderColor: C.navy, borderWidth: 1.8 }
 ] }, options: { maintainAspectRatio: false, animation: false, elements: { point: { radius: 0 } },
   scales: { x: { type: 'linear', ...axis('frequency [Hz]') }, y: axis('coil voltage amplitude [V]') } } });
+if (S.bench) {
+  const Bn = S.bench.replay;
+  new Chart(document.getElementById('c-bench'), { type: 'line', data: { datasets: [
+    { label: 'rig work into the damper (1 s average)', data: Bn.t.map((t, i) => ({ x: t, y: Bn.Pmech[i] })), borderColor: C.light, borderWidth: 1.6 },
+    { label: 'into the bank (1 s average)', data: Bn.t.map((t, i) => ({ x: t, y: Bn.Pbank[i] })), borderColor: C.teal, borderWidth: 2.2 },
+    { label: 'vehicle model, mean into the bank', data: [{ x: Bn.t[0], y: Bn.vehicle }, { x: Bn.t[Bn.t.length - 1], y: Bn.vehicle }], borderColor: C.orange, borderDash: [6, 4], borderWidth: 1.6 }
+  ] }, options: { maintainAspectRatio: false, animation: false, elements: { point: { radius: 0 } },
+    scales: { x: { type: 'linear', ...axis('time [s]') }, y: axis('power [W]') } } });
+  document.getElementById('bench-note').innerHTML = `The bench model puts <b>${Bn.mean_bank} W</b> into the bank on rough track ` +
+    `(vehicle model ${Bn.vehicle} W) and <b>${Bn.mean_good} W</b> on smooth track (${Bn.vehicle_good} W). ` +
+    `Hardware: motor ${S.bench.hw.motor}, ${S.bench.hw.force}, drive ${S.bench.hw.drive}.`;
+  document.getElementById('bench-pred').innerHTML = S.bench.pred.map(r =>
+    `<tr><td class="tid">${r[0]}</td><td>${r[1]}</td><td><b>${r[2]}</b></td></tr>`).join('');
+} else {
+  document.getElementById('bench-card').style.display = 'none';
+  document.getElementById('bench-pred-card').style.display = 'none';
+}
 document.getElementById('wheel-note').innerHTML = `At the defect frequency the front bogie reads <b>${Wd.front[1]} V</b> (eccentric) and ` +
   `<b>${Wd.front[2]} V</b> (three-lobed) against <b>${Wd.front[0]} V</b> healthy; the rear bogie stays low, so the defect is located to the front wheelset.`;
 </script>
