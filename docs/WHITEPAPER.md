@@ -2,8 +2,8 @@
 
 **Self-powered, load-adaptive, train-synchronised suspension for Indian Railways**
 
-Version 0.1 · October 2026 · Sangeeth
-Status: concept defined; simulation Stages 1–3 complete (today's trains; smart damper and power chain; load-adaptive and preview controllers)
+Version 0.2 · October 2026 · Sangeeth
+Status: simulation complete, Stages 1–4 (today's trains; smart damper and power chain; load-adaptive and preview controllers; active push, full-day power and health sensing). Gate A met in simulation; bench prototype next.
 
 > **Confidential.** This document describes an invention that has not yet been filed for patent protection. Do not publish or present it openly before a provisional patent application is filed.
 
@@ -24,7 +24,13 @@ A verified MATLAB/Simulink model of today's Indian trains (LHB, Vande Bharat, IC
 - fixed dampers lose **17–30% of their damping ratio** as load rises
 - they turn **20–90 W per bogie** (coaches) and up to about **210 W per bogie** (loaded BOXN) into heat
 
-A preview study estimates **about 24% lower body vibration** with self-sufficient bogie power. That estimate is to be confirmed in the next simulation stages.
+The full SwarmRide system, tested on the same coach and the same rail, shows:
+- **ride index 16–23% better** and **body vibration about 40% lower** at full load, with **33–38 W** per coach bogie into the bank on rough track (Stage 3)
+- a **worst-seat jolt 80% lower** at a known track settlement when the damper briefly pushes, for about 0.1 Wh (Stage 4)
+- a bogie that **stays self-powered through a full day and night** if its electronics sleep when parked (Stage 4)
+- a **hot axle caught within 10 s** and an **out-of-round wheel visible in the damper's own coil signal** (Stage 4)
+
+73 automatic verification checks pass.
 
 ---
 
