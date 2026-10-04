@@ -1,4 +1,4 @@
-SwarmRide verification report  (2026-10-04 15:07, MATLAB 2024b)
+SwarmRide verification report  (2026-10-04 15:54, MATLAB 2024b)
 
 --- test_sperling ---
 PASS  Sperling Wz, 1 Hz sine vs closed form                                             0 %          (limit 0.5)  Wz 1.967 vs 1.967
@@ -70,5 +70,15 @@ PASS  C3 with warning +20 ms off still better than today                        
 PASS  C3 at half load with a -10% load estimate still better than today                 0            (limit 0)  1.507 vs today 1.780
 PASS  C3 at half load with a +10% load estimate still better than today                 0            (limit 0)  1.498 vs today 1.780
 PASS  C3 fail-safe: harvesting stops after the fault                                    0 W          (limit 1e-06)  
+--- test_stage4 ---
+PASS  Stage 4 with new parts off reproduces Stage 3                                     0 % of peak  (limit 1e-06)  
+PASS  Journey bank model vs Simulink bank (supercap voltage after 30 s)         1.786e-05 V          (limit 0.02)  
+PASS  C4: energy balance with active pushes (share of energy that flowed)         0.05962 %          (limit 1)  527 J flowed
+PASS  C4: bank power drawn only inside the push windows                         1.207e-14 W          (limit 2)  small negatives only from the current-loop lag
+PASS  C4: bogie loads always served                                                     0 W          (limit 1e-09)  
+PASS  C4 lowers the worst-seat peak at the settlement vs C3                             0 m/s^2      (limit 0)  0.196 vs 0.764
+PASS  C4 with no known bad spots behaves exactly like C3                                0 % of peak  (limit 1e-06)  
+PASS  Hot axle: on-bogie alarm before the failure temperature                           0 C          (limit 0)  alarm at 90 C
+PASS  Wheel defect raises the front-bogie coil signal at the wheel frequency (x times healthy)          0            (limit 0)  x5
 
-64 of 64 checks passed.
+73 of 73 checks passed.
