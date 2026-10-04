@@ -30,7 +30,7 @@ The full SwarmRide system, tested on the same coach and the same rail, shows:
 - a bogie that **stays self-powered through a full day and night** if its electronics sleep when parked (Stage 4)
 - a **hot axle caught within 10 s** and an **out-of-round wheel visible in the damper's own coil signal** (Stage 4)
 
-73 automatic verification checks pass.
+85 automatic verification checks pass, including the bench model and the C firmware.
 
 ---
 
