@@ -1,0 +1,115 @@
+=== A. Verification: LHB coach, 12 t, 160 km/h, poor track, design C ===
+A1 LHB  LPV design: closed-loop spectral radius 0.9790 .. 0.9813 at 5 load points -> PASS
+A1 VB   LPV design: closed-loop spectral radius 0.9831 .. 0.9850 at 5 load points -> PASS
+A1 ICF  LPV design: closed-loop spectral radius 0.9770 .. 0.9832 at 5 load points -> PASS
+A1 BOXN LPV design: closed-loop spectral radius 0.9387 .. 0.9999 at 5 load points -> PASS
+A2 Passivity: smart damper never needs bank power (min Pgen -0.16 W); command within 0..c_cap (0..98439 of 98439 N s/m) -> PASS
+A3 Energy balance (C3): residual -0.0004 % / -0.0003 % -> PASS
+A4 Fail-safe with C3 (fault at 15 s): damping after 35047 N s/m vs today 35000 (inertance aside); harvest after 0.00 W -> PASS
+A5 Preview timing error -20 ms: Wz 1.529 (C3 exact 1.528, C2 1.559) -> PASS
+A5 Preview timing error +20 ms: Wz 1.527 (C3 exact 1.528, C2 1.559) -> PASS
+A6 Load estimate -10 % (half load): Wz 1.507 (exact estimate 1.501, today 1.780) -> PASS
+A6 Load estimate +10 % (half load): Wz 1.498 (exact estimate 1.501, today 1.780) -> PASS
+
+=== B. Head to head: design C, top speed (per bogie: power; ride at the centre and worst seat) ===
+train track   load C   |     Wz  Wzmax    RMS |  stroke   P_bank      net
+LHB   poor    0.0t C0  |  1.731  2.142  0.148 |  20.0mm     0.0W    +0.0W
+LHB   poor    0.0t C1  |  1.781  2.093  0.147 |   9.2mm    31.4W   +23.4W
+LHB   poor    0.0t C2  |  1.519  1.815  0.099 |  14.2mm    29.3W   +21.3W
+LHB   poor    0.0t C3  |  1.493  1.776  0.094 |  12.7mm    26.7W   +18.7W
+LHB   poor    5.1t C0  |  1.780  2.206  0.159 |  22.0mm     0.0W    +0.0W
+LHB   poor    5.1t C1  |  1.701  2.036  0.133 |  10.6mm    34.1W   +26.1W
+LHB   poor    5.1t C2  |  1.530  1.846  0.103 |  15.6mm    32.8W   +24.8W
+LHB   poor    5.1t C3  |  1.501  1.804  0.097 |  14.0mm    29.5W   +21.5W
+LHB   poor   12.0t C0  |  1.844  2.290  0.174 |  25.2mm     0.0W    +0.0W
+LHB   poor   12.0t C1  |  1.639  1.998  0.124 |  12.4mm    37.1W   +29.1W
+LHB   poor   12.0t C2  |  1.559  1.897  0.109 |  17.4mm    37.2W   +29.2W
+LHB   poor   12.0t C3  |  1.528  1.854  0.103 |  15.8mm    33.1W   +25.1W
+LHB   good   12.0t C0  |  1.591  1.975  0.106 |  15.4mm     0.0W    +0.0W
+LHB   good   12.0t C1  |  1.415  1.724  0.076 |   7.4mm    13.6W    +5.6W
+LHB   good   12.0t C2  |  1.343  1.632  0.066 |  10.4mm    13.4W    +5.4W
+LHB   good   12.0t C3  |  1.318  1.598  0.063 |   9.5mm    12.0W    +4.0W
+VB    poor    0.0t C0  |  1.751  2.153  0.151 |  23.3mm     0.0W    +0.0W
+VB    poor    0.0t C1  |  1.615  1.964  0.118 |  11.1mm    39.6W   +31.6W
+VB    poor    0.0t C2  |  1.502  1.798  0.097 |  15.8mm    39.8W   +31.8W
+VB    poor    0.0t C3  |  1.470  1.751  0.092 |  14.3mm    34.3W   +26.3W
+VB    poor    3.8t C0  |  1.770  2.184  0.155 |  24.2mm     0.0W    +0.0W
+VB    poor    3.8t C1  |  1.596  1.947  0.116 |  11.8mm    41.0W   +33.0W
+VB    poor    3.8t C2  |  1.516  1.818  0.100 |  16.5mm    41.9W   +33.9W
+VB    poor    3.8t C3  |  1.484  1.773  0.094 |  15.1mm    36.0W   +28.0W
+VB    poor    7.6t C0  |  1.787  2.211  0.159 |  24.9mm     0.0W    +0.0W
+VB    poor    7.6t C1  |  1.585  1.935  0.114 |  12.5mm    42.4W   +34.4W
+VB    poor    7.6t C2  |  1.532  1.840  0.103 |  17.1mm    43.9W   +35.9W
+VB    poor    7.6t C3  |  1.500  1.797  0.097 |  15.8mm    37.8W   +29.8W
+VB    good    7.6t C0  |  1.541  1.907  0.097 |  15.2mm     0.0W    +0.0W
+VB    good    7.6t C1  |  1.367  1.670  0.070 |   7.6mm    15.6W    +7.6W
+VB    good    7.6t C2  |  1.320  1.586  0.063 |  10.4mm    16.0W    +8.0W
+VB    good    7.6t C3  |  1.294  1.551  0.059 |   9.6mm    13.8W    +5.8W
+ICF   poor    0.0t C0  |  1.454  2.308  0.085 |   9.6mm     0.0W    +0.0W
+ICF   poor    0.0t C1  |  1.627  1.953  0.114 |   3.7mm    11.6W    +3.6W
+ICF   poor    0.0t C2  |  1.374  1.809  0.070 |   5.7mm    12.2W    +4.2W
+ICF   poor    0.0t C3  |  1.349  1.765  0.067 |   5.5mm    11.3W    +3.3W
+ICF   poor    7.5t C0  |  1.341  2.229  0.068 |  11.7mm     0.0W    +0.0W
+ICF   poor    7.5t C1  |  1.508  1.892  0.091 |   4.6mm    13.0W    +5.0W
+ICF   poor    7.5t C2  |  1.289  1.746  0.059 |   6.8mm    13.6W    +5.6W
+ICF   poor    7.5t C3  |  1.275  1.700  0.058 |   6.6mm    12.4W    +4.4W
+ICF   poor   15.0t C0  |  1.378  2.159  0.070 |  13.5mm     0.0W    +0.0W
+ICF   poor   15.0t C1  |  1.416  1.833  0.076 |   5.3mm    14.4W    +6.4W
+ICF   poor   15.0t C2  |  1.238  1.685  0.053 |   7.5mm    14.5W    +6.5W
+ICF   poor   15.0t C3  |  1.227  1.639  0.052 |   7.3mm    13.0W    +5.0W
+ICF   good   15.0t C0  |  1.189  1.863  0.043 |   8.2mm     0.0W    +0.0W
+ICF   good   15.0t C1  |  1.223  1.582  0.047 |   3.2mm     5.3W    -2.7W
+ICF   good   15.0t C2  |  1.070  1.459  0.033 |   4.5mm     5.3W    -2.7W
+ICF   good   15.0t C3  |  1.061  1.422  0.032 |   4.4mm     4.8W    -3.2W
+BOXN  poor    0.0t C0  |  2.279  2.426  0.405 |   1.4mm     0.0W    +0.0W
+BOXN  poor    0.0t C1  |  2.274  2.456  0.510 |   1.0mm    18.5W   +10.5W
+BOXN  poor    0.0t C2  |  2.322  2.522  0.332 |   3.1mm    17.6W    +9.6W
+BOXN  poor    0.0t C3  |  2.321  2.521  0.331 |   3.1mm    17.6W    +9.6W
+BOXN  poor   33.6t C0  |  2.149  2.321  0.357 |   1.9mm     0.0W    +0.0W
+BOXN  poor   33.6t C1  |  2.044  2.298  0.235 |   2.9mm    44.5W   +36.5W
+BOXN  poor   33.6t C2  |  1.864  2.287  0.170 |   4.0mm    42.9W   +34.9W
+BOXN  poor   33.6t C3  |  1.790  2.190  0.153 |   3.8mm    37.8W   +29.8W
+BOXN  poor   67.2t C0  |  2.146  2.318  0.344 |   2.0mm     0.0W    +0.0W
+BOXN  poor   67.2t C1  |  1.827  2.231  0.165 |   3.8mm    63.9W   +55.9W
+BOXN  poor   67.2t C2  |  1.693  2.265  0.132 |   4.4mm    64.3W   +56.3W
+BOXN  poor   67.2t C3  |  1.657  2.185  0.126 |   4.1mm    55.4W   +47.4W
+BOXN  good   67.2t C0  |  1.878  2.031  0.230 |   0.9mm     0.0W    +0.0W
+BOXN  good   67.2t C1  |  1.577  1.923  0.101 |   2.3mm    23.7W   +15.7W
+BOXN  good   67.2t C2  |  1.460  1.954  0.081 |   2.6mm    23.8W   +15.8W
+BOXN  good   67.2t C3  |  1.430  1.886  0.077 |   2.5mm    20.4W   +12.4W
+(Wz = centre of the coach; Wzmax = worst of centre / over front bogie / over rear bogie; net = P_bank - 8 W)
+
+=== C1. Single events, LHB crowded, 160 km/h ===
+bump       C0: peak body acceleration 0.110 (worst seat 0.246) m/s^2, RMS over the event 0.0142 m/s^2
+bump       C1: peak body acceleration 0.194 (worst seat 0.424) m/s^2, RMS over the event 0.0201 m/s^2
+bump       C2: peak body acceleration 0.093 (worst seat 0.205) m/s^2, RMS over the event 0.0102 m/s^2
+bump       C3: peak body acceleration 0.093 (worst seat 0.205) m/s^2, RMS over the event 0.0102 m/s^2
+settlement C0: peak body acceleration 0.339 (worst seat 0.967) m/s^2, RMS over the event 0.0766 m/s^2
+settlement C1: peak body acceleration 0.455 (worst seat 1.254) m/s^2, RMS over the event 0.0658 m/s^2
+settlement C2: peak body acceleration 0.286 (worst seat 0.760) m/s^2, RMS over the event 0.0467 m/s^2
+settlement C3: peak body acceleration 0.286 (worst seat 0.764) m/s^2, RMS over the event 0.0466 m/s^2
+
+=== C2. Comfort vs power (LHB crowded, poor track) ===
+C1 fixed c =  24610 N s/m: Wz 1.900, P_bank 47.3 W
+C1 fixed c =  49220 N s/m: Wz 1.725, P_bank 51.6 W
+C1 fixed c =  73829 N s/m: Wz 1.652, P_bank 48.8 W
+C1 fixed c = 110744 N s/m: Wz 1.635, P_bank 40.5 W
+C1 fixed c = 147659 N s/m: Wz 1.654, P_bank 30.1 W
+C1 fixed c = 196879 N s/m: Wz 1.690, P_bank 15.2 W
+C3 damping floor 0.15 x c_req: Wz 1.552, P_bank 37.5 W, stroke 15.7 mm
+C3 damping floor 0.30 x c_req: Wz 1.571, P_bank 40.8 W, stroke 15.5 mm
+C3 damping floor 0.45 x c_req: Wz 1.588, P_bank 43.2 W, stroke 15.3 mm
+C3 damping floor 0.60 x c_req: Wz 1.602, P_bank 44.5 W, stroke 15.1 mm
+C3 damping floor 0.80 x c_req: Wz 1.619, P_bank 44.8 W, stroke 14.7 mm
+C2 force weight   0.1: Wz 1.605, P_bank 37.7 W, stroke 19.3 mm
+C2 force weight   0.3: Wz 1.574, P_bank 37.4 W, stroke 19.1 mm
+C2 force weight   1.0: Wz 1.561, P_bank 37.2 W, stroke 18.1 mm
+C2 force weight   3.0: Wz 1.559, P_bank 37.2 W, stroke 17.4 mm
+C2 force weight  10.0: Wz 1.583, P_bank 37.8 W, stroke 17.5 mm
+C2 force weight  30.0: Wz 1.652, P_bank 39.0 W, stroke 19.8 mm
+C3 force weight   0.1: Wz 1.602, P_bank 37.3 W, stroke 19.1 mm
+C3 force weight   0.3: Wz 1.565, P_bank 36.7 W, stroke 18.9 mm
+C3 force weight   1.0: Wz 1.542, P_bank 35.3 W, stroke 17.2 mm
+C3 force weight   3.0: Wz 1.528, P_bank 33.1 W, stroke 15.8 mm
+C3 force weight  10.0: Wz 1.539, P_bank 30.3 W, stroke 14.6 mm
+C3 force weight  30.0: Wz 1.589, P_bank 27.9 W, stroke 14.7 mm
