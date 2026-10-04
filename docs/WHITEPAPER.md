@@ -210,6 +210,25 @@ The slow ICF coach and all-smooth track still drain slowly, so they need a small
 
 Full report: [`SwarmRide_Sim/Stage4.md`](../SwarmRide_Sim/Stage4.md). Investor dashboard: [`dashboard/index.html`](../dashboard/index.html).
 
+## 5e. The bench prototype (Stage 5)
+
+The design-C damper was sized for real hardware from its duty in the coach simulation. At most it sees 6.1 kN, 0.16 m/s and 33 A, with about 8 W of coil loss. The hardware is:
+- a 48 V-class servo motor (Kt 0.40 N m/A rms, 14 N m peak);
+- a Ø25 mm × 10 mm-lead ball screw (8 kN);
+- a 60 V / 46 A four-quadrant drive;
+- 3 × 1.0 Ω fail-safe resistors on a changeover contactor;
+- a 10 F supercapacitor and a 128 Wh LiFePO4 battery per bogie.
+
+A Simulink bench model (`SR_Bench.slx`) adds what the vehicle model idealised: a 10 kHz current loop with a voltage limit, inverter and DC-DC losses, a contactor that takes 20 ms, and winding heat. On the damper's own motion replayed from the coach it predicts:
+- **14.4 W into the bank** (vehicle model 14.5 W);
+- **today's damping** after a fault, with a 20 ms gap;
+- an 800 W push for 95 J;
+- a winding at 42 °C.
+
+A margin study shows that rotor inertia (made large at the rod by the screw) does not hurt the ride up to 16× the assumed value, but friction above 300 N costs harvest. The controller, drive and bank supervisor are ported to C. A host test matches the MATLAB code in double and in microcontroller float arithmetic (10 of 10 checks).
+
+Package: [`Bench_Prototype/`](../Bench_Prototype/README.md). Report: [`SwarmRide_Sim/Stage5_Bench.md`](../SwarmRide_Sim/Stage5_Bench.md).
+
 ## 6. Expected results (preview study)
 
 From a simplified Python model, written before the Simulink stages and **now superseded by Sections 5b–5d**. Crowded coach, poor track, 160 km/h.
@@ -272,4 +291,6 @@ Prior art to distinguish: energy-harvesting dampers in research, OMRS, EoTT, Tra
 | [`SwarmRide_Sim/Stage2.md`](../SwarmRide_Sim/Stage2.md) | Stage 2 simulation report |
 | [`SwarmRide_Sim/Stage3.md`](../SwarmRide_Sim/Stage3.md) | Stage 3 simulation report |
 | [`SwarmRide_Sim/Stage4.md`](../SwarmRide_Sim/Stage4.md) | Stage 4 simulation report |
+| [`SwarmRide_Sim/Stage5_Bench.md`](../SwarmRide_Sim/Stage5_Bench.md) | Stage 5: bench model and predicted bench results |
+| [`Bench_Prototype/`](../Bench_Prototype/README.md) | Bench prototype package: requirements, designs, firmware, test plan, budget |
 | [`dashboard/index.html`](../dashboard/index.html) | Investor dashboard of all results |
