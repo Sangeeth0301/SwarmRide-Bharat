@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E07A1F"/></marker>
+    <marker id="aT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2A9D8F"/></marker>
+    <marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D64541"/></marker>
+    <marker id="aG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A93A0"/></marker>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#C3CCD8" stroke-width="2"/></pattern>
+    <style>
+      .ttl  { font-size: 26px; font-weight: 700; fill: #13233A; }
+      .sub  { font-size: 14.5px; fill: #5E6878; }
+      .band { font-size: 13px; font-weight: 700; letter-spacing: 1.4px; }
+      .bt   { font-size: 15px; font-weight: 700; fill: #13233A; text-anchor: middle; }
+      .bl   { font-size: 12.5px; fill: #4A5568; text-anchor: middle; }
+      .bll  { font-size: 12.5px; fill: #4A5568; }
+      .eq   { font-size: 12.5px; fill: #A8520F; font-weight: 600; text-anchor: middle; }
+      .box  { fill: #FFFFFF; stroke: #C3CCD8; stroke-width: 1.4; }
+      .hiO  { fill: #FFF3E6; stroke: #E07A1F; stroke-width: 2.4; }
+      .hiT  { fill: #F0FAF8; stroke: #2A9D8F; stroke-width: 2.2; }
+      .mech { fill: #F2F3F5; stroke: #8A93A0; stroke-width: 1.4; }
+      .safe { fill: #FFF5F4; stroke: #D64541; stroke-width: 2; }
+      .pw   { stroke: #E07A1F; stroke-width: 3; fill: none; }
+      .sg   { stroke: #2A9D8F; stroke-width: 2; fill: none; stroke-dasharray: 6 4; }
+      .sf   { stroke: #D64541; stroke-width: 2.2; fill: none; }
+      .mk   { stroke: #8A93A0; stroke-width: 3; fill: none; }
+    </style>
+  </defs>
+  <rect width="1400" height="900" fill="#FBFBFC"/>
+  <text x="40" y="52" class="ttl">SwarmRide bench prototype: one design-C smart damper on a test rig</text>
+  <text x="40" y="78" class="sub">Mechanical path (grey) · power (orange) · measurements and commands (teal) · hardware safety chain (red)</text>
+
+  <!-- ===== 1. Test rig ===== -->
+  <text x="40" y="122" class="band" fill="#8A93A0">1 · TEST RIG</text>
+  <rect x="40" y="135" width="360" height="725" rx="14" fill="#FFFFFF" stroke="#E2E6EC"/>
+  <!-- frame -->
+  <rect x="70" y="160" width="22" height="660" fill="url(#hatch)" stroke="#8A93A0"/>
+  <rect x="348" y="160" width="22" height="660" fill="url(#hatch)" stroke="#8A93A0"/>
+  <rect x="70" y="160" width="300" height="34" fill="url(#hatch)" stroke="#8A93A0"/>
+  <text x="220" y="182" class="bt" style="font-size:13px">crosshead (fixed)</text>
+  <!-- load cell -->
+  <rect x="180" y="200" width="80" height="36" rx="6" class="hiT"/>
+  <text x="220" y="223" class="bt" style="font-size:13px">load cell</text>
+  <text x="100" y="214" class="bll">20 kN</text>
+  <text x="100" y="229" class="bll">fatigue</text>
+  <!-- motor -->
+  <rect x="140" y="246" width="160" height="120" rx="10" class="hiO"/>
+  <text x="220" y="282" class="bt">Servo motor</text>
+  <text x="220" y="301" class="bl">3-phase PM, 48 V class</text>
+  <text x="220" y="318" class="bl">Kt 0.40 N m/A rms</text>
+  <text x="220" y="335" class="bl">encoder · winding</text>
+  <text x="220" y="351" class="bl">temperature sensor</text>
+  <!-- coupling -->
+  <rect x="198" y="370" width="44" height="22" rx="4" class="mech"/>
+  <text x="300" y="386" class="bll">coupling</text>
+  <!-- housing with screw -->
+  <rect x="165" y="396" width="110" height="250" rx="8" class="mech"/>
+  <line x1="220" y1="400" x2="220" y2="640" stroke="#13233A" stroke-width="10"/>
+  <path d="M212 410 l16 6 M212 426 l16 6 M212 442 l16 6 M212 458 l16 6 M212 474 l16 6 M212 490 l16 6 M212 506 l16 6 M212 522 l16 6 M212 538 l16 6 M212 554 l16 6 M212 570 l16 6 M212 586 l16 6 M212 602 l16 6 M212 618 l16 6" stroke="#FBFBFC" stroke-width="1.6"/>
+  <rect x="190" y="560" width="60" height="30" rx="4" fill="#13233A"/>
+  <text x="220" y="580" style="font-size:11.5px;fill:#FFFFFF;text-anchor:middle;font-weight:700">nut</text>
+  <text x="300" y="470" class="bll">ball screw</text>
+  <text x="300" y="486" class="bll">25 mm, 10 mm lead</text>
+  <text x="300" y="574" class="bll">anti-rotation</text>
+  <text x="300" y="590" class="bll">guide</text>
+  <!-- rod -->
+  <rect x="208" y="646" width="24" height="70" fill="#C3CCD8" stroke="#8A93A0"/>
+  <rect x="184" y="640" width="72" height="10" rx="3" fill="#2A9D8F"/>
+  <text x="300" y="652" class="bll">seals, bump</text>
+  <text x="300" y="668" class="bll">stops ±40 mm</text>
+  <text x="112" y="520" class="bll" transform="rotate(-90 112 520)">damper under test (LHB mounts)</text>
+  <!-- actuator -->
+  <rect x="150" y="720" width="140" height="80" rx="10" class="box" stroke="#8A93A0" stroke-width="2"/>
+  <text x="220" y="748" class="bt">Servo actuator</text>
+  <text x="220" y="767" class="bl">displacement-controlled</text>
+  <text x="220" y="784" class="bl">±50 mm · 10 kN · 0.4 m/s</text>
+  <rect x="70" y="806" width="300" height="20" fill="url(#hatch)" stroke="#8A93A0"/>
+  <text x="220" y="838" class="bl">plays the drive files: the damper's own</text>
+  <text x="220" y="853" class="bl">motion from the coach simulation</text>
+
+  <!-- ===== 2. Drive and power ===== -->
+  <text x="440" y="122" class="band" fill="#E07A1F">2 · DRIVE AND POWER BANK (ONE BOGIE'S BANK)</text>
+  <rect x="440" y="135" width="560" height="560" rx="14" fill="#FFFFFF" stroke="#E2E6EC"/>
+  <!-- contactor -->
+  <rect x="470" y="170" width="200" height="74" rx="10" class="safe"/>
+  <text x="570" y="200" class="bt">Changeover contactor</text>
+  <text x="570" y="219" class="bl">3-pole, 24 V coil</text>
+  <text x="570" y="235" class="bl">drops in 20 ms</text>
+  <!-- resistors -->
+  <rect x="720" y="160" width="250" height="88" rx="10" class="box"/>
+  <text x="845" y="188" class="bt">Fail-safe resistors</text>
+  <text x="845" y="207" class="bl">3 × 1.0 Ω star, 100 W each</text>
+  <text x="845" y="224" class="eq">dropped: damping = today's damper</text>
+  <text x="845" y="240" class="bl">(17.5 kN s/m per damper)</text>
+  <!-- inverter -->
+  <rect x="470" y="290" width="200" height="96" rx="10" class="hiO"/>
+  <text x="570" y="318" class="bt">3-phase inverter</text>
+  <text x="570" y="337" class="bl">100 V MOSFETs · 20 kHz PWM</text>
+  <text x="570" y="354" class="bl">46 A peak · 4-quadrant</text>
+  <text x="570" y="372" class="eq">harvests and pushes</text>
+  <!-- DC link -->
+  <rect x="720" y="300" width="250" height="76" rx="10" class="box"/>
+  <text x="845" y="328" class="bt">DC link 60 V</text>
+  <text x="845" y="347" class="bl">470 µF low-ESR + film</text>
+  <text x="845" y="364" class="bl">controls braking up to 0.30 m/s</text>
+  <!-- DC-DC -->
+  <rect x="720" y="420" width="250" height="76" rx="10" class="hiO"/>
+  <text x="845" y="448" class="bt">Bidirectional DC-DC</text>
+  <text x="845" y="467" class="bl">60 V ↔ 12–48 V, 1.5 kW peak</text>
+  <text x="845" y="484" class="bl">efficiency ≈ 94 %</text>
+  <!-- supercap -->
+  <rect x="470" y="420" width="200" height="76" rx="10" class="hiO"/>
+  <text x="570" y="448" class="bt">Supercapacitor 10 F</text>
+  <text x="570" y="467" class="bl">18 × 180 F / 2.7 V + balancing</text>
+  <text x="570" y="484" class="eq">catches the kW bursts</text>
+  <!-- battery and load -->
+  <rect x="470" y="540" width="200" height="76" rx="10" class="box"/>
+  <text x="570" y="568" class="bt">LiFePO4 8S 5 Ah</text>
+  <text x="570" y="587" class="bl">with BMS · 128 Wh</text>
+  <text x="570" y="604" class="bl">energy store</text>
+  <rect x="720" y="540" width="250" height="76" rx="10" class="box"/>
+  <text x="845" y="568" class="bt">Electronic load</text>
+  <text x="845" y="587" class="bl">4 W: this damper's half of</text>
+  <text x="845" y="604" class="bl">the 8 W bogie electronics</text>
+  <text x="720" y="660" class="bll">Power analyser on the DC link and the supercapacitor:</text>
+  <text x="720" y="678" class="bll">measures what really reaches the bank.</text>
+  <!-- power arrows -->
+  <path d="M300 300 C 380 300, 400 330, 466 330" class="pw" marker-end="url(#aO)"/>
+  <path d="M300 280 C 380 280, 400 210, 466 210" class="pw" marker-end="url(#aO)"/>
+  <path d="M670 207 L716 207" class="pw" marker-end="url(#aO)"/>
+  <path d="M670 338 L716 338" class="pw" marker-start="url(#aO)" marker-end="url(#aO)"/>
+  <path d="M845 376 L845 416" class="pw" marker-start="url(#aO)" marker-end="url(#aO)"/>
+  <path d="M720 458 L674 458" class="pw" marker-start="url(#aO)" marker-end="url(#aO)"/>
+  <path d="M570 496 L570 536" class="pw" marker-start="url(#aO)" marker-end="url(#aO)"/>
+  <path d="M670 470 C 700 470, 700 578, 716 578" class="pw" marker-end="url(#aO)"/>
+  <text x="318" y="262" class="bll" style="fill:#A8520F">3 phases</text>
+
+  <!-- ===== 3. Control and data ===== -->
+  <text x="1040" y="122" class="band" fill="#2A9D8F">3 · CONTROL, SAFETY AND DATA</text>
+  <rect x="1040" y="135" width="320" height="725" rx="14" fill="#FFFFFF" stroke="#E2E6EC"/>
+  <rect x="1065" y="165" width="270" height="150" rx="10" class="hiT"/>
+  <text x="1200" y="193" class="bt">SwarmRide drive firmware</text>
+  <text x="1200" y="212" class="bl">Cortex-M4F microcontroller</text>
+  <text x="1200" y="232" class="bl">10 kHz: current reference, PI current</text>
+  <text x="1200" y="249" class="bl">control + back-EMF feed-forward</text>
+  <text x="1200" y="269" class="bl">fail-safe supervisor (latched)</text>
+  <text x="1200" y="289" class="bl">100 Hz: LPV + preview (HIL step)</text>
+  <text x="1200" y="306" class="eq">same code as the simulation</text>
+  <rect x="1065" y="345" width="270" height="120" rx="10" class="safe"/>
+  <text x="1200" y="373" class="bt">Hardware safety chain</text>
+  <text x="1200" y="393" class="bl">contactor coil powered only while:</text>
+  <text x="1200" y="411" class="bl">heartbeat AND bank OK AND</text>
+  <text x="1200" y="429" class="bl">gate enable AND E-stop closed</text>
+  <text x="1200" y="451" class="eq">any loss → passive damper</text>
+  <rect x="1065" y="495" width="270" height="150" rx="10" class="box"/>
+  <text x="1200" y="523" class="bt">Test computer + DAQ</text>
+  <text x="1200" y="543" class="bl">plays the drive files to the rig</text>
+  <text x="1200" y="561" class="bl">and the commands to the drive</text>
+  <text x="1200" y="581" class="bl">10 kS/s: force, stroke, phase currents,</text>
+  <text x="1200" y="599" class="bl">DC power, supercap voltage,</text>
+  <text x="1200" y="617" class="bl">winding and resistor temperatures</text>
+  <text x="1200" y="635" class="eq">compares with the predictions</text>
+  <rect x="1065" y="675" width="270" height="160" rx="10" fill="#F7F9FB" stroke="#C3CCD8" stroke-dasharray="5 4"/>
+  <text x="1200" y="703" class="bt">What the bench must prove</text>
+  <text x="1200" y="725" class="bl">T1 machine constant  ·  T2 damping law</text>
+  <text x="1200" y="745" class="bl">T3 efficiency  ·  T4 current loop</text>
+  <text x="1200" y="765" class="bl">T5 voltage limit  ·  T6 fail-safe</text>
+  <text x="1200" y="785" class="bl">T7 power on replayed track</text>
+  <text x="1200" y="805" class="bl">T8 push  ·  T9 winding heat</text>
+  <text x="1200" y="825" class="bl">T10 controller in the loop</text>
+  <!-- signals: routed through the gaps between the sections -->
+  <path d="M300 352 H 420 V 150 H 1020 V 200 H 1061" class="sg" marker-end="url(#aT)"/>
+  <text x="790" y="146" class="bll" style="fill:#1F6F66">encoder, phase currents, winding temperature</text>
+  <path d="M1065 240 H 1012 V 403 H 620 V 390" class="sg" marker-end="url(#aT)"/>
+  <text x="680" y="417" class="bll" style="fill:#1F6F66">PWM (current control)</text>
+  <path d="M1065 410 H 1030 V 266 H 640 V 248" class="sf" marker-end="url(#aR)"/>
+  <text x="682" y="282" class="bll" style="fill:#B03A2E">contactor coil</text>
+  <path d="M1200 315 L1200 341" class="sg" marker-end="url(#aT)"/>
+  <path d="M260 210 H 428 V 708 H 1022 V 560 H 1061" class="sg" marker-end="url(#aT)"/>
+  <text x="560" y="703" class="bll" style="fill:#1F6F66">load-cell force, DC power, supercap voltage to the DAQ</text>
+  <path d="M1065 600 H 1032 V 722 H 436 V 760 H 294" class="sg" marker-end="url(#aT)"/>
+  <text x="560" y="738" class="bll" style="fill:#1F6F66">rig motion and drive commands (drive files)</text>
+  <text x="440" y="884" class="bll">All numbers: SwarmRide_Sim/functions/bp_hardware.m · predictions: SwarmRide_Sim/results/bench_report.txt</text>
+</svg>
