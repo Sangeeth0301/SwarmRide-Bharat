@@ -102,7 +102,7 @@ plot(1e3 * (t(k) - 0.3), d(T.step.iref(k)), '-', 'Color', grey, 'LineWidth', 2);
 plot(1e3 * (t(k) - 0.3), d(T.step.i(k)), '-', 'Color', navy, 'LineWidth', 1.4);
 grid on; xlabel('time after the command step [ms]'); ylabel('coil current [A]');
 legend({'reference', 'coil current'}, 'Location', 'southeast');
-title(sprintf('T4: current loop, 63 %% in %.2f ms', 1e3 * R.T4.tau));
+title(sprintf('T4: current loop, time constant %.2f ms', 1e3 * R.T4.tau));
 subplot(1, 2, 2); hold on
 v = d(T.vlimit.v);  u = d(T.vlimit.u);  s = d(T.vlimit.sat);
 plot(v, u, '.', 'Color', navy, 'MarkerSize', 3);
@@ -121,19 +121,19 @@ mj = MG(strcmp({MG.what}, 'J'));
 semilogx([mj.val] * 1e4, [mj.Wz], 'o-', 'Color', navy, 'MarkerFaceColor', navy, 'LineWidth', 1.6);
 set(gca, 'XScale', 'log');
 yline(W0, '--', 'today''s damper', 'Color', grey, 'LineWidth', 1.3);
-yline(Wb * 1.02, ':', '2 % of the gain lost', 'Color', orange, 'LineWidth', 1.3);
+yline(Wb * 1.02, ':', 'design Wz + 2 %', 'Color', orange, 'LineWidth', 1.3);
 if R.J_found
     xline(R.J_limit * 1e4, '-', sprintf('limit %.1f', R.J_limit * 1e4), 'Color', red, 'LineWidth', 1.3);
 end
 xline(HW.J_sim * 1e4, ':', 'simulation', 'Color', teal, 'LineWidth', 1.3);
 grid on; xlabel('rotor + screw inertia [10^{-4} kg m^2]'); ylabel('Sperling Wz (lower = better)');
-title('Inertia budget for the real motor and screw');
+title('Inertia budget: the ride is best near 16x the assumed inertia');
 subplot(1, 2, 2); hold on
 mf = MG(strcmp({MG.what}, 'Fc'));                   % first point: the design friction (run with the design inertia)
 plot([HW.Fc, mf.val], [Wb, mf.Wz], 's-', 'Color', teal, 'MarkerFaceColor', teal, 'LineWidth', 1.6);
 yline(W0, '--', 'today''s damper', 'Color', grey, 'LineWidth', 1.3);
 grid on; xlabel('screw + seal friction [N]'); ylabel('Sperling Wz (lower = better)');
-title('Friction budget');
+title('Friction budget: the ride does not care, the harvest does');
 exportgraphics(fig, fullfile(resdir, 'bench_margins.png'), 'Resolution', 150); close(fig);
 
 %% 7. Model diagram
