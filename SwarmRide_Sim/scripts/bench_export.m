@@ -73,7 +73,7 @@ d('SR_VBANK_MIN', HW.Vbank_min, 'fail-safe: bank voltage minimum [V]');
 d('SR_T_TRIP', HW.T_trip, 'fail-safe: winding temperature trip [C]');
 b = {'SR_CSC', P.Csc, 'supercapacitor [F]'; 'SR_VMAX', P.Vmax, 'supercap full [V]'; 'SR_VMIN', P.Vmin, 'supercap empty [V]';
      'SR_VCHG', P.Vchg, 'charge the battery above [V]'; 'SR_VDIS', P.Vdis, 'battery supports below [V]';
-     'SR_SOCMIN', P.SOCmin, ''; 'SR_SOCMAX', P.SOCmax, ''; 'SR_ETA_CH', P.eta_ch, ''; 'SR_ETA_DIS', P.eta_dis, '';
+     'SR_SOCMIN', P.SOCmin, 'battery lowest state of charge'; 'SR_SOCMAX', P.SOCmax, 'battery highest state of charge'; 'SR_ETA_CH', P.eta_ch, 'battery charge efficiency'; 'SR_ETA_DIS', P.eta_dis, 'battery discharge efficiency';
      'SR_PCH_MAX', P.Pch_max, 'battery charge limit [W]'; 'SR_PDIS_MAX', P.Pdis_max, 'battery discharge limit [W]';
      'SR_KV', P.Kv, 'supervisor gain [W/V]'; 'SR_EBAT_WH', P.Ebat_Wh, 'battery [Wh]'};
 for k = 1:size(b, 1), d(b{k, :}); end
