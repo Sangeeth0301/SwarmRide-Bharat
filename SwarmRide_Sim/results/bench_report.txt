@@ -1,0 +1,52 @@
+=== A. Duty of one damper in the vehicle simulation (LHB crowded, 160 km/h, design C) ===
+poor    (C3): speed RMS 0.034 / max 0.115 m/s, force RMS 1074 / max 5037 N, current RMS  5.6 / max 27.9 A, stroke max 15.8 mm, into the bank  14.5 W, push max    0 W
+good    (C3): speed RMS 0.020 / max 0.068 m/s, force RMS  666 / max 3113 N, current RMS  3.3 / max 16.9 A, stroke max  9.5 mm, into the bank   5.3 W, push max    0 W
+settle  (C4): speed RMS 0.014 / max 0.163 m/s, force RMS  505 / max 6112 N, current RMS  2.8 / max 33.3 A, stroke max 15.6 mm, into the bank  -1.9 W, push max  721 W
+
+Hardware ratings for one damper (functions/bp_hardware.m):
+  Motor: 3-phase PM servo, Kt 0.279 N m/A (0.395 N m/A rms), back-EMF 23.9 V rms/1000 rpm line-to-line, R 0.333 ohm line-to-line, L 0.40 mH per phase
+         torque 3.9 N m continuous / 14.1 N m peak, speed 1800 rpm at 0.30 m/s, motor constant 0.56 N m/sqrt(W)
+  Damper: force 2.2 kN continuous / 8.0 kN peak (simulated peak 6.1 kN), stroke +-40 mm, ball screw 25 mm x 10 mm lead
+  Inertia budget: 0.00015 kg m^2 in total (simulation); a 25 x 300 mm steel screw takes 9e-05, leaving 6e-05 for the rotor
+  Drive: DC link 60 V, 100 V MOSFETs, current limit 46 A (sim 86 A), phase current 3.9 A rms on rough track; controls braking up to 0.30 m/s
+  Fail-safe: changeover contactor, 3 x 1.01 ohm star resistors (pulse 450 W each at 0.3 m/s), drop-out 20 ms
+  Bank (per bogie): DC-DC 1500 W bidirectional, supercapacitor 18 x 180 F / 2.7 V cells = 10 F, LiFePO4 8S 5 Ah
+
+=== B. Bench model checks ===
+B1 Bench model simplified like the vehicle model vs the vehicle model (rough-track replay): force differs by 0.49 % of peak, terminal power 16.27 vs 16.26 W -> PASS
+B2 Energy balance (rough-track replay, real hardware): residual 0.0000 % of the rig work (820 J) -> PASS
+B3 Time step 0.1 ms vs 0.05 ms: power into the bank 14.351 vs 14.351 W (0.00 %) -> PASS
+B4 Back-EMF test recovers the machine constant: 175.39 vs 175.39 V s/m (0.00 %) -> PASS
+
+=== C. Predicted bench results (real hardware model: what the lab should measure) ===
+T1 Back-EMF constant: 175.4 V s/m, i.e. 23.9 V rms / 1000 rpm line-to-line (open circuit, +-0.1 m/s)
+T2/T3 Damping  20 % of c_req: commanded   9844, measured   9842 N s/m (-0.0 %); coil efficiency 0.920 (formula 1 - c/c_max = 0.920); rig work to bank 0.728
+T2/T3 Damping  40 % of c_req: commanded  19688, measured  19685 N s/m (-0.0 %); coil efficiency 0.840 (formula 1 - c/c_max = 0.840); rig work to bank 0.714
+T2/T3 Damping  60 % of c_req: commanded  29532, measured  29527 N s/m (-0.0 %); coil efficiency 0.760 (formula 1 - c/c_max = 0.760); rig work to bank 0.660
+T2/T3 Damping  80 % of c_req: commanded  39376, measured  39369 N s/m (-0.0 %); coil efficiency 0.680 (formula 1 - c/c_max = 0.680); rig work to bank 0.595
+T2/T3 Damping 100 % of c_req: commanded  49220, measured  49211 N s/m (-0.0 %); coil efficiency 0.600 (formula 1 - c/c_max = 0.600); rig work to bank 0.526
+      Friction fitted 150 N (model 150 N); inertance fitted 59 kg (model 59 kg)
+T4 Current loop: time constant 0.50 ms (designed 0.50 ms); overshoot 0.1 %
+T5 Voltage limit at full design damping: the drive runs out of voltage at 0.362 m/s (formula 0.361 m/s); the current limit caps the force above 0.163 m/s; simulated damper speeds stay below 0.163 m/s
+T6 Fail-safe: damping before 17499, after 17500 N s/m (today's damper 17500, -0.0 %); 20 ms with no electromagnetic force while the contactor moves; peak force in the change 2129 N (before 2130 N)
+T7 replay_poor  : rig work   27.6 W, coil   7.8 W, inverter 0.84 W, DC-DC 0.91 W, into the bank  14.4 W (vehicle model  14.5 W, -1.2 %); current  5.6 A rms / 23.2 A max; out of voltage 0.00 % of the time
+T7 replay_good  : rig work   10.6 W, coil   2.8 W, inverter 0.46 W, DC-DC 0.32 W, into the bank   5.1 W (vehicle model   5.3 W, -3.9 %); current  3.3 A rms / 14.1 A max; out of voltage 0.00 % of the time
+T7 replay_settle: rig work    0.8 W, coil   2.0 W, inverter 0.13 W, DC-DC 0.28 W, into the bank  -1.9 W (vehicle model  -1.9 W, +1.1 %); current  2.8 A rms / 33.1 A max; out of voltage 0.00 % of the time
+T8 Push at the settlement: 800 W peak from the bank, 95 J drawn; force follows the push command within 1.4 % (RMS of error / RMS of command)
+T9 Winding temperature: 8.6 W average copper loss on rough track (with one settlement push a minute) -> 41.9 C steady (ambient 35 C, trip 120 C); time constant 20 min
+
+=== D. Hardware margins (vehicle model, LHB crowded, poor track, 160 km/h, C3) ===
+J        =  0.00015: Wz 1.528 (+0.0 % vs design; today 1.844), worst seat Wz 1.854, body RMS 0.1026 m/s^2, into the bank 33.1 W per bogie
+J        =   0.0003: Wz 1.524 (-0.2 % vs design; today 1.844), worst seat Wz 1.850, body RMS 0.1017 m/s^2, into the bank 33.0 W per bogie
+J        =   0.0006: Wz 1.517 (-0.7 % vs design; today 1.844), worst seat Wz 1.841, body RMS 0.1003 m/s^2, into the bank 32.9 W per bogie
+J        =   0.0012: Wz 1.506 (-1.4 % vs design; today 1.844), worst seat Wz 1.826, body RMS 0.0980 m/s^2, into the bank 32.6 W per bogie
+J        =   0.0024: Wz 1.497 (-2.0 % vs design; today 1.844), worst seat Wz 1.803, body RMS 0.0962 m/s^2, into the bank 32.0 W per bogie
+J        =   0.0048: Wz 1.552 (+1.6 % vs design; today 1.844), worst seat Wz 1.794, body RMS 0.1026 m/s^2, into the bank 30.2 W per bogie
+Fc       =      300: Wz 1.526 (-0.2 % vs design; today 1.844), worst seat Wz 1.845, body RMS 0.1020 m/s^2, into the bank 30.7 W per bogie
+Fc       =      600: Wz 1.530 (+0.1 % vs design; today 1.844), worst seat Wz 1.838, body RMS 0.1023 m/s^2, into the bank 26.4 W per bogie
+F_rated  =    8e+03: Wz 1.528 (+0.0 % vs design; today 1.844), worst seat Wz 1.854, body RMS 0.1026 m/s^2, into the bank 33.1 W per bogie
+F_rated  =    8e+03 at the settlement with push (C4): worst seat 0.196 m/s^2 (vehicle model with 15 kN: 0.196)
+Inertia: Wz stays within 2 % of the design value up to the largest tested, J = 0.0048 kg m^2 (b = 1895 kg at the rod)
+
+Best centre ride at J = 0.0024 kg m^2 (b = 947 kg): the target for the motor + screw
+
