@@ -4,7 +4,8 @@
 - LPV (load-scheduled) LQR with Train Brain preview, designed at five loads per vehicle and cached (`functions/sr_controller_design.m`)
 - Stage 3 model: Train Brain (rail around the train), SwarmRide Controller (100 Hz feedback + preview, semi-active conversion with passivity and efficiency limits, command smoothing)
 - Head to head: today's damper, fixed harvester, LPV, LPV + preview; 4 vehicles x 3 loads; good and poor track; short dip and track settlement; comfort-vs-power sweeps with a damping floor
-- Results: ride the same at every load and about 20% better on LHB / Vande Bharat, body vibration halved, 28-30 W per coach bogie
+- Results: better ride at every load, 15-17% on crowded LHB / Vande Bharat coaches and 23% on a loaded wagon, body vibration about 40% lower, 33-38 W per coach bogie
+- Fixed: the controller's stroke weight had reused the name of the train start position (P.s0); Stage 3 rerun on the same rail as today's damper, with a guard test
 - Stage 3 checks in the verification suite; Stage 3 report
 
 ## Audit and track fix
