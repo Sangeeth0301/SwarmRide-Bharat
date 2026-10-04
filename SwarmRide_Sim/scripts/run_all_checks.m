@@ -7,6 +7,7 @@
 %     test_stage2          smart damper and power chain against Stage 1 and hand calculations
 %     test_stage3          controllers: stable, passive, energy-consistent, fail-safe, better than today
 %     test_stage4          active push, journey bank model, hot axle and wheel-defect detection
+%     test_bench           bench prototype: bench model, hardware sizing, C firmware vs MATLAB
 %   Output: results/verification_report.txt.   Takes about 5-10 minutes.
 %   Run from the SwarmRide_Sim folder:   >> run scripts/run_all_checks
 
@@ -17,8 +18,9 @@ load_system(fullfile(root, 'models', 'SR_Stage1.slx'));
 load_system(fullfile(root, 'models', 'SR_Stage2.slx'));
 load_system(fullfile(root, 'models', 'SR_Stage3.slx'));
 load_system(fullfile(root, 'models', 'SR_Stage4.slx'));
+load_system(fullfile(root, 'models', 'SR_Bench.slx'));
 
-tests = {@test_sperling, @test_track, @test_stage1_physics, @test_convergence, @test_stage2, @test_stage3, @test_stage4};
+tests = {@test_sperling, @test_track, @test_stage1_physics, @test_convergence, @test_stage2, @test_stage3, @test_stage4, @test_bench};
 T = [];
 for k = 1:numel(tests)
     fprintf('Running %s ...\n', func2str(tests{k}));
