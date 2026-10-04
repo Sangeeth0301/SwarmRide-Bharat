@@ -70,6 +70,14 @@ if ~exist('designType', 'var'), designType = 'C';     end    % C = lead design (
 if ~exist('cmdMode', 'var'),    cmdMode = 'match';    end
 if ~exist('t_fault', 'var'),    t_fault = Inf;        end
 D = sr_damper_design(TB, P, designType);
+% Hardware margin studies (bench prototype): D_override = struct('J', 3e-4, 'Fc', 300, 'F_rated', 8e3)
+% replaces those design values; the inertance and the current limit follow from them.
+if exist('D_override', 'var') && isstruct(D_override)
+    fo = fieldnames(D_override);
+    for ko = 1:numel(fo), D.(fo{ko}) = D_override.(fo{ko}); end
+    if strcmpi(designType, 'C'), D.b_in = D.J * (2*pi / D.lead)^2; end
+    D.imax = D.F_rated / D.Ke;
+end
 Pinfo.designName = D.name;
 Pinfo.cmdMode    = cmdMode;
 
