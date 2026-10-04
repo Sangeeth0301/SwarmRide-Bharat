@@ -1,4 +1,4 @@
-SwarmRide verification report  (2026-10-04 15:54, MATLAB 2024b)
+SwarmRide verification report  (2026-10-04 17:09, MATLAB 2024b)
 
 --- test_sperling ---
 PASS  Sperling Wz, 1 Hz sine vs closed form                                             0 %          (limit 0.5)  Wz 1.967 vs 1.967
@@ -80,5 +80,18 @@ PASS  C4 lowers the worst-seat peak at the settlement vs C3                     
 PASS  C4 with no known bad spots behaves exactly like C3                                0 % of peak  (limit 1e-06)  
 PASS  Hot axle: on-bogie alarm before the failure temperature                           0 C          (limit 0)  alarm at 90 C
 PASS  Wheel defect raises the front-bogie coil signal at the wheel frequency (x times healthy)          0            (limit 0)  x5
+--- test_bench ---
+PASS  Sizing: motor torque constant = Ke x lead / 2 pi                                  0 %          (limit 1e-09)  
+PASS  Sizing: fail-safe resistors give today's damping per damper                       0 %          (limit 0.01)  17500 vs 17500 N s/m
+PASS  Bench model: back-EMF test recovers the machine constant                   0.001158 %          (limit 1)  175.39 vs 175.39 V s/m
+PASS  Bench model (vehicle-model simplifications) = vehicle model damper force      0.486 % of peak  (limit 3)  
+PASS  Bench model: energy balance (rig work = losses + bank + stored)           6.216e-08 %          (limit 0.5)  820 J of rig work
+PASS  Bench model with real losses: power into the bank vs vehicle model            1.186 %          (limit 10)  14.4 vs 14.5 W
+PASS  Drive: current loop time constant vs design                                3.45e-09 %          (limit 25)  0.500 vs 0.500 ms
+PASS  Fail-safe: damping after the contactor drops = today's damper              0.001685 %          (limit 2)  17500 vs 17500 N s/m
+PASS  Fail-safe: time without electromagnetic force = contactor drop-out                0 ms         (limit 2)  20 ms
+PASS  Drive: measured damping = command (60 % of c_req)                           0.01692 %          (limit 2)  29527 vs 29532 N s/m
+PASS  Firmware (C, double) = MATLAB controller, drive and bank                          0 fails      (limit 0)  10 of 10 host checks pass; compiler warnings: 0
+PASS  Firmware (C, float) = MATLAB controller, drive and bank                           0 fails      (limit 0)  10 of 10 host checks pass; compiler warnings: 0
 
-73 of 73 checks passed.
+85 of 85 checks passed.
