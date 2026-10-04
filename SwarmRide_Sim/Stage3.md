@@ -4,7 +4,7 @@
 **Model:** `models/SR_Stage3.slx` (built by `scripts/build_stage3.m`)
 **Status:** complete and verified
 
-> **In one line:** SwarmRide's load-adaptive controller keeps the ride **the same at every load** and about **20% better than today's damper** on LHB and Vande Bharat coaches (Sperling Wz 1.84 → 1.44 when crowded). It **halves body vibration**, halves the suspension travel, and still puts **28–30 W per bogie** into the bank, 3.5× what the bogie electronics need.
+> **In one line:** SwarmRide's load-adaptive controller gives a **better ride at every load**, about **15–17% better than today's damper** on crowded LHB and Vande Bharat coaches (Sperling Wz 1.84 → 1.53), cuts body vibration by about **40%**, and still puts **33–38 W per bogie** into the bank, 4–5× what the bogie electronics need.
 
 ---
 
@@ -169,20 +169,20 @@ Train Brain ──p──► SwarmRide Controller ────┘          (powe
 
 ## 9. Results
 
-All runs: smart damper design C, top service speed, crowded unless stated. Today's damper (C0) is the Stage 1 model on the same rail.
+All runs: smart damper design C, top service speed, crowded unless stated. Today's damper (C0) is the Stage 1 model on **the same rail**, checked by the test suite.
 
 ### 9.1 Verification
 
 | Check | Result | Meaning |
 |---|---|---|
-| **A1 Stable at every load** | Closed-loop spectral radius 0.94–0.9999 at all 5 load points, all 4 vehicles | Every LPV gain set is stable → **PASS** |
-| **A2 Passive** | The damper never needs bank power (min −0.2 W, current-loop lag only); command always within 0 … c_cap | The controller only ever resists motion → **PASS** |
+| **A1 Stable at every load** | Closed-loop spectral radius 0.94–0.9999 at all 5 load points, all 4 vehicles | Every LPV gain set is stable → **PASS** (the 0.9999 point is explained in Section 11) |
+| **A2 Passive** | The damper never needs bank power (min −0.16 W, current-loop lag only); command always within 0 … c_cap | The controller only ever resists motion → **PASS** |
 | **A3 Energy balance** | Residual 0.0004% | Every joule still accounted for → **PASS** |
-| **A4 Fail-safe under the controller** | After a fault the damping is 35,085 vs today 35,000 N·s/m (the difference is screw friction and inertance); harvesting 0 W | A failed SwarmRide damper is today's damper → **PASS** |
-| **A5 Warning timing ±20 ms** | Wz 1.440–1.441 (exact timing 1.440, no preview 1.464) | Insensitive to small timing errors → **PASS**. A 0.5 s error does hurt (Wz 1.48) |
-| **A6 Load estimate ±10% (half load)** | Wz 1.436 either way (today 1.780) | Robust to weighing errors → **PASS** |
+| **A4 Fail-safe under the controller** | After a fault the damping is 35,047 vs today 35,000 N·s/m (the difference is screw friction and inertance); harvesting 0 W | A failed SwarmRide damper is today's damper → **PASS** |
+| **A5 Warning timing ±20 ms** | Wz 1.527–1.529 (exact timing 1.528, no preview 1.559) | Insensitive to small timing errors → **PASS**. A 0.5 s error does hurt |
+| **A6 Load estimate ±10% (half load)** | Wz 1.498–1.507 (exact estimate 1.501, today 1.780) | Robust to weighing errors → **PASS** |
 
-The verification suite (`scripts/run_all_checks.m`) now includes these Stage 3 checks; the latest results are in `results/verification_report.txt`.
+The full verification suite (`scripts/run_all_checks.m`) passes **64 of 64** checks, including a check that the Stage 3 train starts on the same rail as Stage 1.
 
 ### 9.2 Ride at every load (the core result)
 
@@ -192,20 +192,23 @@ The verification suite (`scripts/run_all_checks.m`) now includes these Stage 3 c
 
 | Vehicle | Load | C0 today | C1 fixed harvester | C2 LPV | **C3 LPV + preview** | C3 vs today |
 |---|---|---|---|---|---|---|
-| LHB, 160 km/h | empty | 1.73 | 1.74 | 1.46 | **1.44** | −17% |
-| | 5.1 t | 1.78 | 1.66 | 1.46 | **1.44** | −19% |
-| | 12 t | 1.84 | 1.59 | 1.46 | **1.44** | **−22%** |
-| Vande Bharat, 160 km/h | empty | 1.75 | 1.57 | 1.43 | **1.40** | −20% |
-| | 3.8 t | 1.77 | 1.54 | 1.43 | **1.41** | −20% |
-| | 7.6 t | 1.79 | 1.52 | 1.44 | **1.42** | **−21%** |
-| ICF, 110 km/h | empty | 1.45 | 1.62 | 1.38 | **1.36** | −7% |
-| | 7.5 t | 1.34 | 1.50 | 1.29 | **1.28** | −4% |
-| | 15 t | 1.38 | 1.41 | 1.25 | **1.24** | −10% |
-| BOXN, 100 km/h | empty | 2.28 | 2.25 | 2.31 | 2.31 | **+1%** |
-| | 33.6 t | 2.15 | 2.03 | 1.86 | **1.79** | −17% |
-| | 67.2 t | 2.15 | 1.82 | 1.69 | **1.66** | **−23%** |
+| LHB, 160 km/h | empty | 1.73 | 1.78 | 1.52 | **1.49** | −14% |
+| | 5.1 t | 1.78 | 1.70 | 1.53 | **1.50** | −16% |
+| | 12 t | 1.84 | 1.64 | 1.56 | **1.53** | **−17%** |
+| Vande Bharat, 160 km/h | empty | 1.75 | 1.62 | 1.50 | **1.47** | −16% |
+| | 3.8 t | 1.77 | 1.60 | 1.52 | **1.48** | −16% |
+| | 7.6 t | 1.79 | 1.59 | 1.53 | **1.50** | **−16%** |
+| ICF, 110 km/h | empty | 1.45 | 1.63 | 1.37 | **1.35** | −7% |
+| | 7.5 t | 1.34 | 1.51 | 1.29 | **1.28** | −5% |
+| | 15 t | 1.38 | 1.42 | 1.24 | **1.23** | −11% |
+| BOXN, 100 km/h | empty | 2.28 | 2.27 | 2.32 | 2.32 | **+2%** |
+| | 33.6 t | 2.15 | 2.04 | 1.86 | **1.79** | −17% |
+| | 67.2 t | 2.15 | 1.83 | 1.69 | **1.66** | **−23%** |
 
-**How to read it:** today's ride gets worse as the coach fills up (LHB 1.73 → 1.84). SwarmRide's stays flat (1.44 empty, half or crowded). That is the **load-adaptive (LPV) promise, proven**. The fixed harvester (C1) helps some cases and hurts others: it makes the empty ICF coach ride worse than today. One fixed setting cannot suit every load.
+**How to read it:**
+- **SwarmRide stays nearly flat:** LHB 1.49 → 1.53 from empty to crowded. Today's damper is worse at every load, and worsens faster (1.73 → 1.84).
+- **The loaded wagon gains most:** −23%.
+- **The fixed harvester (C1) is inconsistent:** it helps some loads and hurts others; it makes the empty ICF coach ride worse than today. One fixed setting cannot suit every load.
 
 ### 9.3 Worst seat (over the bogies)
 
@@ -213,20 +216,20 @@ The verification suite (`scripts/run_all_checks.m`) now includes these Stage 3 c
 
 | Vehicle (full load) | Today | C3 | Change |
 |---|---|---|---|
-| LHB | 2.29 | 1.75 | **−24%** |
-| Vande Bharat | 2.21 | 1.67 | **−24%** |
-| ICF | 2.16 | 1.67 | **−23%** |
+| LHB | 2.29 | 1.85 | **−19%** |
+| Vande Bharat | 2.21 | 1.80 | **−19%** |
+| ICF | 2.16 | 1.64 | **−24%** |
 | BOXN | 2.32 | 2.19 | −6% |
 
 Passengers over the bogies gain the most, because the controller damps pitch as well as bounce.
 
 **Body vibration (RMS, full load):**
-- LHB 0.174 → 0.086 m/s² (**−51%**)
-- Vande Bharat 0.159 → 0.082 (**−48%**)
+- LHB 0.174 → 0.103 m/s² (**−41%**)
+- Vande Bharat 0.159 → 0.097 (**−39%**)
 - ICF 0.070 → 0.052 (−26%)
 - BOXN 0.344 → 0.126 (**−63%**)
 
-**Suspension travel:** LHB 25 → 12 mm, Vande Bharat 25 → 13 mm.
+**Suspension travel:** LHB and Vande Bharat 25 → 16 mm.
 
 ### 9.4 Comfort vs power
 
@@ -235,17 +238,18 @@ Passengers over the bogies gain the most, because the controller damps pitch as 
 | Setting (LHB crowded, poor track) | Wz | Into the bank |
 |---|---|---|
 | C0 today's damper | 1.84 | 0 W |
-| C1 fixed harvester, best setting | 1.555 | 43 W |
-| C1 fixed harvester, most power | 1.570 | 43 W |
-| **C2 LPV (force weight 3)** | 1.464 | 31 W |
-| **C3 LPV + preview (force weight 3)** | **1.440** | 28 W |
-| C3 with damping floor 0.3 × c_req | 1.486 | 36 W |
-| C3 with damping floor 0.6 × c_req | 1.524 | 40 W |
+| C1 fixed harvester, most comfortable setting | 1.635 | 40 W |
+| C1 fixed harvester, most power | 1.725 | 52 W |
+| **C2 LPV (force weight 3)** | 1.559 | 37 W |
+| **C3 LPV + preview (force weight 3)** | **1.528** | 33 W |
+| C3 with damping floor 0.3 × c_req | 1.571 | 41 W |
+| C3 with damping floor 0.8 × c_req | 1.619 | 45 W |
 
 **How to read it:**
-- No fixed setting can reach SwarmRide's comfort. The best fixed setting is Wz 1.555, against 1.44.
-- At the same power (about 40 W), SwarmRide still rides better (1.52 vs about 1.57).
-- The **damping floor** is a single dial: an operator can choose more comfort (passenger service) or more power (freight, where sensors matter most).
+- **No fixed setting reaches SwarmRide's comfort:** the best fixed setting gives Wz 1.635, against 1.528.
+- **At the same power (about 40 W) SwarmRide still rides better:** 1.57 against 1.635.
+- **The damping floor is one dial:** operators choose more comfort for passenger service, or more power for freight, where the sensors matter most.
+- **The fixed harvester's top power (52 W) costs comfort:** Wz 1.73.
 
 ### 9.5 Single events
 
@@ -254,7 +258,7 @@ Passengers over the bogies gain the most, because the controller damps pitch as 
 | Event (LHB crowded) | Today: peak (worst seat) | C2 / C3: peak (worst seat) | Body RMS over the event |
 |---|---|---|---|
 | Short dip, 10 mm over 4 m | 0.110 (0.246) m/s² | 0.093 (0.205) | 0.0142 → 0.0102 (−28%) |
-| Track settlement, 20 mm over 20 m | 0.339 (0.967) m/s² | 0.286 (0.761) | 0.077 → 0.047 (**−39%**) |
+| Track settlement, 20 mm over 20 m | 0.339 (0.967) m/s² | 0.286 (0.760) | 0.077 → 0.047 (**−39%**) |
 
 SwarmRide calms the coach faster after every event. **The preview (C3) adds nothing here.** A damper that can only resist motion cannot act before the motion starts (Section 10).
 
@@ -264,10 +268,10 @@ SwarmRide calms the coach faster after every event. **The preview (C3) adds noth
 
 | Vehicle (full load) | Poor track: C1 / C2 / C3 | Good track: C1 / C2 / C3 | Bogie loads |
 |---|---|---|---|
-| LHB | 35 / 31 / 28 W | 13 / 11 / 10 W | 8 W |
-| Vande Bharat | 38 / 35 / 30 W | 14 / 13 / 11 W | 8 W |
-| ICF | 14 / 15 / 13 W | 5.2 / 5.5 / 4.9 W | 8 W |
-| BOXN | 63 / 65 / 56 W | 24 / 24 / 21 W | 8 W |
+| LHB | 37 / 37 / 33 W | 14 / 13 / 12 W | 8 W |
+| Vande Bharat | 42 / 44 / 38 W | 16 / 16 / 14 W | 8 W |
+| ICF | 14 / 15 / 13 W | 5.3 / 5.3 / 4.8 W | 8 W |
+| BOXN | 64 / 64 / 55 W | 24 / 24 / 20 W | 8 W |
 
 ### 9.7 How the controller works in time
 
@@ -281,15 +285,15 @@ The damping changes many times a second. It is firm when resisting the motion ca
 
 | # | Finding | Evidence | Meaning |
 |---|---|---|---|
-| 1 | **Same ride at every load** | LHB C3 Wz 1.44 empty, half and crowded; today 1.73 → 1.84 | The load-adaptive (LPV) design works; this was today's weakness in Stage 1 |
-| 2 | **About 20% better ride on modern coaches** | LHB −22%, Vande Bharat −21% when crowded; worst seat −24% | A clear, measurable comfort gain for passengers |
-| 3 | **Body vibration halved** | RMS −48% to −51% (LHB, VB), −63% (loaded BOXN) | Less fatigue for passengers and less load on the body and cargo |
-| 4 | **Still self-powered** | 28–30 W per coach bogie, 56 W per loaded wagon bogie on poor track | 3.5–7× the 8 W bogie load on normal track |
-| 5 | **Comfort and power on one dial** | Damping floor: 28 W at Wz 1.44 up to 40 W at Wz 1.52 | Operators choose; SwarmRide beats every fixed setting on comfort |
-| 6 | **Preview adds little with a resist-only damper** | C3 vs C2: 1–2% on rough track, 0% on single events | Honest finding: to use the Train Brain warning fully, the damper must briefly push |
-| 7 | **Robust** | Timing ±20 ms, load estimate ±10%: no meaningful change; fail-safe intact | Safe for real-world sensor errors |
-| 8 | **Empty goods wagon: no ride gain** | BOXN empty Wz 2.28 → 2.31 | For empty wagons the value is self-powered sensing (17 W), not comfort |
-| 9 | **Smooth track on ICF still short of power** | 4.9–5.5 W against 8 W | The battery must cover it, or ICF needs a lower-power sensor set |
+| 1 | **Better ride at every load** | LHB C3 Wz 1.49 / 1.50 / 1.53 (empty / half / crowded) against today 1.73 / 1.78 / 1.84 | The load-adaptive (LPV) design works; today's damper is worst exactly when the coach is crowded |
+| 2 | **About 15–17% better ride on modern coaches** | LHB −17%, Vande Bharat −16% when crowded; worst seat −19% | A clear, measurable comfort gain for passengers |
+| 3 | **Body vibration cut by about 40%** | RMS −41% (LHB), −39% (VB), −63% (loaded BOXN) | Less fatigue for passengers, less load on the body and the cargo |
+| 4 | **Still self-powered** | 33–38 W per coach bogie, 55 W per loaded wagon bogie on poor track | 4–7× the 8 W bogie load on normal track |
+| 5 | **Comfort and power on one dial** | Damping floor: 33 W at Wz 1.53 up to 45 W at Wz 1.62 | Operators choose; at equal power SwarmRide rides better than any fixed setting |
+| 6 | **Preview adds little with a resist-only damper** | C3 vs C2: about 2% on rough track, 0% on single events | Honest finding: to use the Train Brain warning fully, the damper must briefly push |
+| 7 | **Robust** | Timing ±20 ms and load estimate ±10%: Wz changes under 0.01; fail-safe intact | Safe for real-world sensor errors |
+| 8 | **Empty goods wagon: no ride gain** | BOXN empty Wz 2.28 → 2.32 | For empty wagons the value is self-powered sensing (18 W), not comfort |
+| 9 | **Smooth track on ICF still short of power** | 4.8–5.3 W against 8 W | The battery must cover it, or ICF needs a lower-power sensor set |
 
 **What would make the preview count (next step):** the smart damper's H-bridge can also drive the coil as a motor. Spending a little banked energy for a fraction of a second at known bad spots (bridge approaches, points, settlements) would let the Train Brain warning *lift or lower* the body before the bump. In effect: **harvest everywhere, spend at the worst places.** This is a natural Stage 4 experiment.
 
@@ -302,7 +306,8 @@ The damping changes many times a second. It is firm when resisting the motion ca
 - **Vertical model only**, as in Stages 1–2. Lateral comfort and stability are not yet modelled.
 - **Average-model electronics and assumed parameters** (Stage 2 limits still apply).
 - **Preview with a resist-only damper is weak** (finding 6); active preview is untested.
-- **Empty goods wagon** is not improved; frequency-weighted tuning might help.
+- **Empty goods wagon** is not improved. At that load the ideal (active) controller would soften the suspension almost completely: its design has one very slow, non-oscillating pole (spectral radius 0.9999, time constant about 110 s). A resist-only damper cannot remove the springs, so the real system is unaffected, but it explains the missing gain. A penalty on slow body motion, or frequency-weighted tuning, should help.
+- **Found and fixed during Stage 3:** the controller's stroke weight briefly reused the name of the train's start position, so early Stage 3 runs drove a different stretch of rail. All results here are from the corrected runs, and a test now guards against it.
 
 ---
 
