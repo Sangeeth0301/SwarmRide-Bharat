@@ -325,13 +325,15 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
 ├── SwarmRide_Bharat_Complete_Guide.md
 ├── SwarmRide_Simulation_Results_Preview.pdf
 ├── images/                           banner, architecture, annotated bogie, pitch sketches, roadmap
+├── dashboard/                        investor dashboard (open index.html through a local web server)
 ├── pdf/                              pitch builder, preview study, photographs and credits
+├── tools/                            documentation checks, Markdown to Word
 └── SwarmRide_Sim/                    MATLAB/Simulink simulation
     ├── sr_setup.m                    start here
     ├── functions/                    physics, sensors, track, rolling stock, damper design
     ├── builders/                     shared Simulink block builders
     ├── scripts/                      parameters, model builders, checks, run_all_checks
-    ├── tests/                        verification tests (physics, convergence, power chain, track)
+    ├── tests/                        verification tests (physics, convergence, power chain, track, control, Stage 4)
     ├── models/                       generated Simulink models
     └── results/                      figures, reports, scope captures
 ```
@@ -345,6 +347,9 @@ trainType = 'LHB';  v_kmh = 160;  mload_t = 12;  trackType = 'poor';
 % press Run: live scopes open and the 30 s run plays in real time
 designType = 'C';  ctrlMode = 'C3';                        % Stage 3: damper design and controller
 run('scripts/check_stage3.m')                              % reproduce the Stage 3 study
+ctrlMode = 'C4';  trackType = 'settlement';  stage = 4;   % Stage 4: push at a known bad spot
+run('scripts/check_stage4.m')                              % reproduce the Stage 4 study
+run('scripts/run_all_checks.m')                            % all 73 verification checks
 ```
 
 Requires MATLAB R2024b with Simulink, Control System Toolbox, Simscape and Simscape Electrical.
@@ -360,8 +365,9 @@ The pitch and preview tooling use Python 3 (numpy, scipy, matplotlib, Pillow) an
 | [Investor pitch](SwarmRide_Bharat_Pitch.md) · [PDF](SwarmRide_Bharat_Pitch.pdf) · [Word](SwarmRide_Bharat_Pitch.docx) | Investors and Indian Railways |
 | [Technical document](SwarmRide_Bharat_Technical_Document.md) | Engineers |
 | [Complete guide](SwarmRide_Bharat_Complete_Guide.md) | Learning the project from scratch |
-| [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Stage 3 report](SwarmRide_Sim/Stage3.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) · [Verification](SwarmRide_Sim/VERIFICATION.md) | Simulation |
-| [Results preview](SwarmRide_Simulation_Results_Preview.pdf) | Expected results |
+| [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Stage 3 report](SwarmRide_Sim/Stage3.md) · [Stage 4 report](SwarmRide_Sim/Stage4.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) · [Verification](SwarmRide_Sim/VERIFICATION.md) | Simulation |
+| [Dashboard](dashboard/index.html) | All simulation results on one page (run `python -m http.server` in the repository root, then open `/dashboard/index.html`) |
+| [Results preview](SwarmRide_Simulation_Results_Preview.pdf) | Early estimate, before the Simulink stages |
 
 ---
 
