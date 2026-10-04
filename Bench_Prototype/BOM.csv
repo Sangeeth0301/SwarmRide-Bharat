@@ -1,0 +1,24 @@
+id,group,item,qty,specification,why,cost_low_inr,cost_high_inr
+M1,Damper mechanics,Ball screw with nut,1,"25 mm diameter, 10 mm lead, ground C5 (or rolled C7 for the first build), 300 mm, preloaded nut",Turns stroke into rotation; lead sets the gearing,8000,20000
+M2,Damper mechanics,Screw end supports,1,"Fixed side (angular-contact pair) + floating side, for 25 mm screw",Carries the axial force into the housing,4000,9000
+M3,Damper mechanics,Motor-to-screw coupling,1,"Zero-backlash, >= 30 N m, low inertia (bellows or disc)",Backlash would add a dead band to the damping,2500,6000
+M4,Damper mechanics,Housing and rod,1,"Machined steel tube and rod, anti-rotation guide for the nut, LHB damper length",Same envelope as today's damper,25000,60000
+M5,Damper mechanics,Mounting eyes with rubber bushes,2,From a spare LHB vertical secondary damper,Same joints as on the bogie,10000,30000
+M6,Damper mechanics,"Seals, wiper and bump stops",1,"Rod seal + wiper, polyurethane stops at +-40 mm",Keeps dust and water out; limits the stroke,2000,5000
+E1,Motor,Servo motor,1,"3-phase PM, 48 V class, Kt 0.40 N m/A rms (+-10 %), R 0.33 ohm line-to-line or less, >= 14 N m peak, >= 4 N m continuous, >= 1800 rpm, encoder, winding temperature sensor, lowest available rotor inertia (see the inertia budget)",The damper's generator and actuator,25000,70000
+E2,Drive,Motor drive (3-phase inverter),1,"48-60 V, >= 50 A peak / 15 A continuous, four-quadrant (regenerative), field-oriented current control, external current command (CAN or analogue), current and encoder logging",Sets the coil current = the damping; harvests and pushes,15000,60000
+E3,Drive,Controller board,1,"Cortex-M4F with FPU (e.g. STM32G4 development board), CAN-FD",Runs the SwarmRide firmware,2000,5000
+E4,Drive,Changeover contactor,1,"3-pole, 24 V DC coil, normally closed onto the resistors, >= 50 A, drop-out <= 20 ms (or two interlocked 3-pole contactors)",Hardware fail-safe,4000,12000
+E5,Drive,Fail-safe resistors,3,"1.0 ohm, 100 W aluminium-housed, pulse 450 W for 1 s, on a heat sink",Give today's damping when the contactor drops,1500,4500
+E6,Drive,Safety-chain board,1,"Heartbeat monostable, bank-OK comparator, gate-enable and E-stop in series with the contactor coil",Safety rests on hardware,2000,5000
+E7,Power,Bidirectional DC-DC converter,1,"60 V <-> 12-48 V, 1.5 kW peak, >= 94 % (development kit or custom 4-switch buck-boost)",Holds the DC link and charges the bank,20000,60000
+E8,Power,Supercapacitor bank,1,"18 x 180 F / 2.7 V cells in series with active balancing (10 F, 48.6 V)",Catches kW bursts of harvesting and pushing,15000,35000
+E9,Power,LiFePO4 battery,1,"8S 5 Ah (25.6 V, 128 Wh) with BMS",Energy store for the bogie electronics,6000,12000
+E10,Power,"DC link capacitors, fuses, isolators, cabling",1,"470 uF / 100 V low-ESR + 10 uF film; 80 V / 63 A DC fuses; shielded motor cable",Protection and wiring,8000,15000
+E11,Power,Brake chopper,1,"10 ohm resistor + switch at 70 V",Protects the DC link from over-voltage,2000,5000
+T1,Test,Rig time (rented damper test machine),10,"Servo-hydraulic or electric, +-50 mm, >= 10 kN, >= 0.4 m/s, 0.2-20 Hz, with load cell; per day",Strokes the damper; quote per day to be confirmed,10000,30000
+T2,Test,Power analyser or precision shunts,1,"DC 60 V / 50 A, >= 10 kS/s, isolated",Measures what really reaches the bank,20000,100000
+T3,Test,Data acquisition,1,">= 12 isolated channels, 10 kS/s each (may come with the rig)",Records every predicted quantity,40000,150000
+T4,Test,Programmable DC electronic load,1,"60 V / 10 A",Stands in for the bogie electronics (4 W per damper),15000,40000
+T5,Test,Lab DC supply,1,"0-60 V / 20 A",Pre-charge and drive tests,20000,50000
+T6,Test,"Thermocouples, discharge tool, safety guard",1,"Type K x 6, supercapacitor discharge resistor, interlocked guard",Safety and temperatures,10000,30000
