@@ -144,20 +144,19 @@ sequenceDiagram
 
 ## Engineering validation
 
-The whole system is being proven in **MATLAB/Simulink** before any hardware. Every stage uses the **same coach, rail, speed and load, and changes only the damper**, so every comparison is fair. A test suite (`scripts/run_all_checks.m`) checks the model against hand calculations, an independent state-space model, energy conservation and step-size convergence; see **[VERIFICATION.md](SwarmRide_Sim/VERIFICATION.md)** for what is proven and what is not.
+The whole system has been proven in **MATLAB/Simulink** before any hardware. Every stage uses the **same coach, rail, speed and load, and changes only the damper**, so every comparison is fair. A test suite (`scripts/run_all_checks.m`) checks the model against hand calculations, an independent state-space model, energy conservation and step-size convergence; see **[VERIFICATION.md](SwarmRide_Sim/VERIFICATION.md)** for what is proven and what is not.
 
 ```mermaid
 flowchart LR
     S1["<b>Stage 1</b><br/>Test rig<br/>track · 4-DOF coach · today's damper"]
     S2["<b>Stage 2</b><br/>Smart damper<br/>designs A/B/C · power chain · fail-safe"]
     S3["<b>Stage 3</b><br/>Control<br/>LPV load-adaptive · Train Brain preview"]
-    S4["<b>Stage 4</b><br/>Health and demo<br/>self-powered sensors · dashboard"]
+    S4["<b>Stage 4</b><br/>Push, day, health<br/>active push · full-day power · sensing · dashboard"]
     S1 --> S2 --> S3 --> S4
     classDef done fill:#2A9D8F,stroke:#1F6F66,color:#ffffff
     classDef now fill:#E07A1F,stroke:#A8520F,color:#ffffff
     classDef next fill:#EEF3FA,stroke:#9AA8BC,color:#13233A
-    class S1,S2,S3 done
-    class S4 now
+    class S1,S2,S3,S4 done
 ```
 
 ### Stage 1: the baseline to beat (complete)
@@ -232,7 +231,7 @@ The fixed damping command is replaced by the **SwarmRide Controller**: an LPV (l
 - Ride **15–17% better** on crowded LHB and Vande Bharat coaches (worst seat −19%), body vibration **about 40% lower**, suspension travel down by a third, still **33–38 W per bogie** into the bank.
 - Robust to a ±20 ms late warning and a ±10% load-estimate error, and the fail-safe still works.
 - **Honest limits:**
-  - The preview adds only 1–2%, because a damper that can only resist cannot act before the motion starts. Making the warning count needs brief active pushing, which is the next experiment.
+  - The preview adds only 1–2%, because a damper that can only resist cannot act before the motion starts. Making the warning count needs brief active pushing, which Stage 4 adds.
   - The empty goods wagon does not ride better.
 
 Full report: **[SwarmRide_Sim/Stage3.md](SwarmRide_Sim/Stage3.md)**
