@@ -332,3 +332,5 @@ The damping changes many times a second. It is firm when resisting the motion ca
 1. **Self-powered health sensing:** bearing temperature, wheel impacts and coupler checks powered by the bank over a long journey (energy over hours, smooth and rough stretches).
 2. **Active preview at known bad spots:** spend banked energy to push briefly, using the Train Brain warning.
 3. **Investor dashboard:** a live web view of the coach, the damper, the bank and the controllers side by side.
+
+**Done:** all three are in [Stage4.md](Stage4.md). The push cuts the worst-seat jolt at a settlement by 80%, the bogie stays self-powered through a full day when its electronics sleep when parked, and the dashboard is in `dashboard/index.html`.
