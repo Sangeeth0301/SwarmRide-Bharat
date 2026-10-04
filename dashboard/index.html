@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SwarmRide Bharat · Simulation Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="data.js"></script>
+<style>
+  :root {
+    --navy: #13233A; --orange: #E07A1F; --teal: #2A9D8F; --grey: #8A93A0; --red: #D64541;
+    --ink: #1F2A37; --muted: #5E6878; --line: #E3E7ED; --bg: #F5F7FA; --card: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font-family: "Segoe UI", Inter, Helvetica, Arial, sans-serif; line-height: 1.45; }
+  header { background: var(--card); border-bottom: 1px solid var(--line); }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0 18px; flex-wrap: wrap; }
+  h1 { margin: 0; font-size: 28px; letter-spacing: -0.3px; }
+  h1 .b { color: var(--orange); }
+  .sub { color: var(--muted); margin-top: 4px; font-size: 15px; }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-size: 12.5px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--muted); }
+  .pill.ok { color: #1F6F66; border-color: #BFE3DC; background: #EEF8F6; }
+  .pill.warn { color: #A8520F; border-color: #F0D2B4; background: #FDF5EC; }
+  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 22px 0 6px; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  .kpi .v { font-size: 30px; font-weight: 700; color: var(--navy); }
+  .kpi .v.o { color: var(--orange); } .kpi .v.t { color: var(--teal); }
+  .kpi .l { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 18px 0 30px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px 16px; min-width: 0; }
+  .card.wide { grid-column: 1 / -1; }
+  .card h2 { margin: 0; font-size: 17px; }
+  .card .why { color: var(--muted); font-size: 13.5px; margin: 4px 0 12px; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 10px; flex-wrap: wrap; }
+  .seg button { border: 0; background: #fff; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; color: var(--muted); }
+  .seg button.on { background: var(--navy); color: #fff; }
+  .chart { position: relative; height: 290px; }
+  .note { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+  .stat { flex: 1 1 140px; background: var(--bg); border-radius: 10px; padding: 10px 12px; }
+  .stat b { display: block; font-size: 20px; color: var(--navy); } .stat span { font-size: 12.5px; color: var(--muted); }
+  .arch { width: 100%; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+  ul.tight { margin: 6px 0 0 18px; padding: 0; font-size: 14px; } ul.tight li { margin: 4px 0; }
+  footer { color: var(--muted); font-size: 12.5px; padding: 10px 0 30px; }
+  @media (max-width: 980px) { .kpis { grid-template-columns: repeat(2, 1fr); } .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <div>
+      <h1>SwarmRide <span class="b">Bharat</span></h1>
+      <div class="sub">Self-powered, load-adaptive, train-synchronised suspension · MATLAB/Simulink simulation results</div>
+    </div>
+    <div class="pills">
+      <span class="pill ok" id="pill-checks">verification</span>
+      <span class="pill">LHB · Vande Bharat · ICF · BOXN</span>
+      <span class="pill warn">Confidential · pre-patent</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="kpis" id="kpis"></section>
+
+  <section class="grid">
+    <div class="card">
+      <h2>Better ride at every load</h2>
+      <div class="why">Sperling ride index Wz on poor track (lower is better). Today's damper worsens as the coach fills; SwarmRide stays low.</div>
+      <div class="seg" id="seg-ride"></div>
+      <div class="chart"><canvas id="c-ride"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h2>Comfort and power on one dial</h2>
+      <div class="why">Crowded LHB coach, 160 km/h. Lower = more comfortable, right = more power into the bogie bank.</div>
+      <div class="chart" style="margin-top:42px"><canvas id="c-pareto"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h2>The Train Brain warning pays off</h2>
+      <div class="why">At a known bad spot the damper briefly pushes, using its own banked energy (C4). Body acceleration at the coach centre.</div>
+      <div class="seg" id="seg-event"></div>
+      <div class="chart"><canvas id="c-event"></canvas></div>
+      <div class="note" id="event-note"></div>
+    </div>
+
+    <div class="card">
+      <h2>A full day on one bogie's power bank</h2>
+      <div class="why">Battery charge with 8 W of sensors, controller and radio always on, including a night parked.</div>
+      <div class="seg" id="seg-journey"></div>
+      <div class="chart"><canvas id="c-journey"></canvas></div>
+      <div class="note" id="journey-note"></div>
+    </div>
+
+    <div class="card">
+      <h2>Hot axle: seen in seconds, not hours</h2>
+      <div class="why">A developing bearing fault (illustrative model). The on-bogie sensor runs on the bank and reads every 10 s.</div>
+      <div class="chart"><canvas id="c-axle"></canvas></div>
+      <div class="stats" id="axle-stats"></div>
+    </div>
+
+    <div class="card">
+      <h2>The damper is also a sensor</h2>
+      <div class="why">Front-bogie coil voltage spectrum, LHB at 160 km/h. An out-of-round wheel shows up at its own frequency.</div>
+      <div class="chart"><canvas id="c-wheel"></canvas></div>
+      <div class="note" id="wheel-note"></div>
+    </div>
+
+    <div class="card wide">
+      <h2>System architecture</h2>
+      <div class="why">Energy is made and used on each bogie; only data travels along the train.</div>
+      <img class="arch" src="../images/architecture.svg" alt="SwarmRide end-to-end architecture">
+    </div>
+
+    <div class="card wide">
+      <h2>What is proven, and what is not</h2>
+      <ul class="tight">
+        <li><b>Proven in simulation:</b> physics against hand calculations, an independent model, energy conservation, step-size convergence, fail-safe behaviour and controller stability, all in an automatic test suite (<span id="checks-inline"></span>).</li>
+        <li><b>Assumed:</b> many vehicle parameters are engineering estimates pending RDSO data; the model is vertical only; power electronics are average models; the hot-axle model is illustrative.</li>
+        <li><b>Next:</b> bench prototype of one smart damper, then an instrumented field run.</li>
+      </ul>
+    </div>
+  </section>
+  <footer>Generated <span id="gen"></span> from the SwarmRide_Sim results. © 2026 Sangeeth. All rights reserved.</footer>
+</main>
+
+<script>
+const S = window.SR;
+const C = { navy: '#13233A', orange: '#E07A1F', teal: '#2A9D8F', grey: '#8A93A0', red: '#D64541', light: '#C9CED6' };
+Chart.defaults.font.family = '"Segoe UI", Inter, Helvetica, Arial, sans-serif';
+Chart.defaults.color = '#5E6878';
+Chart.defaults.plugins.legend.labels.boxWidth = 14;
+const names = { LHB: 'LHB, 160 km/h', VB: 'Vande Bharat, 160 km/h', ICF: 'ICF, 110 km/h', BOXN: 'BOXN goods, 100 km/h' };
+const ctrlStyle = {
+  C0: { label: "Today's damper", color: C.grey, dash: [6, 4] },
+  C1: { label: 'Fixed harvester', color: C.orange },
+  C2: { label: 'SwarmRide LPV', color: C.teal },
+  C3: { label: 'SwarmRide LPV + preview', color: C.navy }
+};
+const pct = (a, b) => Math.round(100 * (b - a) / a);
+
+// header, KPIs
+document.getElementById('pill-checks').textContent = S.meta.checks + ' checks pass';
+document.getElementById('checks-inline').textContent = S.meta.checks + ' checks pass';
+document.getElementById('gen').textContent = S.meta.generated;
+const L = S.ride.LHB, iFull = L.loads.length - 1;
+const kpis = [
+  [pct(L.C0[iFull], L.C3[iFull]) + '%', 'ride index, crowded LHB coach', ''],
+  [pct(S.rms.LHB.C0[iFull], S.rms.LHB.C3[iFull]) + '%', 'body vibration (RMS), crowded LHB', 't'],
+  [Math.round(S.bank.LHB.C3[iFull]) + ' W', 'into the bogie bank, vs 8 W needed', 'o'],
+  [pct(S.events.settlement.peak[1], S.events.settlement.peak[2]) + '%', 'worst-seat peak at a settlement, with active push', 't'],
+  [S.meta.checks.split(' ')[0] + '/' + S.meta.checks.split(' ')[2], 'automatic verification checks pass', '']
+];
+document.getElementById('kpis').innerHTML = kpis.map(k =>
+  `<div class="kpi"><div class="v ${k[2]}">${k[0]}</div><div class="l">${k[1]}</div></div>`).join('');
+
+function segment(id, items, onPick) {
+  const el = document.getElementById(id);
+  el.innerHTML = items.map((it, i) => `<button class="${i ? '' : 'on'}" data-k="${it[0]}">${it[1]}</button>`).join('');
+  el.querySelectorAll('button').forEach(b => b.onclick = () => {
+    el.querySelectorAll('button').forEach(x => x.classList.remove('on')); b.classList.add('on'); onPick(b.dataset.k);
+  });
+}
+const axis = (t) => ({ title: { display: true, text: t }, grid: { color: '#EEF1F5' } });
+
+// 1. ride vs load
+const ride = new Chart(document.getElementById('c-ride'), { type: 'line', data: { datasets: [] },
+  options: { maintainAspectRatio: false, scales: { x: { type: 'linear', ...axis('passenger / cargo load [t]') }, y: axis('Sperling Wz') } } });
+function drawRide(tr) {
+  const r = S.ride[tr];
+  ride.data.datasets = Object.keys(ctrlStyle).map(c => ({ label: ctrlStyle[c].label, data: r.loads.map((x, i) => ({ x, y: r[c][i] })),
+    borderColor: ctrlStyle[c].color, backgroundColor: ctrlStyle[c].color, borderDash: ctrlStyle[c].dash || [], borderWidth: 2.5, pointRadius: 4 }));
+  ride.update();
+}
+segment('seg-ride', Object.keys(names).map(k => [k, names[k]]), drawRide); drawRide('LHB');
+
+// 2. comfort vs power
+const pts = (m) => m.map(p => ({ x: p[0], y: p[1] }));
+new Chart(document.getElementById('c-pareto'), { type: 'scatter', data: { datasets: [
+  { label: "Today's damper", data: [{ x: S.pareto.C0[0], y: S.pareto.C0[1] }], backgroundColor: C.grey, pointRadius: 8, pointStyle: 'star' },
+  { label: 'Fixed harvester (any setting)', data: pts(S.pareto.C1), borderColor: C.orange, backgroundColor: C.orange, showLine: true, borderWidth: 2 },
+  { label: 'SwarmRide LPV', data: pts(S.pareto.C2), borderColor: C.teal, backgroundColor: C.teal, showLine: true, borderWidth: 2 },
+  { label: 'SwarmRide LPV + preview', data: pts(S.pareto.C3), borderColor: C.navy, backgroundColor: C.navy, showLine: true, borderWidth: 2 },
+  { label: 'SwarmRide with damping floor', data: pts(S.pareto.C3floor), borderColor: C.navy, backgroundColor: '#fff', borderDash: [6, 4], showLine: true, borderWidth: 2 }
+] }, options: { maintainAspectRatio: false, scales: { x: axis('power into the bank [W per bogie]'), y: axis('Sperling Wz') } } });
+
+// 3. events
+const ev = new Chart(document.getElementById('c-event'), { type: 'line', data: { datasets: [] },
+  options: { maintainAspectRatio: false, animation: false, elements: { point: { radius: 0 } },
+    scales: { x: { type: 'linear', ...axis('time [s]') }, y: axis('body acceleration [m/s²]') } } });
+function drawEvent(k) {
+  const e = S.events[k], lim = k === 'settlement' ? [3, 9] : [0.8, 5];
+  const mk = (arr) => e.t.map((t, i) => ({ x: t, y: arr[i] })).filter(p => p.x >= lim[0] && p.x <= lim[1]);
+  ev.data.datasets = [
+    { label: "Today's damper", data: mk(e.C0), borderColor: C.grey, borderWidth: 1.6 },
+    { label: 'SwarmRide, resist only (C3)', data: mk(e.C3), borderColor: C.teal, borderWidth: 1.6 },
+    { label: 'SwarmRide, push at the spot (C4)', data: mk(e.C4), borderColor: C.navy, borderWidth: 2.6 }];
+  ev.update();
+  document.getElementById('event-note').innerHTML = `Worst-seat peak: today <b>${e.peak[0]}</b>, resist only <b>${e.peak[1]}</b>, ` +
+    `with push <b>${e.peak[2]}</b> m/s². Energy taken from the bank for the push: <b>${e.energyJ} J</b> (${(e.energyJ / 3600).toFixed(2)} Wh).`;
+}
+segment('seg-event', [['settlement', 'Track settlement 20 mm / 20 m'], ['bump', 'Short dip 10 mm / 4 m']], drawEvent); drawEvent('settlement');
+
+// 4. journeys
+const jc = new Chart(document.getElementById('c-journey'), { type: 'line', data: { datasets: [] },
+  options: { maintainAspectRatio: false, animation: false, elements: { point: { radius: 0 } },
+    scales: { x: { type: 'linear', ...axis('time [h]') }, y: { ...axis('battery charge [%]'), min: 0, max: 100 } } } });
+function drawJourney(tr) {
+  const j = S.journey[tr];
+  jc.data.datasets = [
+    { label: 'route with some rough track', data: j.t.map((t, i) => ({ x: t, y: j.soc[i] })), borderColor: C.navy, borderWidth: 2.4 },
+    { label: 'same route, all smooth track', data: j.t.map((t, i) => ({ x: t, y: j.soc_good[i] })), borderColor: C.orange, borderDash: [6, 4], borderWidth: 2 }];
+  jc.update();
+  document.getElementById('journey-note').innerHTML = `${names[tr]}, ${j.name}: harvested <b>${j.harvest} Wh</b>, used <b>${j.used} Wh</b>` +
+    (j.unserved > 0 ? `, <b style="color:${C.red}">${j.unserved} Wh not served</b>` : ', every load served') + '.';
+}
+segment('seg-journey', Object.keys(names).map(k => [k, k === 'VB' ? 'Vande Bharat' : k]), drawJourney); drawJourney('LHB');
+
+// 5. hot axle
+const H = S.hotaxle;
+new Chart(document.getElementById('c-axle'), { type: 'line', data: { datasets: [
+  { label: 'bearing temperature', data: H.t.map((t, i) => ({ x: t, y: H.T[i] })).filter(p => p.y <= H.fail + 40), borderColor: C.navy, borderWidth: 2.5 },
+  { label: 'alarm', data: [{ x: 0, y: H.alarm }, { x: H.t[H.t.length - 1], y: H.alarm }], borderColor: C.orange, borderDash: [6, 4], borderWidth: 1.5 },
+  { label: 'failure risk', data: [{ x: 0, y: H.fail }, { x: H.t[H.t.length - 1], y: H.fail }], borderColor: C.red, borderDash: [6, 4], borderWidth: 1.5 }
+] }, options: { maintainAspectRatio: false, elements: { point: { radius: 0 } },
+  scales: { x: { type: 'linear', ...axis('minutes after the fault starts'), max: Math.ceil(H.t.find((t, i) => H.T[i] >= H.fail) * 1.2) },
+            y: axis('bearing temperature [°C]') } } });
+document.getElementById('axle-stats').innerHTML = [
+  [`${H.self_T} °C`, 'SwarmRide alarm (within 10 s)'],
+  [`${H.median_delay_min} min`, `median delay, trackside every ${H.spacing_km} km`],
+  [`${H.p_missed}%`, `faults reaching ${H.fail} °C before any trackside check`]
+].map(s => `<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('');
+
+// 6. wheel defect
+const Wd = S.wheel;
+new Chart(document.getElementById('c-wheel'), { type: 'line', data: { datasets: [
+  { label: Wd.cases[0], data: Wd.f.map((f, i) => ({ x: f, y: Wd.healthy[i] })), borderColor: C.grey, borderWidth: 1.4 },
+  { label: Wd.cases[1], data: Wd.f.map((f, i) => ({ x: f, y: Wd.ecc[i] })), borderColor: C.orange, borderWidth: 1.8 },
+  { label: Wd.cases[2], data: Wd.f.map((f, i) => ({ x: f, y: Wd.lobe3[i] })), borderColor: C.navy, borderWidth: 1.8 }
+] }, options: { maintainAspectRatio: false, animation: false, elements: { point: { radius: 0 } },
+  scales: { x: { type: 'linear', ...axis('frequency [Hz]') }, y: axis('coil voltage amplitude [V]') } } });
+document.getElementById('wheel-note').innerHTML = `At the defect frequency the front bogie reads <b>${Wd.front[1]} V</b> (eccentric) and ` +
+  `<b>${Wd.front[2]} V</b> (three-lobed) against <b>${Wd.front[0]} V</b> healthy; the rear bogie stays low, so the defect is located to the front wheelset.`;
+</script>
+</body>
+</html>
