@@ -152,7 +152,7 @@ const kpis = [
   [pct(L.C0[iFull], L.C3[iFull]) + '%', 'ride index, crowded LHB coach', ''],
   [pct(S.rms.LHB.C0[iFull], S.rms.LHB.C3[iFull]) + '%', 'body vibration (RMS), crowded LHB', 't'],
   [Math.round(S.bank.LHB.C3[iFull]) + ' W', 'into the bogie bank, vs 8 W needed', 'o'],
-  [pct(S.events.settlement.peak[1], S.events.settlement.peak[2]) + '%', 'worst-seat peak at a settlement, with active push', 't'],
+  [pct(S.events.settlement.peak[0], S.events.settlement.peak[2]) + '%', 'worst-seat jolt at a settlement vs today, with active push', 't'],
   [S.meta.checks.split(' ')[0] + '/' + S.meta.checks.split(' ')[2], 'automatic verification checks pass', '']
 ];
 document.getElementById('kpis').innerHTML = kpis.map(k =>
