@@ -88,14 +88,35 @@ Each bogie makes enough electricity to run itself, with some to spare. It will n
 | --- | --- | --- |
 | Best rail damper ever built | 63 W per damper | [Dong et al.](https://doi.org/10.1177/1045389X231200146) |
 | Possible on rail, in theory | 33–960 W per damper | Same study (loaded freight wagon, 90 km/h) |
-| Needed by electronics and sensors per bogie | About 5–20 W | Our estimate, to be measured |
-| Power bank to cover 30 minutes with no bumps | About 5 Wh | 10 W × 0.5 h, our estimate |
-| **Result** | **More made than used** | To be proven on the bench |
+| **Into one coach bogie's power bank, rough track** | **33–38 W** (LHB, Vande Bharat, 160 km/h) | Our Simulink model, Stage 3 |
+| Into one bogie's bank, smooth track at speed | 11–13 W (coaches); 20 W (loaded wagon, 100 km/h) | Our Simulink model, Stage 4 |
+| Needed by the bogie electronics and sensors | 8 W awake, 1 W asleep when parked | Our design budget, to be measured |
+| Power bank per bogie | 120 Wh battery + supercapacitor for short bursts | Our design |
+| **Result over a full day with a 10 h night** | **More made than used** on LHB, Vande Bharat and freight, if the electronics sleep when parked | Our journey simulation, Stage 4 |
 
 Two points to be clear about:
 
 - **On goods wagons**, self-power is essential. Wagons have no electricity, and braking energy does not reach them.
 - **On Vande Bharat**, the train already has power. There, self-power means no new wiring and independent bogies, not saving electricity.
+
+## What the simulation shows
+
+We built the whole system in MATLAB/Simulink in four stages. Today's damper and SwarmRide ride the **same coach on the same rail**; only the damper changes. 73 automatic checks (hand calculations, an independent model, energy conservation, fail-safe) all pass.
+
+| Result | Number | Meaning |
+| --- | --- | --- |
+| Ride comfort, crowded LHB coach at 160 km/h | Ride index **−17%** (Vande Bharat −16%, loaded wagon −23%) | Better at every load, as promised |
+| Body vibration, crowded LHB coach | **−41%** | A calmer coach |
+| Power into each coach bogie's bank, rough track | **33–38 W**, against 8 W of electronics | The bogie powers itself |
+| Track settlement, worst seat, with a brief push from the bank | **−80%** for about 0.1 Wh | The Train Brain warning pays off |
+| Hot axle | Seen within **10 s** by the on-bogie sensor; trackside checkpoints miss 82% of faults until after 180 °C | Self-powered safety sensing matters |
+| Out-of-round wheel | Coil signal **×5 to ×200** above healthy, located to the wheelset | No extra sensor needed |
+
+![SwarmRide rides better than today's damper at every load](SwarmRide_Sim/results/stage3_ride_vs_load.png)
+
+![At a known bad spot the damper briefly pushes with banked energy](SwarmRide_Sim/results/stage4_active_push.png)
+
+One honest finding: if the bogie electronics stay fully on through a 10 h night, they drain the battery. A simple sleep rule (1 W when parked) fixes it. The slow ICF coach and very smooth routes still need a small top-up. Vehicle data are estimates until RDSO data is available, and the next proof is a bench prototype.
 
 ## Why it is better than what is used today
 
@@ -157,7 +178,7 @@ It also fits national goals: made in India, and aimed squarely at rail safety. P
 
 ![Prove it, get RDSO approval, pilot on freight and Vande Bharat, then scale](images/roadmap.png)
 
-Gate A matters most. The simulation must show a better ride than fixed dampers at every load, and more power made than used. Freight comes first because wagons have no power and the safety need is greatest. Vande Bharat follows for comfort. Timing depends on funding and RDSO trials.
+Gate A is met in simulation: a better ride than fixed dampers at every load, and more power made than used over a full day (see *What the simulation shows*). Freight comes first because wagons have no power and the safety need is greatest. Vande Bharat follows for comfort. Timing depends on funding and RDSO trials.
 
 ## Risks and how we handle them
 
@@ -175,7 +196,7 @@ Gate A matters most. The simulation must show a better ride than fixed dampers a
 
 Three things take us from idea to a working pilot:
 
-1. **Funding** for the computer simulation, a bench prototype and the patent filing. The amount will be set once the prototype is costed.
+1. **Funding** for a bench prototype and the patent filing (the computer simulation is done). The amount will be set once the prototype is costed.
 2. **Pilot partners:** one Dedicated Freight Corridor goods rake and one Vande Bharat trainset, with permission to share the data.
 3. **Test support:** access to a damper test rig, and RDSO guidance for trials.
 
