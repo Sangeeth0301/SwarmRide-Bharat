@@ -268,6 +268,26 @@ Stage 4 answers the three questions Stage 3 left open:
 
 Full report: **[SwarmRide_Sim/Stage4.md](SwarmRide_Sim/Stage4.md)**
 
+### Stage 5: the bench prototype, ready to build (Gate B)
+
+The next proof must come from hardware: **one real design-C damper on a test rig**. Stage 5 prepares everything for it.
+
+<p align="center">
+  <img src="Bench_Prototype/images/bench_setup.png" alt="Bench prototype setup" width="100%">
+</p>
+
+| Item | What was produced |
+|---|---|
+| **Hardware ratings** | From the damper's duty in the coach simulation: 48 V-class servo motor (Kt 0.40 N m/A rms, 14 N m peak), Ø25 mm × 10 mm-lead ball screw, 8 kN, 60 V / 46 A four-quadrant drive, 3 × 1.0 Ω fail-safe resistors, 10 F supercapacitor + 128 Wh LiFePO4 |
+| **Bench model** (`SR_Bench.slx`) | The damper as it will be tested: 10 kHz current control with a voltage limit, inverter and DC-DC losses, a contactor that takes 20 ms, winding heat |
+| **Predictions** | The damper's own motion from the coach, replayed on the rig: **14.4 W** into the bank (vehicle model 14.5 W). Fail-safe = today's damping, with a 20 ms gap. Push 800 W for 95 J. Winding at 42 °C |
+| **Firmware in C** | Controller, drive and bank supervisor, ported from MATLAB. **10 of 10 host checks pass** in double and in float (microcontroller) arithmetic |
+| **Test plan** | T1–T10 with drive files for the rig, predicted values and pass bands; budget ≈ ₹4.4–13.5 lakh; 16 weeks to Gate B |
+
+**Finding:** the ball screw makes rotor inertia look like hundreds of kilograms at the rod, but the coach model shows the ride does not get worse even at 8× the assumed inertia. Friction is the budget to control: 600 N would cost a fifth of the harvest.
+
+Package: **[Bench_Prototype/](Bench_Prototype/README.md)** · Bench model report: **[SwarmRide_Sim/Stage5_Bench.md](SwarmRide_Sim/Stage5_Bench.md)**
+
 ### Early estimate (preview study)
 
 Before the Simulink stages, a simplified Python model estimated the gains below. Stage 3 has now measured them in Simulink: a ride improvement of 17% and body vibration down 41% on a crowded LHB coach, at 33 W per bogie (Section *Stage 3* above). Crowded coach, poor track, 160 km/h.
