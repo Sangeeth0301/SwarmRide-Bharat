@@ -3,7 +3,7 @@
 **Self-powered, load-adaptive, train-synchronised suspension for Indian Railways**
 
 Version 0.2 · October 2026 · Sangeeth
-Status: simulation complete, Stages 1–4 (today's trains; smart damper and power chain; load-adaptive and preview controllers; active push, full-day power and health sensing). Gate A met in simulation; bench prototype next.
+Status: simulation complete, Stages 1–4. Gate A met in simulation. Bench prototype designed (Stage 5: hardware ratings, bench model, C firmware, test plan); building and testing it is next (Gate B).
 
 > **Confidential.** This document describes an invention that has not yet been filed for patent protection. Do not publish or present it openly before a provisional patent application is filed.
 
@@ -246,7 +246,8 @@ Prior art to distinguish: energy-harvesting dampers in research, OMRS, EoTT, Tra
 | Simulation 2 | Smart damper (A/B/C), power chain, fail-safe, harvested watts per train | **Done** |
 | Simulation 3 | LPV and preview controllers, head-to-head comparison | **Done** |
 | Simulation 4 | Active push, full-day power, self-powered health sensing, investor dashboard | **Done** |
-| Bench prototype | One design-C damper with its H-bridge and bank on a test rig | **Next** |
+| Bench prototype design | Hardware ratings, bench model, C firmware, rig drive files, test plan | **Done** |
+| Bench prototype | Build one design-C damper and test it on a rig (Gate B) | **Next** |
 | Field pilot | Freight wagons, then Vande Bharat | After RDSO engagement |
 
 ## 9. Limits and risks
