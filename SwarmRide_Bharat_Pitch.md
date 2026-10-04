@@ -178,7 +178,7 @@ It also fits national goals: made in India, and aimed squarely at rail safety. P
 
 ![Prove it, get RDSO approval, pilot on freight and Vande Bharat, then scale](images/roadmap.png)
 
-Gate A is met in simulation: a better ride than fixed dampers at every load, and more power made than used over a full day (see *What the simulation shows*). Freight comes first because wagons have no power and the safety need is greatest. Vande Bharat follows for comfort. Timing depends on funding and RDSO trials.
+Gate A is met in simulation: a better ride than fixed dampers at every load, and more power made than used over a full day (see *What the simulation shows*). The bench prototype for Gate B is designed and ready to build: hardware ratings, a bench model that predicts every lab measurement, firmware checked against the simulation, and a 16-week test plan. Freight comes first because wagons have no power and the safety need is greatest. Vande Bharat follows for comfort. Timing depends on funding and RDSO trials.
 
 ## Risks and how we handle them
 
