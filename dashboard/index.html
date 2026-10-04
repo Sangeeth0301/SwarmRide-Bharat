@@ -90,7 +90,7 @@
 
     <div class="card">
       <h2>A full day on one bogie's power bank</h2>
-      <div class="why">Battery charge with 8 W of sensors, controller and radio always on, including a night parked.</div>
+      <div class="why">Battery charge over a day and a night parked. Electronics use 8 W when moving; the design rule is to sleep (1 W) when parked.</div>
       <div class="seg" id="seg-journey"></div>
       <div class="chart"><canvas id="c-journey"></canvas></div>
       <div class="note" id="journey-note"></div>
@@ -211,12 +211,15 @@ const jc = new Chart(document.getElementById('c-journey'), { type: 'line', data:
     scales: { x: { type: 'linear', ...axis('time [h]') }, y: { ...axis('battery charge [%]'), min: 0, max: 100 } } } });
 function drawJourney(tr) {
   const j = S.journey[tr];
+  const pts2 = (a) => j.t.map((t, i) => ({ x: t, y: a[i] }));
   jc.data.datasets = [
-    { label: 'route with some rough track', data: j.t.map((t, i) => ({ x: t, y: j.soc[i] })), borderColor: C.navy, borderWidth: 2.4 },
-    { label: 'same route, all smooth track', data: j.t.map((t, i) => ({ x: t, y: j.soc_good[i] })), borderColor: C.orange, borderDash: [6, 4], borderWidth: 2 }];
+    { label: 'always on (8 W)', data: pts2(j.soc_on), borderColor: C.red, borderDash: [2, 3], borderWidth: 2 },
+    { label: 'standby when parked (1 W)', data: pts2(j.soc), borderColor: C.navy, borderWidth: 2.6 },
+    { label: 'standby, all-smooth track', data: pts2(j.soc_good), borderColor: C.orange, borderDash: [6, 4], borderWidth: 2 }];
   jc.update();
-  document.getElementById('journey-note').innerHTML = `${names[tr]}, ${j.name}: harvested <b>${j.harvest} Wh</b>, used <b>${j.used} Wh</b>` +
-    (j.unserved > 0 ? `, <b style="color:${C.red}">${j.unserved} Wh not served</b>` : ', every load served') + '.';
+  const served = (u) => u > 0 ? `<b style="color:${C.red}">${u} Wh not served</b>` : '<b>every load served</b>';
+  document.getElementById('journey-note').innerHTML = `${names[tr]}, ${j.name}: harvested <b>${j.harvest} Wh</b>. ` +
+    `Always on: used ${j.used_on} Wh, ${served(j.unserved_on)}. With standby: used ${j.used} Wh, ${served(j.unserved)}.`;
 }
 segment('seg-journey', Object.keys(names).map(k => [k, k === 'VB' ? 'Vande Bharat' : k]), drawJourney); drawJourney('LHB');
 

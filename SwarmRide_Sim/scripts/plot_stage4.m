@@ -32,15 +32,17 @@ exportgraphics(fig, fullfile(resdir, 'stage4_active_push.png'), 'Resolution', 15
 fig = figure('Visible', 'off', 'Position', [100 100 1150 720]);
 for s = 1:numel(JR)
     subplot(2, 2, s); hold on
-    J = JR(s).J;  Jg = JR(s).Jgood;
-    plot(J.t, 100 * J.SOC, 'Color', navy, 'LineWidth', 1.8);
+    J = JR(s).J;  Js = JR(s).Js;  Jg = JR(s).Jg;
+    plot(J.t, 100 * J.SOC, ':', 'Color', red, 'LineWidth', 1.8);
+    plot(Js.t, 100 * Js.SOC, 'Color', navy, 'LineWidth', 2);
     plot(Jg.t, 100 * Jg.SOC, '--', 'Color', orange, 'LineWidth', 1.5);
     grid on; xlabel('time [h]'); ylabel('battery state of charge [%]'); ylim([0 100]);
-    title(sprintf('%s: %s', JR(s).train, JR(s).name));
-    text(0.02, 0.08, sprintf('harvested %.0f Wh, used %.0f Wh', J.E_harvest, J.E_used), 'Units', 'normalized');
-    if s == 1, legend({'route with some rough track', 'same route, all smooth track'}, 'Location', 'southeast'); end
+    title(sprintf('%s: %s (harvested %.0f Wh)', JR(s).train, JR(s).name, J.E_harvest));
+    if s == 1
+        legend({'electronics always on (8 W)', 'standby when parked (1 W)', 'standby, all-smooth track'}, 'Location', 'northeast');
+    end
 end
-sgtitle('One bogie''s power bank over a full day (8 W of sensors, controller and radio always on)');
+sgtitle('One bogie''s power bank over a full day: the electronics must sleep when the train is parked');
 exportgraphics(fig, fullfile(resdir, 'stage4_journey.png'), 'Resolution', 150); close(fig);
 
 %% 3. Hot axle

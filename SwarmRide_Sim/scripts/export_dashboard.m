@@ -55,10 +55,11 @@ end
 
 %% journeys
 for s = 1:numel(S4.JR)
-    J = S4.JR(s).J;  Jg = S4.JR(s).Jgood;  k = 1:60:numel(J.t);    % every minute
+    J = S4.JR(s).J;  Js = S4.JR(s).Js;  Jg = S4.JR(s).Jg;  k = 1:60:numel(J.t);    % every minute
     D.journey.(S4.JR(s).train) = struct('name', S4.JR(s).name, 't', round(J.t(k)', 3), ...
-        'soc', round(100 * J.SOC(k)', 1), 'soc_good', round(100 * Jg.SOC(k)', 1), ...
-        'harvest', round(J.E_harvest), 'used', round(J.E_used), 'unserved', round(J.E_unserved, 2));
+        'soc_on', round(100 * J.SOC(k)', 1), 'soc', round(100 * Js.SOC(k)', 1), 'soc_good', round(100 * Jg.SOC(k)', 1), ...
+        'harvest', round(J.E_harvest), 'used_on', round(J.E_used), 'used', round(Js.E_used), ...
+        'unserved_on', round(J.E_unserved, 1), 'unserved', round(Js.E_unserved, 1), 'unserved_good', round(Jg.E_unserved, 1));
 end
 
 %% hot axle
