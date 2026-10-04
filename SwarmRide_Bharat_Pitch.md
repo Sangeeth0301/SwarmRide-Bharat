@@ -101,7 +101,7 @@ Two points to be clear about:
 
 ## What the simulation shows
 
-We built the whole system in MATLAB/Simulink in four stages. Today's damper and SwarmRide ride the **same coach on the same rail**; only the damper changes. 73 automatic checks (hand calculations, an independent model, energy conservation, fail-safe) all pass.
+We built the whole system in MATLAB/Simulink in four stages. Today's damper and SwarmRide ride the **same coach on the same rail**; only the damper changes. 85 automatic checks (hand calculations, an independent model, energy conservation, fail-safe, and the bench prototype's model and firmware) all pass.
 
 | Result | Number | Meaning |
 | --- | --- | --- |
