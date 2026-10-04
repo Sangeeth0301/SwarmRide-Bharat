@@ -264,7 +264,7 @@ Stage 4 answers the three questions Stage 3 left open:
   </tr>
 </table>
 
-**Gate A is met in simulation:** a better ride than fixed dampers at every load, and more power made than used over a full day. **All 73 automatic checks pass.** The investor dashboard ([`dashboard/index.html`](dashboard/index.html)) shows every result from the real simulation output.
+**Gate A is met in simulation:** a better ride than fixed dampers at every load, and more power made than used over a full day. **All 73 automatic checks of Stages 1–4 pass** (85 with the bench prototype). The investor dashboard ([`dashboard/index.html`](dashboard/index.html)) shows every result from the real simulation output.
 
 Full report: **[SwarmRide_Sim/Stage4.md](SwarmRide_Sim/Stage4.md)**
 
@@ -374,7 +374,9 @@ designType = 'C';  ctrlMode = 'C3';                        % Stage 3: damper des
 run('scripts/check_stage3.m')                              % reproduce the Stage 3 study
 ctrlMode = 'C4';  trackType = 'settlement';  stage = 4;   % Stage 4: push at a known bad spot
 run('scripts/check_stage4.m')                              % reproduce the Stage 4 study
-run('scripts/run_all_checks.m')                            % all 73 verification checks
+stage = 'bench';  sr_setup                                % bench prototype: one damper on a test rig
+run('scripts/check_bench.m')                               % bench study: sizing, predictions, margins, exports
+run('scripts/run_all_checks.m')                            % all 85 verification checks
 ```
 
 Requires MATLAB R2024b with Simulink, Control System Toolbox, Simscape and Simscape Electrical.
