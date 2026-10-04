@@ -122,7 +122,10 @@ semilogx([mj.val] * 1e4, [mj.Wz], 'o-', 'Color', navy, 'MarkerFaceColor', navy, 
 set(gca, 'XScale', 'log');
 yline(W0, '--', 'today''s damper', 'Color', grey, 'LineWidth', 1.3);
 yline(Wb * 1.02, ':', '2 % of the gain lost', 'Color', orange, 'LineWidth', 1.3);
-xline(R.J_limit * 1e4, '-', sprintf('limit %.1f', R.J_limit * 1e4), 'Color', red, 'LineWidth', 1.3);
+if R.J_found
+    xline(R.J_limit * 1e4, '-', sprintf('limit %.1f', R.J_limit * 1e4), 'Color', red, 'LineWidth', 1.3);
+end
+xline(HW.J_sim * 1e4, ':', 'simulation', 'Color', teal, 'LineWidth', 1.3);
 grid on; xlabel('rotor + screw inertia [10^{-4} kg m^2]'); ylabel('Sperling Wz (lower = better)');
 title('Inertia budget for the real motor and screw');
 subplot(1, 2, 2); hold on

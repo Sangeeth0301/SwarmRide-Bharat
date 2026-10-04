@@ -137,9 +137,9 @@ say('T9 Winding temperature: %.1f W average copper loss on rough track (with one
 
 %% D. Hardware margins in the vehicle model
 say('=== D. Hardware margins (vehicle model, LHB crowded, poor track, 160 km/h, C3) ===\n');
-MG = struct('what', {}, 'val', {}, 'Wz', {}, 'rms', {}, 'Pdc', {});
+MG = struct('what', {}, 'val', {}, 'Wz', {}, 'Wzmax', {}, 'rms', {}, 'Pdc', {});
 base = struct();
-for J = [1.5e-4 3e-4 6e-4 1.2e-3]
+for J = [1.5e-4 3e-4 6e-4 1.2e-3 2.4e-3 4.8e-3]
     [o, P] = sr_run(m3, 'LHB', 'designType', 'C', 'ctrlMode', 'C3', 'D_override', struct('J', J));
     MG(end+1) = mrec('J', J, o, P); %#ok<SAGROW>
 end
@@ -151,19 +151,26 @@ end
 MG(end+1) = mrec('F_rated', HW.F_peak, o, P);
 [o, P] = sr_run(m4, 'LHB', 'designType', 'C', 'ctrlMode', 'C4', 'trackType', 'settlement', 'D_override', struct('F_rated', HW.F_peak));
 r8 = squeeze(o.az.Data);  tt = o.az.Time;  k8 = tt > 0.3 & tt < 15;
-MG(end+1) = struct('what', 'F_rated_settle', 'val', HW.F_peak, 'Wz', NaN, 'rms', max(abs(r8(:, k8)), [], 'all'), 'Pdc', NaN);
+MG(end+1) = struct('what', 'F_rated_settle', 'val', HW.F_peak, 'Wz', NaN, 'Wzmax', NaN, 'rms', max(abs(r8(:, k8)), [], 'all'), 'Pdc', NaN);
 [o, P] = sr_run(m1, 'LHB');
 r0 = squeeze(o.az.Data);  W0 = sr_sperling(r0(1, o.az.Time > 3), 1 / P.Ts);
 Wb = MG(1).Wz;
 for k = 1:numel(MG) - 1
     g = MG(k);
-    say('%-8s = %8.3g: Wz %.3f (%+.1f %% vs design; today %.3f), body RMS %.4f m/s^2, into the bank %.1f W per bogie\n', ...
-        g.what, g.val, g.Wz, 100 * (g.Wz / Wb - 1), W0, g.rms, g.Pdc);
+    say('%-8s = %8.3g: Wz %.3f (%+.1f %% vs design; today %.3f), worst seat Wz %.3f, body RMS %.4f m/s^2, into the bank %.1f W per bogie\n', ...
+        g.what, g.val, g.Wz, 100 * (g.Wz / Wb - 1), W0, g.Wzmax, g.rms, g.Pdc);
 end
 say('F_rated  = %8.3g at the settlement with push (C4): worst seat %.3f m/s^2 (vehicle model with 15 kN: 0.196)\n', HW.F_peak, MG(end).rms);
 Jv = [MG(strcmp({MG.what}, 'J')).val];  Wj = [MG(strcmp({MG.what}, 'J')).Wz];
-R.J_limit = interp1(Wj, Jv, Wb * 1.02, 'linear', 'extrap');
-say('Inertia that costs 2 %% of the ride gain at most: J <= %.2g kg m^2 (rotor + screw)\n\n', R.J_limit);
+kx = find(Wj > Wb * 1.02, 1);                      % first inertia that worsens Wz by more than 2 %
+if isempty(kx)
+    R.J_limit = Jv(end);  R.J_found = false;
+    say('Inertia: Wz stays within 2 %% of the design value up to the largest tested, J = %.2g kg m^2 (b = %.0f kg at the rod)\n\n', ...
+        R.J_limit, R.J_limit * (2*pi / HW.lead)^2);
+else
+    R.J_limit = interp1(Wj(kx-1:kx), Jv(kx-1:kx), Wb * 1.02);  R.J_found = true;
+    say('Inertia that worsens Wz by 2 %%: J = %.2g kg m^2 (b = %.0f kg at the rod)\n\n', R.J_limit, R.J_limit * (2*pi / HW.lead)^2);
+end
 
 %% E. Save
 fclose(fid);
@@ -305,7 +312,8 @@ end
 function r = mrec(what, val, o, P)
 t = o.az.Time;  k = t > 3;  a = squeeze(o.az.Data);
 pd = sr_sig(o, 'Pdc', t);
-r = struct('what', what, 'val', val, 'Wz', sr_sperling(a(1, k), 1 / P.Ts), 'rms', sqrt(mean(a(1, k).^2)), ...
+W3 = arrayfun(@(j) sr_sperling(a(j, k), 1 / P.Ts), 1:3);
+r = struct('what', what, 'val', val, 'Wz', W3(1), 'Wzmax', max(W3), 'rms', sqrt(mean(a(1, k).^2)), ...
     'Pdc', mean(pd(:, k), 'all'));
 end
 
@@ -316,7 +324,7 @@ rows = {
  'T1', 'Back-EMF line-to-line', 'V rms per 1000 rpm', R.T1.Ke_ll, '+-5 %'
  'T2', 'Measured / commanded damping at 60 % of c_req', '-', R.T2.c_fit(3) / R.T2.c_cmd(3), '0.95-1.05'
  'T2', 'Friction (screw + seals)', 'N', R.T2.Fc_fit, '<= 300'
- 'T2', 'Inertance (rotor + screw)', 'kg', R.T2.b_fit, sprintf('<= %.0f', R.J_limit * (2*pi / Bd.lead)^2)
+ 'T2', 'Inertance (rotor + screw)', 'kg', R.T2.b_fit, sprintf('<= %.0f (ride margin study)', R.J_limit * (2*pi / Bd.lead)^2)
  'T3', 'Coil efficiency at 60 % of c_req', '-', R.T2.eta_coil(3), '>= 0.95 x predicted'
  'T3', 'Rig work to bank at 60 % of c_req', '-', R.T2.eta_total(3), '>= 0.90 x predicted'
  'T4', 'Current-loop 63 % rise time', 'ms', 1e3 * R.T4.tau, sprintf('<= %.1f', 2e3 * Bst.tau_cl)
