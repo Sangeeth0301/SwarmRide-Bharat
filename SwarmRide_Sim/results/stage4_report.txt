@@ -1,0 +1,54 @@
+=== A. Verification ===
+A1 Stage 4 with its new parts off reproduces Stage 3 (C3): difference 0.00e+00 % of peak -> PASS
+A2 Journey bank model vs Simulink bank (same power, 30 s): supercap 32.013 V vs 32.013 V -> PASS
+A3 Energy balance with active pushes (C4, settlement): residual 0.0593 % / 0.0596 % of the energy that flowed (261 / 266 J); loads always served (max unserved 0.00 W) -> PASS
+A4 C4 acts only inside its windows (poor track, no known bad spots): differs from C3 by 0.00e+00 % -> PASS
+
+=== B. Active push at known bad spots (LHB crowded, 160 km/h) ===
+settlement C0 window 0.0 s: peak 0.339 (worst seat 0.967) m/s^2, RMS 0.0766 m/s^2, bank energy spent pushing    0.0 J (peak     0 W)
+settlement C3 window 0.0 s: peak 0.286 (worst seat 0.764) m/s^2, RMS 0.0466 m/s^2, bank energy spent pushing    0.0 J (peak     0 W)
+settlement C4 window 0.5 s: peak 0.129 (worst seat 0.200) m/s^2, RMS 0.0158 m/s^2, bank energy spent pushing  345.9 J (peak  1497 W)
+settlement C4 window 1.0 s: peak 0.128 (worst seat 0.196) m/s^2, RMS 0.0155 m/s^2, bank energy spent pushing  344.9 J (peak  1495 W)
+settlement C4 window 2.0 s: peak 0.129 (worst seat 0.196) m/s^2, RMS 0.0154 m/s^2, bank energy spent pushing  344.6 J (peak  1497 W)
+bump       C0 window 0.0 s: peak 0.110 (worst seat 0.246) m/s^2, RMS 0.0142 m/s^2, bank energy spent pushing    0.0 J (peak     0 W)
+bump       C3 window 0.0 s: peak 0.093 (worst seat 0.205) m/s^2, RMS 0.0102 m/s^2, bank energy spent pushing    0.0 J (peak     0 W)
+bump       C4 window 0.5 s: peak 0.042 (worst seat 0.084) m/s^2, RMS 0.0050 m/s^2, bank energy spent pushing   20.0 J (peak   131 W)
+bump       C4 window 1.0 s: peak 0.042 (worst seat 0.082) m/s^2, RMS 0.0047 m/s^2, bank energy spent pushing   19.7 J (peak   130 W)
+bump       C4 window 2.0 s: peak 0.042 (worst seat 0.082) m/s^2, RMS 0.0047 m/s^2, bank energy spent pushing   19.7 J (peak   129 W)
+
+=== C. Long journeys (power table from Stage 3, controller C3, design C) ===
+LHB  half   good: power into the bank [2.2 5.2 10.7] W at [80 120 160] km/h
+LHB  half   poor: power into the bank [5.9 14.3 29.5] W at [80 120 160] km/h
+VB   half   good: power into the bank [3.1 6.4 13.2] W at [80 120 160] km/h
+VB   half   poor: power into the bank [8.2 17.6 36] W at [80 120 160] km/h
+ICF  half   good: power into the bank [1.4 2.8 4.6] W at [60 90 110] km/h
+ICF  half   poor: power into the bank [3.6 7.5 12.4] W at [60 90 110] km/h
+BOXN loaded good: power into the bank [3.5 10.7 20.4] W at [50 75 100] km/h
+BOXN loaded poor: power into the bank [9.3 28.8 55.4] W at [50 75 100] km/h
+BOXN empty  good: power into the bank [0.7 2.3 6.4] W at [50 75 100] km/h
+BOXN empty  poor: power into the bank [2.1 6.7 17.6] W at [50 75 100] km/h
+LHB  passenger day, 14.2 h (incl. 10 h parked), harvested 45 Wh:
+     always on (8 W)             used  114 Wh, unserved  11.8 Wh; battery 60% -> min 10%, end 10%
+     standby when parked (1 W)   used   44 Wh, unserved   0.0 Wh; battery 60% -> min 60%, end 60%
+     standby, all-smooth track   used   44 Wh, unserved   0.0 Wh; battery 60% -> min 48%, end 48%
+VB   passenger day, 14.2 h (incl. 10 h parked), harvested 56 Wh:
+     always on (8 W)             used  114 Wh, unserved   1.9 Wh; battery 60% -> min 10%, end 10%
+     standby when parked (1 W)   used   44 Wh, unserved   0.0 Wh; battery 60% -> min 60%, end 69%
+     standby, all-smooth track   used   44 Wh, unserved   0.0 Wh; battery 60% -> min 54%, end 54%
+ICF  passenger day, 15.8 h (incl. 10 h parked), harvested 28 Wh:
+     always on (8 W)             used  126 Wh, unserved  39.5 Wh; battery 60% -> min 10%, end 10%
+     standby when parked (1 W)   used   57 Wh, unserved   0.0 Wh; battery 60% -> min 36%, end 36%
+     standby, all-smooth track   used   57 Wh, unserved   0.0 Wh; battery 60% -> min 28%, end 28%
+BOXN freight round trip, 20.0 h (incl. 10 h parked), harvested 104 Wh:
+     always on (8 W)             used  160 Wh, unserved   9.6 Wh; battery 60% -> min 10%, end 10%
+     standby when parked (1 W)   used   70 Wh, unserved   0.0 Wh; battery 60% -> min 60%, end 80%
+     standby, all-smooth track   used   70 Wh, unserved   0.0 Wh; battery 60% -> min 55%, end 55%
+Parked with no motion, a full bank (120 Wh battery + supercap) runs the 8 W bogie electronics for about 13 h
+
+=== D. Health sensing ===
+D1 Hot axle (illustrative): bearing reaches 90 C 38 min after the fault starts and 180 C (failure risk) 68 min after it
+   On-bogie sensor (self-powered, read every 10 s): alarm within 10 s, bearing at 90 C
+   Trackside checkpoints every 250 km at 100 km/h (one check every 2.5 h): median delay 77 min after 90 C (180 C follows only 30 min after it); 82% of faults reach 180 C before any check
+D2 healthy             : coil signal at 15.5 Hz (wheel rotation): front bogie 0.082 V (healthy 0.082 V, x1), rear bogie 0.086 V
+D2 eccentric 0.5 mm    : coil signal at 15.5 Hz (wheel defect order): front bogie 0.425 V (healthy 0.082 V, x5), rear bogie 0.086 V
+D2 three-lobed 0.3 mm  : coil signal at 46.4 Hz (wheel defect order): front bogie 0.240 V (healthy 0.001 V, x204), rear bogie 0.003 V
