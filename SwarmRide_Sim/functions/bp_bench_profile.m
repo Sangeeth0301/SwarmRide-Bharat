@@ -7,7 +7,7 @@ function BX = bp_bench_profile(test, HW, DR)
 %
 %   test          what it shows
 %   'emf'         back-EMF constant: constant-speed strokes at +-0.1 m/s, drive commands zero current
-%   'damping'     damping law: 1.5 Hz sine, 12 mm, damping command stepped 20..100 % of c_req
+%   'damping'     damping law: 1.5 Hz sine, 12 mm, damping command 0, then 20..100 % of c_req
 %   'step'        current-loop speed: constant 0.05 m/s stroke, damping command stepped at 0.3 s
 %   'vlimit'      voltage limit: 2 Hz sine growing from 2 to 30 mm at full design damping
 %   'failsafe'    1.5 Hz sine at today's damping; a fault drops the contactor at 5 s
@@ -23,7 +23,7 @@ switch test
         v = smooth_edges(v, t, 0.02);
         c = zeros(size(t));
     case 'damping'
-        lev = [0.2 0.4 0.6 0.8 1.0];  Tl = 4;  T = Tl * numel(lev);
+        lev = [0 0.2 0.4 0.6 0.8 1.0];  Tl = 4;  T = Tl * numel(lev);   % 0: friction and inertance alone
         t = (0:dt:T)';  A = 0.012;  f = 1.5;  w = 2*pi*f;
         v = A * w * cos(w * t);
         c = HW.c_req * lev(min(floor(t / Tl) + 1, numel(lev)))';
