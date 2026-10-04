@@ -1,5 +1,16 @@
 # Changelog
 
+## Stage 5: bench prototype (design package for Gate B)
+- Hardware sizing of the design-C damper from its duty in the coach simulation (`functions/bp_hardware.m`): 48 V-class servo motor (Kt 0.40 N m/A rms, 14 N m peak), 25 mm x 10 mm-lead ball screw, 8 kN, 60 V / 46 A four-quadrant drive, 3 x 1.0 ohm fail-safe resistors on a changeover contactor, 10 F supercapacitor + 128 Wh LiFePO4
+- Bench model `SR_Bench.slx`: test rig, drive firmware at 10 kHz (PI + back-EMF feed-forward, voltage limit, fail-safe latch), contactor drop-out, inverter and DC-DC losses, supercapacitor, winding temperature, energy meters
+- Bench study (`scripts/check_bench.m`): bench model = vehicle model when simplified the same way (0.49 % of peak); energy balance closes; predicted T1-T9: 14.4 W into the bank on the replayed rough track (vehicle model 14.5 W), fail-safe = today's damping with a 20 ms gap, 800 W / 95 J push, winding at 42 C
+- Hardware margins: rotor inertia up to 16x the assumed value slightly improves the ride; friction above 300 N costs harvest; an 8 kN current limit changes nothing
+- Firmware in C (`Bench_Prototype/firmware`): Train Brain preview, LPV + preview, semi-active conversion, drive current reference and control, fail-safe, bank supervisor, scheduler; host test against MATLAB vectors passes in double and float
+- Rig drive files, generated firmware gains and test vectors (`scripts/bench_export.m`)
+- Bench prototype package: requirements, mechanical, electronics, test rig, test plan T1-T10, budget and schedule, safety, bill of materials, setup diagram
+- Bench checks in the verification suite (`tests/test_bench.m`), including compiling and running the firmware host test
+- Hardware overrides for margin studies (`D_override`); bench model in `sr_setup` and `regenerate_all`
+
 ## Simulation Stage 4: active push, full-day power and health sensing
 - Controller C4: inside a short window around known bad spots, the H-bridge drives the coil as a motor from the bogie bank (`scripts/build_stage4.m`, `scripts/sr_params_stage4.m`)
 - Result: worst-seat jolt at a track settlement down 80% against today (0.967 -> 0.196 m/s^2) for 345 J; short dip down 67% for 20 J
