@@ -105,7 +105,7 @@ say('      Friction fitted %.0f N (model %.0f N); inertance fitted %.0f kg (mode
 
 [os, Bst] = bench_run(mb, 'step', 'real', struct('Tlog', 1e-4));
 R.T4 = test_step(os, Bst);
-say('T4 Current loop: 63 %% rise time %.2f ms (designed %.2f ms); overshoot %.1f %%\n', 1e3 * R.T4.tau, 1e3 * Bst.tau_cl, R.T4.overshoot);
+say('T4 Current loop: time constant %.2f ms (designed %.2f ms); overshoot %.1f %%\n', 1e3 * R.T4.tau, 1e3 * Bst.tau_cl, R.T4.overshoot);
 
 [ov, Bv] = bench_run(mb, 'vlimit', 'real');
 R.T5 = test_vlimit(ov, Bv);
@@ -327,7 +327,7 @@ rows = {
  'T2', 'Inertance (rotor + screw)', 'kg', R.T2.b_fit, sprintf('<= %.0f (ride margin study)', R.J_limit * (2*pi / Bd.lead)^2)
  'T3', 'Coil efficiency at 60 % of c_req', '-', R.T2.eta_coil(3), '>= 0.95 x predicted'
  'T3', 'Rig work to bank at 60 % of c_req', '-', R.T2.eta_total(3), '>= 0.90 x predicted'
- 'T4', 'Current-loop 63 % rise time', 'ms', 1e3 * R.T4.tau, sprintf('<= %.1f', 2e3 * Bst.tau_cl)
+ 'T4', 'Current-loop time constant', 'ms', 1e3 * R.T4.tau, sprintf('<= %.1f', 2e3 * Bst.tau_cl)
  'T5', 'Speed where the drive runs out of voltage (full damping)', 'm/s', R.T5.v_sat, sprintf('>= %.2f', R.U.v_max)
  'T6', 'Damping after the fail-safe drops', 'N s/m', R.T6.c_after, sprintf('%.0f +-10 %%', Bf.c_today)
  'T6', 'Time with no electromagnetic force (contactor moving)', 'ms', 1e3 * R.T6.gap, '<= 30'
