@@ -32,7 +32,7 @@ From the vehicle simulation (`SwarmRide_Sim/scripts/check_bench.m`, section A). 
 | R7 | Damping range | **0 to 49 kN s/m** per damper (c_req), within ±5% of the command | The controller asks for 0 … c_req | T2 |
 | R8 | Push (motoring) | **≥ 0.8 kW** for 1 s, force tracking ≤ 10% RMS error | Settlement push: 721 W in the vehicle model, 800 W in the bench model | T8 |
 | R9 | Current-loop speed | Time constant **≤ 1 ms** | The vehicle model assumes 2 ms; faster is better | T4 |
-| R10 | Rotor + screw inertia | **J ≤ the limit from the margin study** (see section 3) | Inertia acts like a mass on the damper rod and stiffens the ride at high frequency | T2 |
+| R10 | Rotor + screw inertia | **J ≤ 2.4 × 10⁻³ kg m²** (inertance ≤ 947 kg at the rod) | The ride is best near this value and stays within 2% up to twice it (section 3) | T2 |
 | R11 | Friction (screw + seals) | **≤ 300 N** | Friction adds harshness at small strokes and wastes harvest | T2 |
 | R12 | Fail-safe | Contactor drops in **≤ 30 ms**; damping then **17.5 kN s/m ± 10%** (= today's damper) | Safety rests on hardware, not software | T6 |
 | R13 | Harvest | Into the bank on the rough-track replay: **14.4 W ± 20%** | The headline energy claim | T7 |
@@ -49,7 +49,11 @@ b = J · (2π / lead)²  =  J × 394,784  [kg per kg m²]
 
 The simulation assumed J = 1.5 × 10⁻⁴ kg m², which is b = 59 kg. A 25 mm × 300 mm steel screw alone is 0.9 × 10⁻⁴ kg m². So the rotor would have only 0.6 × 10⁻⁴ kg m², which is less than most servo motors with 14 N m peak torque.
 
-The margin study (`check_bench.m`, section D) reruns the vehicle model with more inertia and finds how much the ride can tolerate. See [README](README.md) and [`bench_report.txt`](../SwarmRide_Sim/results/bench_report.txt) for the result. It sets **R10** and drives the motor choice in [02_Mechanical_Design.md](02_Mechanical_Design.md).
+The margin study (`check_bench.m`, section D) reran the vehicle model with up to 32× more inertia:
+- The ride at the coach centre gets slightly **better** up to 2.4 × 10⁻³ kg m², which is 16× the assumed value. The rotor acts as an inerter.
+- It stays within 2% of the design value even at 4.8 × 10⁻³.
+
+So **R10 is a soft limit** that standard servo motors meet. Details: [02_Mechanical_Design.md](02_Mechanical_Design.md), section 3.
 
 ## 4. Ratings that follow (one damper)
 
