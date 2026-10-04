@@ -1,6 +1,6 @@
 %% SR_SETUP  Run this first every time you open the SwarmRide project in MATLAB.
-%   >> sr_setup              opens the newest model (Stage 3: SwarmRide controllers)
-%   >> stage = 1; sr_setup   opens the Stage 1 model (today's damper); stage = 2 the smart damper
+%   >> sr_setup              opens the newest model (Stage 4: active push, health sensing)
+%   >> stage = 1; sr_setup   opens the Stage 1 model (today's damper); 2 smart damper; 3 controllers
 %   Adds the project folders to the path, keeps Simulink's build files in /work,
 %   and opens the model.
 root = fileparts(mfilename('fullpath'));
@@ -10,7 +10,7 @@ if ~isfolder(fullfile(root, 'work')), mkdir(fullfile(root, 'work')); end
 Simulink.fileGenControl('set', 'CacheFolder', fullfile(root, 'work'), ...
     'CodeGenFolder', fullfile(root, 'work'), 'createDir', true);
 cd(root);
-if ~exist('stage', 'var'), stage = 3; end
+if ~exist('stage', 'var'), stage = 4; end
 open_system(fullfile(root, 'models', sprintf('SR_Stage%d.slx', stage)));
 fprintf(['\nSwarmRide ready (Stage %d). Pick a train and scenario, then press Run in Simulink:\n' ...
          '   trainType = ''LHB'';   %% LHB | VB | ICF | BOXN\n' ...
@@ -21,5 +21,9 @@ if stage == 2
 elseif stage >= 3
     fprintf(['   designType = ''C'';  ctrlMode = ''C3'';     %% C1 fixed harvester | C2 LPV | C3 LPV + preview\n' ...
              '   load_err = 0.02;  preview_dt = 0;  t_fault = Inf;   %% load-estimate error, warning timing error, test fault\n']);
+end
+if stage >= 4
+    fprintf(['   ctrlMode = ''C4'';  trackType = ''settlement'';   %% C4 = push at known bad spots (bump | settlement)\n' ...
+             '   wheel_runout = 0.5e-3;  wheel_order = 1;         %% out-of-round front wheel (0 = healthy)\n']);
 end
 fprintf('The scope windows open and the 30 s run plays in real time.\n\n');
