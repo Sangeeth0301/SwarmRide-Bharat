@@ -86,19 +86,25 @@ for s = 1:numel(spec)
     end
     PT.(spec(s).train) = pt;
 end
-JR = struct('train', {}, 'name', {}, 'J', {});
+% Three cases per vehicle: electronics always on (8 W); standby (1 W after 5 min parked, wake on
+% motion); standby on the same route with all-smooth track (the hardest case).
+sb = struct('Pstandby', 1, 'standby_after', 5);
+JR = struct('train', {}, 'name', {}, 'J', {}, 'Js', {}, 'Jg', {});
 for s = 1:numel(spec)
     tr = spec(s).train;  TB = sr_trains(tr);
     P = params_for(tr);
     [route, name] = route_for(tr, TB);
-    J = sr_journey(route, PT.(tr), P, 1);
-    JR(end+1) = struct('train', tr, 'name', name, 'J', J); %#ok<SAGROW>
-    say('%-4s %s: %.1f h, harvested %.0f Wh, used %.0f Wh, unserved %.2f Wh, dumped %.0f Wh; battery SOC %.0f%% -> min %.0f%%, end %.0f%%\n', ...
-        tr, name, J.hours, J.E_harvest, J.E_used, J.E_unserved, J.E_dumped, 100 * P.SOC0, 100 * J.SOC_min, 100 * J.SOC_end);
-    Jg = sr_journey(all_good(route), PT.(tr), P, 1);
-    say('     same route, all smooth track: harvested %.0f Wh, used %.0f Wh, unserved %.2f Wh, end SOC %.0f%%\n', ...
-        Jg.E_harvest, Jg.E_used, Jg.E_unserved, 100 * Jg.SOC_end);
-    JR(end).Jgood = Jg;
+    J  = sr_journey(route, PT.(tr), P, 1);
+    Js = sr_journey(route, PT.(tr), P, 1, sb);
+    Jg = sr_journey(all_good(route), PT.(tr), P, 1, sb);
+    JR(end+1) = struct('train', tr, 'name', name, 'J', J, 'Js', Js, 'Jg', Jg); %#ok<SAGROW>
+    say('%-4s %s, %.1f h (incl. %d h parked), harvested %.0f Wh:\n', tr, name, J.hours, 10, J.E_harvest);
+    lines = {'always on (8 W)', J; 'standby when parked (1 W)', Js; 'standby, all-smooth track', Jg};
+    for q = 1:size(lines, 1)
+        Jq = lines{q, 2};
+        say('     %-27s used %4.0f Wh, unserved %5.1f Wh; battery %.0f%% -> min %.0f%%, end %.0f%%\n', lines{q, 1}, ...
+            Jq.E_used, Jq.E_unserved, 100 * P.SOC0, 100 * Jq.SOC_min, 100 * Jq.SOC_end);
+    end
 end
 P = params_for('LHB');
 say('Parked with no motion, a full bank (120 Wh battery + supercap) runs the %.0f W bogie electronics for about %.0f h\n\n', ...
