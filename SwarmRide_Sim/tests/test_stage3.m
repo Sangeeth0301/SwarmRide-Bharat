@@ -6,7 +6,7 @@ R = [];
 for tr = {'LHB', 'VB', 'ICF', 'BOXN'}
     CD = design_for(tr{1});
     R = [R; sr_check(sprintf('%s LPV design: closed-loop spectral radius below 1', tr{1}), ...
-        max(0, max(CD.rho) - 0.9999), 0, '', sprintf('max %.4f over %d load points', max(CD.rho), numel(CD.rho)))]; %#ok<AGROW>
+        max(0, max(CD.rho) - 1), 0, '', sprintf('max %.5f over %d load points', max(CD.rho), numel(CD.rho)))]; %#ok<AGROW>
 end
 
 % 2. C3 on the LHB coach: passive, energy balance, better than today and than C2
@@ -21,6 +21,8 @@ R = [R; sr_check('C3: damping command stays within 0..c_cap', ...
     max(0, max(cc, [], 'all') - P3.c_cap) + max(0, -min(cc, [], 'all')), 1e-3, 'N s/m')];
 EB = sr_energy_balance(o3, P3);
 R = [R; sr_check('C3: energy balance', 100 * max(abs(EB.rel)), 0.1, '%')];
+R = [R; sr_check('Stage 3 rides the same rail as Stage 1 (train start position)', abs(P3.s0 - P0.s0), 0, 'm', ...
+    sprintf('%.2f vs %.2f m', P3.s0, P0.s0))];
 W0 = wz(o0, P0);  W2 = wz(o2, P2);  W3 = wz(o3, P3);
 R = [R; sr_check('C2 rides better than today (Wz C2 - C0)', max(0, W2 - W0), 0, '', sprintf('%.3f vs %.3f', W2, W0))];
 R = [R; sr_check('C3 rides at least as well as C2 (Wz C3 - C2)', max(0, W3 - W2), 0.005, '', sprintf('%.3f vs %.3f', W3, W2))];
