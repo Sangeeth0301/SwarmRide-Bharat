@@ -308,8 +308,8 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
 | Simulation 1 | Test rig, verification, baseline of LHB, Vande Bharat, ICF, BOXN | Done |
 | Simulation 2 | Smart damper (A/B/C), rectifier, DC-DC, power bank, fail-safe | Done |
 | Simulation 3 | LPV and preview control, head-to-head comparison | Done |
-| Simulation 4 | Self-powered health sensing, active preview, investor dashboard | **Next** |
-| Prototype | Bench test of one smart damper | Planned |
+| Simulation 4 | Active push at known bad spots, full-day power, self-powered health sensing, investor dashboard | Done |
+| Prototype | Bench test of one smart damper (design C) with its H-bridge and power bank | **Next** |
 | Pilot | Freight wagons, then Vande Bharat, with RDSO | Planned |
 
 ---
