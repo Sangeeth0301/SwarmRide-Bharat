@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-Stage%203%20of%204%20complete%20%C2%B7%20simulation-E07A1F?style=flat-square" alt="status">
+  <img src="https://img.shields.io/badge/status-simulation%20complete%20%C2%B7%204%20of%204%20stages-2A9D8F?style=flat-square" alt="status">
   <img src="https://img.shields.io/badge/MATLAB%20%2F%20Simulink-R2024b-0076A8?style=flat-square" alt="MATLAB/Simulink R2024b">
   <img src="https://img.shields.io/badge/rolling%20stock-LHB%20%C2%B7%20Vande%20Bharat%20%C2%B7%20ICF%20%C2%B7%20BOXN-13233A?style=flat-square" alt="rolling stock">
   <a href="SwarmRide_Sim/VERIFICATION.md"><img src="https://img.shields.io/badge/verification-test%20suite-2A9D8F?style=flat-square" alt="verification"></a>
@@ -30,7 +30,7 @@ Every coach and wagon on Indian Railways carries **secondary dampers** that turn
 | **Replaces** | The passive secondary damper: one part, same mounting points |
 | **Adds** | Energy harvesting · load-adaptive damping · train-wide bump preview · self-powered safety sensing |
 | **Markets** | Freight wagons (BOXN, Dedicated Freight Corridors) · Vande Bharat trainsets |
-| **Stage** | Architecture complete · Simulink test rig, smart damper, power chain and controllers verified · health sensing and dashboard (Stage 4) next |
+| **Stage** | Simulation complete (Gate A met): test rig, smart damper, power chain, controllers, active push, full-day power and health sensing verified in Simulink · bench prototype next |
 
 ---
 
