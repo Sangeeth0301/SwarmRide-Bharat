@@ -171,6 +171,8 @@ else
     R.J_limit = interp1(Wj(kx-1:kx), Jv(kx-1:kx), Wb * 1.02);  R.J_found = true;
     say('Inertia that worsens Wz by 2 %%: J = %.2g kg m^2 (b = %.0f kg at the rod)\n\n', R.J_limit, R.J_limit * (2*pi / HW.lead)^2);
 end
+[~, kb] = min(Wj);  R.J_target = Jv(kb);
+say('Best centre ride at J = %.2g kg m^2 (b = %.0f kg): the target for the motor + screw\n\n', R.J_target, R.J_target * (2*pi / HW.lead)^2);
 
 %% E. Save
 fclose(fid);
@@ -324,7 +326,7 @@ rows = {
  'T1', 'Back-EMF line-to-line', 'V rms per 1000 rpm', R.T1.Ke_ll, '+-5 %'
  'T2', 'Measured / commanded damping at 60 % of c_req', '-', R.T2.c_fit(3) / R.T2.c_cmd(3), '0.95-1.05'
  'T2', 'Friction (screw + seals)', 'N', R.T2.Fc_fit, '<= 300'
- 'T2', 'Inertance (rotor + screw)', 'kg', R.T2.b_fit, sprintf('<= %.0f (ride margin study)', R.J_limit * (2*pi / Bd.lead)^2)
+ 'T2', 'Inertance (rotor + screw)', 'kg', R.T2.b_fit, sprintf('<= %.0f (ride margin study)', R.J_target * (2*pi / Bd.lead)^2)
  'T3', 'Coil efficiency at 60 % of c_req', '-', R.T2.eta_coil(3), '>= 0.95 x predicted'
  'T3', 'Rig work to bank at 60 % of c_req', '-', R.T2.eta_total(3), '>= 0.90 x predicted'
  'T4', 'Current-loop time constant', 'ms', 1e3 * R.T4.tau, sprintf('<= %.1f', 2e3 * Bst.tau_cl)
