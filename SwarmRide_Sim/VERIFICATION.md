@@ -6,7 +6,7 @@ This page records **what has been proven, how, and what has not**. Every check c
 run('scripts/run_all_checks.m')     % about 10 minutes; writes results/verification_report.txt
 ```
 
-**Latest result: 64 of 64 checks pass.**
+**Latest result: 73 of 73 checks pass** (Stages 1–4).
 
 Latest report: [`results/verification_report.txt`](results/verification_report.txt).
 
@@ -35,6 +35,13 @@ Latest report: [`results/verification_report.txt`](results/verification_report.t
 | **Controller benefit** | `test_stage3` | C2 better than today; C3 at least as good as C2 (LHB crowded) | Wz 1.559 and 1.528 against today 1.844 |
 | **Controller robustness** | `test_stage3` | Warning ±20 ms; load estimate ±10% at half load; still better than today | All pass; Wz changes under 0.01 |
 | **Fail-safe under control** | `test_stage3` | Harvesting stops after a fault | 0 W |
+| **Stage 4 adds, does not change** | `test_stage4` | Stage 4 with the push and wheel defect off against Stage 3 | 0% difference |
+| **Journey bank model** | `test_stage4` | The 24 h bank simulator against the Simulink bank on the same power for 30 s | Supercap voltage within 0.02 mV |
+| **Energy conservation with pushes** | `test_stage4` | Energy balance with the coil running as a motor (C4, settlement) | 0.06% of the energy that flowed |
+| **Push only where planned** | `test_stage4` | Bank power drawn outside the push windows; loads served during pushes | ≈ 0 W; nothing unserved |
+| **Push benefit** | `test_stage4` | C4 worst seat at the settlement against C3 (LHB crowded) | 0.196 against 0.764 m/s² |
+| **No hidden active behaviour** | `test_stage4` | C4 with no known bad spots against C3 | 0% difference |
+| **Health sensing** | `test_stage4` | Hot-axle alarm before the failure temperature; wheel defect raises the front-bogie coil signal | Alarm at 90 °C; ×5 healthy |
 | **Documents** | `tools/check_docs.py` | Every image and link in every Markdown file exists | All present |
 | **README diagrams** | Rendered with Mermaid 11 | Both diagrams render | OK |
 | **Python tooling** | Fresh run in a clean copy | Preview simulation, both PDF builders, README visuals | All run; preview results identical to the committed ones |
@@ -63,6 +70,8 @@ The test limit is now 5% per band. **All results (Stage 1b, Stage 2, figures and
 | Rail power wrong at 30–100 m wavelengths | Sines on the harmonics of a 2 km period; all results regenerated (Section 2) |
 | Stage 3 controller's stroke weight reused the name of the train start position (`P.s0`), so early Stage 3 runs drove a different stretch of rail | Renamed to `P.s_ref`; Stage 3 rerun on the same rail; guard test added |
 | Load-estimate check at full load was uninformative (over-estimates clip to the top grid point) | Check moved to half load, where errors in either direction move the gains |
+| Stage 4 energy check compared the residual with the *net* energy, which is near zero when the coil both harvests and pushes | The residual is now compared with the total energy that flowed (0.06%) |
+| Hot-axle report quoted a median bearing temperature far past failure (the fault model keeps heating) | The report now gives the delay after the alarm temperature and the share of faults that pass 180 °C first |
 
 ---
 
@@ -76,5 +85,7 @@ The test limit is now 5% per band. **All results (Stage 1b, Stage 2, figures and
 | Casnub friction is smoothed | BOXN figures are approximate | Better wedge model and measured wagon data |
 | Damper designs are first estimates | Copper mass, torque and inertia are rough | Electromagnetic design (FEA) and a bench prototype |
 | No field data | The model has not been compared with a real train | Instrumented run with accelerometers on a coach |
+| Active push power (1.5 kW peak) | Coil heating and H-bridge rating under repeated pushes are not modelled | Bench test of the push on a shaker rig |
+| Journey and health models are simplified | Power tables instead of a 24 h Simulink run; illustrative bearing fault; clean wheel defect | Real routes and timetables; bearing and wheel data from the field |
 
 **In short:** the model is internally consistent, numerically converged and matches hand calculations everywhere it can be checked. Its absolute numbers are only as good as the assumed parameters (Section 4).
