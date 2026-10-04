@@ -1,8 +1,8 @@
 %% REGENERATE_ALL  Rebuilds every model, result, figure and the verification report.
-%   Run after any change to the physics, track or parameters (about 1.5 hours):
+%   Run after any change to the physics, track or parameters (about 2 hours):
 %     >> run scripts/regenerate_all
 %   Order: build models -> Stage 1 checks -> Stage 1b baseline -> Stage 1 scope views -> Stage 2 study
-%          -> Stage 3 study -> Stage 4 study -> verification.
+%          -> Stage 3 study -> Stage 4 study -> bench-prototype study -> verification.
 
 root = fileparts(fileparts(mfilename('fullpath')));
 addpath(fullfile(root, 'scripts'), fullfile(root, 'functions'), fullfile(root, 'builders'), ...
