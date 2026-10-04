@@ -2,6 +2,7 @@
 %
 % Scenario inputs (set in the workspace before running, otherwise defaults are used):
 %   ctrlMode    'C1' fixed-load harvester | 'C2' LPV load-adaptive | 'C3' LPV + Train Brain preview
+%               | 'C4' C3 + active push at known bad spots (Stage 4 model only)
 %               (C0, today's damper, is the Stage 1 model)
 %   load_err    load-estimate error as a fraction (e.g. 0.05 = estimate 5 % heavy)
 %   preview_dt  timing error of the Train Brain warning [s] (+ = warning arrives late)
@@ -14,9 +15,9 @@ if ~exist('preview_dt', 'var'), preview_dt = 0;    end
 if ~exist('rw', 'var'),         rw = 3;            end
 if ~exist('c_floor_frac', 'var'), c_floor_frac = 0; end
 K3 = sr_stage3_consts();
-modes = {'C1', 'C2', 'C3'};
+modes = {'C1', 'C2', 'C3', 'C4'};
 P.ctrl = find(strcmp(ctrlMode, modes));
-if isempty(P.ctrl), error('sr_params_stage3:mode', 'ctrlMode must be C1, C2 or C3'); end
+if isempty(P.ctrl), error('sr_params_stage3:mode', 'ctrlMode must be C1, C2, C3 or C4'); end
 Pinfo.ctrlMode = ctrlMode;
 
 %% 1. Controller timing and preview window
