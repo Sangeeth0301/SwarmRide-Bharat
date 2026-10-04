@@ -95,6 +95,7 @@ if nargin < 3, ovr = []; end
 assignin('base', 'benchTest', test);
 assignin('base', 'benchMode', mode);
 assignin('base', 'BP_override', ovr);
+evalin('base', 'clear D_override');               % no hardware override left from a margin study
 o = sim('SR_Bench', 'EnablePacing', 'off');
 assignin('base', 'BP_override', []);
 end
