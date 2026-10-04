@@ -6,7 +6,7 @@ This page records **what has been proven, how, and what has not**. Every check c
 run('scripts/run_all_checks.m')     % about 10 minutes; writes results/verification_report.txt
 ```
 
-**Latest result: 73 of 73 checks pass** (Stages 1–4).
+**Latest result: 85 of 85 checks pass** (Stages 1–4 and the bench prototype).
 
 Latest report: [`results/verification_report.txt`](results/verification_report.txt).
 
@@ -42,6 +42,13 @@ Latest report: [`results/verification_report.txt`](results/verification_report.t
 | **Push benefit** | `test_stage4` | C4 worst seat at the settlement against C3 (LHB crowded) | 0.196 against 0.764 m/s² |
 | **No hidden active behaviour** | `test_stage4` | C4 with no known bad spots against C3 | 0% difference |
 | **Health sensing** | `test_stage4` | Hot-axle alarm before the failure temperature; wheel defect raises the front-bogie coil signal | Alarm at 90 °C; ×5 healthy |
+| **Hardware sizing** | `test_bench` | Motor torque constant = Ke × lead / 2π; fail-safe resistors give today's damping | Exact |
+| **Bench model = vehicle model** | `test_bench` | Bench model with the vehicle model's simplifications, on the damper's replayed motion | 0.49% of peak force |
+| **Bench energy balance** | `test_bench` | Rig work = friction + copper + fail-safe + inverter + DC-DC + bank + stored | 6 × 10⁻⁸ % |
+| **Bench power** | `test_bench` | Bench model with real losses vs vehicle model, power into the bank | 14.4 vs 14.5 W |
+| **Drive** | `test_bench` | Back-EMF test recovers Ke; current loop time constant; measured damping = command | 0.001%; 0.500 ms as designed; 0.02% |
+| **Fail-safe hardware** | `test_bench` | Damping after the contactor drops; time without electromagnetic force | Today's damping (0.002%); 20 ms = contactor |
+| **Firmware (C)** | `test_bench` + `Bench_Prototype/firmware/test/host_test.c` | Compiled with gcc (no warnings); controller, drive and bank supervisor against 2,700 MATLAB vectors, in double and in float | 10 of 10 host checks pass in both |
 | **Documents** | `tools/check_docs.py` | Every image and link in every Markdown file exists | All present |
 | **README diagrams** | Rendered with Mermaid 11 | Both diagrams render | OK |
 | **Python tooling** | Fresh run in a clean copy | Preview simulation, both PDF builders, README visuals | All run; preview results identical to the committed ones |
@@ -86,6 +93,7 @@ The test limit is now 5% per band. **All results (Stage 1b, Stage 2, figures and
 | Damper designs are first estimates | Copper mass, torque and inertia are rough | Electromagnetic design (FEA) and a bench prototype |
 | No field data | The model has not been compared with a real train | Instrumented run with accelerometers on a coach |
 | Active push power (1.5 kW peak) | Coil heating and H-bridge rating under repeated pushes are not modelled | Bench test of the push on a shaker rig |
+| Bench model is an average (q-axis) model | No PWM ripple, magnetic saturation or cogging; rig assumed to track perfectly; thermal and loss values are estimates | The bench tests T1–T10 (`Bench_Prototype/06_Test_Plan.md`) |
 | Journey and health models are simplified | Power tables instead of a 24 h Simulink run; illustrative bearing fault; clean wheel defect | Real routes and timetables; bearing and wheel data from the field |
 
 **In short:** the model is internally consistent, numerically converged and matches hand calculations everywhere it can be checked. Its absolute numbers are only as good as the assumed parameters (Section 4).
