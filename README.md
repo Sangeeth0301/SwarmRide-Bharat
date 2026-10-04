@@ -236,6 +236,35 @@ The fixed damping command is replaced by the **SwarmRide Controller**: an LPV (l
 
 Full report: **[SwarmRide_Sim/Stage3.md](SwarmRide_Sim/Stage3.md)**
 
+### Stage 4: active push, a full day and health sensing (complete)
+
+Stage 4 answers the three questions Stage 3 left open:
+- Can the Train Brain warning really pay off?
+- Does the bogie stay powered through a whole day and night?
+- Can the self-powered bogie actually see faults?
+
+| Question | Result |
+|---|---|
+| **Active push at known bad spots** (controller C4) | At a track settlement the damper briefly **pushes** with banked energy. The worst-seat jolt drops from 0.97 (today) and 0.76 (C3) to **0.20 m/s²**, i.e. **−80%**, for **345 J (0.1 Wh)**. At a short dip: −67% for 20 J |
+| **A full day on one bogie's bank** (10 h parked at night) | Electronics left on at 8 W drain the battery to its floor. With a **1 W sleep when parked**: LHB 60% → 60%, Vande Bharat → 69%, freight wagon → 80%, and no load is ever unserved. The slow ICF (→ 36%) and all-smooth track need a small top-up |
+| **Hot axle** | The on-bogie sensor alarms **within 10 s** at 90 °C. With trackside checkpoints every 250 km, **82%** of faults pass 180 °C before any check |
+| **Wheel defect** | Seen in the damper's own coil signal: an eccentric wheel **×5** and a three-lobed wheel **×204** above healthy, and located to the front wheelset |
+
+<table>
+  <tr>
+    <td width="50%"><img src="SwarmRide_Sim/results/stage4_active_push.png" alt="Active push at known bad spots"><br><sub><b>The warning pays off:</b> at a known bad spot the damper pushes with its own banked energy, for about 0.1 Wh.</sub></td>
+    <td width="50%"><img src="SwarmRide_Sim/results/stage4_journey.png" alt="Power bank over a full day"><br><sub><b>A full day:</b> with a 1 W sleep when parked, the bank holds or gains charge on LHB, Vande Bharat and freight.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="SwarmRide_Sim/results/stage4_hot_axle.png" alt="Hot axle detection"><br><sub><b>Hot axle:</b> the danger window (30 min) is far shorter than the gap between trackside checkpoints (2.5 h).</sub></td>
+    <td><img src="SwarmRide_Sim/results/stage4_wheel_defect.png" alt="Wheel defect in the coil signal"><br><sub><b>Wheel defect:</b> a sharp peak at the wheel frequency, only on the bogie with the defective wheelset.</sub></td>
+  </tr>
+</table>
+
+**Gate A is met in simulation:** a better ride than fixed dampers at every load, and more power made than used over a full day. **All 73 automatic checks pass.** The investor dashboard ([`dashboard/index.html`](dashboard/index.html)) shows every result from the real simulation output.
+
+Full report: **[SwarmRide_Sim/Stage4.md](SwarmRide_Sim/Stage4.md)**
+
 ### Early estimate (preview study)
 
 Before the Simulink stages, a simplified Python model estimated the gains below. Stage 3 has now measured them in Simulink: a ride improvement of 17% and body vibration down 41% on a crowded LHB coach, at 33 W per bogie (Section *Stage 3* above). Crowded coach, poor track, 160 km/h.
