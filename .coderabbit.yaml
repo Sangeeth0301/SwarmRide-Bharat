@@ -1,0 +1,53 @@
+version: 1
+reviews:
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+      - master
+  path_instructions:
+    - path: "SwarmRide_Sim/**/*.m"
+      instructions: |
+        Review MATLAB code for numerical stability, units, indexing, control gains, and simulation assumptions.
+        Flag logic changes that could alter ride comfort, power budget, or fail-safe behavior.
+        Check whether parameter updates are consistent across model setup, scripts, and verification checks.
+        Verify that any changes to sr_params.m or stage-specific parameters propagate correctly.
+    - path: "SwarmRide_Sim/**/*.slx"
+      instructions: |
+        Inspect model wiring, signal routing, and block configuration changes.
+        Flag accidental regressions in safety logic, energy harvesting, fail-safe behavior, or control structure.
+        Check that simulation block masks and block parameters remain consistent with documentation.
+    - path: "SwarmRide_Sim/tests/**"
+      instructions: |
+        Review verification test logic and test coverage.
+        Flag any weakening of acceptance criteria or pass bands in the verification suite.
+        Ensure test coverage aligns with the stage gate criteria (Stages 1–5).
+    - path: "Bench_Prototype/**/*.c"
+      instructions: |
+        Review C firmware for bounds checking, state transitions, timing assumptions, and sensor handling.
+        Highlight risks in concurrency, interrupt logic, memory use, and fault behavior.
+        Verify that the firmware matches the MATLAB controller ports mentioned in the design docs.
+    - path: "Bench_Prototype/**/*.h"
+      instructions: |
+        Check header files for type safety, macro definitions, and constants.
+        Flag any mismatches between sr_params_*.h generated gains and the MATLAB-calculated values.
+    - path: "Bench_Prototype/**/*.md"
+      instructions: |
+        Check the bench design against its stated requirements (R1–R15) and safety limits.
+        Call out mismatches between expected results, test plan, and actual prototype assumptions.
+        Verify hardware ratings, BOM, and budget alignment.
+    - path: "tools/**/*.py"
+      instructions: |
+        Check correctness, reproducibility, and validation coverage.
+        Flag unsafe assumptions in scripts that generate reports, documentation, or dashboards.
+        Ensure data validation and error handling are robust.
+    - path: "**/*.md"
+      instructions: |
+        Review documentation changes for technical correctness, broken links, and consistency with the engineering claims.
+        Highlight any unsupported claims or mismatches between docs and simulation results.
+        Verify that stage reports and verification claims remain accurate after code changes.
+    - path: ".github/workflows/**"
+      instructions: |
+        Review GitHub Actions workflows for correctness and safety.
+        Ensure MATLAB, Python, and C checks remain properly configured and do not mask failures.
