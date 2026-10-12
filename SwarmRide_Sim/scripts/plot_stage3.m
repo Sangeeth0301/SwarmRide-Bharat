@@ -117,6 +117,6 @@ try
     print('-sSR_Stage3/SwarmRide Controller (LPV + preview)', '-dpng', '-r150', fullfile(resdir, 'stage3_model_controller.png'));
     print('-sSR_Stage3/Train Brain (track preview)', '-dpng', '-r150', fullfile(resdir, 'stage3_model_trainbrain.png'));
 catch err
-    warning('Diagram export failed: %s', err.message);
+    warning('swarmride:diagram', 'Diagram export failed: %s', err.message);
 end
 fprintf('Saved results/stage3_*.png\n');

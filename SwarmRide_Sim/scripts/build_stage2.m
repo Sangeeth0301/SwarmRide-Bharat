@@ -280,7 +280,7 @@ sr_add_scope(mdl, 'Scope 7 - Power bank', {[PB '/1'], [PB '/2']}, ...
 try
     set_param(mdl, 'EnablePacing', 'on', 'PacingRate', 1);
 catch err
-    warning('Real-time pacing not set: %s', err.message);
+    warning('swarmride:pacing', 'Real-time pacing not set: %s', err.message);
 end
 
 try

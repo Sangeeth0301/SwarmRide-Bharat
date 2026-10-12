@@ -16,8 +16,8 @@ say = @(varargin) [fprintf(varargin{:}), fprintf(fid, varargin{:})];
 %% 1. Natural frequencies (passive damper)
 say('=== 1. Modes of the coach (passive oil damper) ===\n');
 for mt = [0 15]
-    clear v_kmh mload_t trackType; trainType = 'GENERIC';
-    v_kmh = 160; mload_t = mt; trackType = 'poor'; sr_params;
+    clear v_kmh mload_t trackType; trainType = 'GENERIC'; %#ok<NASGU> read by sr_params
+    v_kmh = 160; mload_t = mt; trackType = 'poor'; sr_params; %#ok<NASGU>
     [~, ~, ~, info] = sr_linear_model(P, P.cs);
     say('Load %2d t: ', mt);
     say('%.2f Hz (zeta %.2f)  ', [info.f_hz info.zeta]');
@@ -28,8 +28,8 @@ say('Hand check, body bounce (crowded): sqrt(keff/m)/2pi = %.2f Hz\n\n', sqrt(ke
 
 %% 2. Simulink vs state space on the same track
 say('=== 2. Simulink vs independent state-space model ===\n');
-clear v_kmh mload_t trackType; trainType = 'GENERIC';
-v_kmh = 160; mload_t = 15; trackType = 'poor';
+clear v_kmh mload_t trackType; trainType = 'GENERIC'; %#ok<NASGU> read by sr_params
+v_kmh = 160; mload_t = 15; trackType = 'poor'; %#ok<NASGU> read by sr_params
 out = sim(mdl, 'EnablePacing', 'off');
 sr_params; TR = sr_track(P, trackType);
 [A, Bw] = sr_linear_model(P, P.cs);
@@ -47,8 +47,8 @@ say('=== 3. Ride on poor track, 160 km/h (passive oil damper) ===\n');
 rmsv = zeros(1, 2); k = 0;
 for mt = [0 15]
     k = k + 1;
-    clear v_kmh mload_t trackType; trainType = 'GENERIC';
-    v_kmh = 160; mload_t = mt; trackType = 'poor';
+    clear v_kmh mload_t trackType; trainType = 'GENERIC'; %#ok<NASGU> read by sr_params
+    v_kmh = 160; mload_t = mt; trackType = 'poor'; %#ok<NASGU> read by sr_params
     o = sim(mdl, 'EnablePacing', 'off');
     a = squeeze(o.az.Data); a = a(1, o.az.Time > 3);
     st = squeeze(o.stroke.Data);

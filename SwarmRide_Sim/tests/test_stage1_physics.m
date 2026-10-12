@@ -33,7 +33,7 @@ R = [R; sr_check('Passive damper never gives energy (min F*v)', ...
     min(0, min(F .* vr, [], 'all')), 1e-9, 'W')];
 end
 
-function P = params_for(trainType, mload_t) %#ok<INUSD>
+function P = params_for(trainType, mload_t) %#ok<INUSD,STOUT> outputs are set by the parameter scripts
 % Builds P for one vehicle and load without touching the base workspace
 % (sr_params is a script, so it runs in this function's workspace).
 trackType = 'poor'; %#ok<NASGU>

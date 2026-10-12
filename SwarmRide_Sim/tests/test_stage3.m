@@ -41,7 +41,7 @@ for le = [-0.10 0.10]
 end
 
 % 4. fail-safe still works under the controller
-[of, Pf] = sr_run('SR_Stage3', 'LHB', 'designType', 'C', 'ctrlMode', 'C3', 't_fault', 15);
+[of, ~] = sr_run('SR_Stage3', 'LHB', 'designType', 'C', 'ctrlMode', 'C3', 't_fault', 15);
 tf = of.az.Time;  aft = tf > 15.05;
 pt = sr_sig(of, 'Pterm', tf);
 R = [R; sr_check('C3 fail-safe: harvesting stops after the fault', max(abs(pt(:, aft)), [], 'all'), 1e-6, 'W')];
@@ -52,7 +52,7 @@ t = o.az.Time;  a = squeeze(o.az.Data);
 W = sr_sperling(a(1, t > 3), 1 / P.Ts);
 end
 
-function CD = design_for(trainType) %#ok<INUSD>
+function CD = design_for(trainType) %#ok<INUSD,STOUT> outputs are set by the parameter scripts
 designType = 'C'; ctrlMode = 'C3'; trackType = 'poor'; %#ok<NASGU>
 sr_params;
 sr_params_stage3;

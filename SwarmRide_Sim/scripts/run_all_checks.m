@@ -31,7 +31,7 @@ end
 
 fid = fopen(fullfile(root, 'results', 'verification_report.txt'), 'w');
 say = @(varargin) [fprintf(varargin{:}), fprintf(fid, varargin{:})];
-say('SwarmRide verification report  (%s, MATLAB %s)\n\n', datestr(now, 'yyyy-mm-dd HH:MM'), version('-release'));
+say('SwarmRide verification report  (%s, MATLAB %s)\n\n', char(datetime('now', 'Format', 'yyyy-MM-dd HH:mm')), version('-release'));
 cur = '';
 for k = 1:numel(T)
     if ~strcmp(T(k).test, cur)

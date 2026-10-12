@@ -33,7 +33,7 @@ eta_c = mean(Pdc(:, k), 'all') / mean(Pterm(:, k), 'all');
 R = [R; sr_check('Converter chain vs 0.95 x 0.94', 100 * abs(eta_c - PA.eta_rect * PA.eta_dcdc), 0.5, 'points', ...
     sprintf('%.4f vs %.4f', eta_c, PA.eta_rect * PA.eta_dcdc))];
 [oH, PH] = sr_run('SR_Stage2', 'LHB', 'designType', 'A', 'cmdMode', 'harvest');
-th = oH.az.Time;  kh = th > 3;
+th = oH.az.Time;
 eh = mean(sr_sig(oH, 'Pterm', th), 'all') / mean(sr_sig(oH, 'Pgen', th), 'all');
 R = [R; sr_check('Harvest setting: coil efficiency = 0.5 (load = coil resistance)', 100 * abs(eh - 0.5), 1, 'points', ...
     sprintf('%.3f', eh))];

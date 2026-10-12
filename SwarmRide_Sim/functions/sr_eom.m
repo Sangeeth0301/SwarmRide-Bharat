@@ -8,7 +8,7 @@ function acc = sr_eom(q, qd, w, wd, Fd, P) %#codegen
 %   Used both by the Simulink model and by sr_linear_model, so there is one source of truth.
 
 z = q(1); th = q(2); z1 = q(3); z2 = q(4);
-zd = qd(1); thd = qd(2); z1d = qd(3); z2d = qd(4);
+z1d = qd(3); z2d = qd(4);               % body speeds enter through the damper force Fd
 
 % Secondary suspension: air spring + damper between body and each bogie
 d1 = (z + P.lb*th) - z1;                 % front stroke

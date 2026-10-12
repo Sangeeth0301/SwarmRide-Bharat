@@ -154,7 +154,7 @@ say('%-5s %-5s %5.1ft %-3s | %6.3f %6.3f %6.3f | %5.1fmm %7.1fW %+7.1fW\n', r.tr
     M.Wz, M.Wzmax, M.rms, M.stroke, M.Pdc, M.Pnet);
 end
 
-function [P, CD] = design_for(trainType) %#ok<INUSD>
+function [P, CD] = design_for(trainType) %#ok<INUSD,STOUT> outputs are set by the parameter scripts
 % Parameters and LPV design of one vehicle (full load, top speed, design C, C3) without a simulation.
 designType = 'C'; ctrlMode = 'C3'; trackType = 'poor'; %#ok<NASGU>
 sr_params;

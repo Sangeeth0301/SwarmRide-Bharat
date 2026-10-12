@@ -3,10 +3,12 @@
 </p>
 
 <p align="center">
+  <a href="https://sangeeth0301.github.io/SwarmRide-Bharat/"><img src="https://img.shields.io/badge/website-live-E07A1F?style=flat-square" alt="website"></a>
   <img src="https://img.shields.io/badge/status-simulation%20complete%20%C2%B7%20bench%20prototype%20designed-2A9D8F?style=flat-square" alt="status">
   <img src="https://img.shields.io/badge/MATLAB%20%2F%20Simulink-R2024b-0076A8?style=flat-square" alt="MATLAB/Simulink R2024b">
   <img src="https://img.shields.io/badge/rolling%20stock-LHB%20%C2%B7%20Vande%20Bharat%20%C2%B7%20ICF%20%C2%B7%20BOXN-13233A?style=flat-square" alt="rolling stock">
-  <a href="SwarmRide_Sim/VERIFICATION.md"><img src="https://img.shields.io/badge/verification-test%20suite-2A9D8F?style=flat-square" alt="verification"></a>
+  <a href="https://github.com/Sangeeth0301/SwarmRide-Bharat/actions/workflows/ci.yml"><img src="https://github.com/Sangeeth0301/SwarmRide-Bharat/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="SwarmRide_Sim/VERIFICATION.md"><img src="https://img.shields.io/badge/verification-85%20of%2085%20pass-2A9D8F?style=flat-square" alt="verification"></a>
   <img src="https://img.shields.io/badge/licence-proprietary-8A93A0?style=flat-square" alt="licence">
 </p>
 
@@ -394,6 +396,7 @@ The pitch and preview tooling use Python 3 (numpy, scipy, matplotlib, Pillow) an
 | [Technical document](SwarmRide_Bharat_Technical_Document.md) | Engineers |
 | [Complete guide](SwarmRide_Bharat_Complete_Guide.md) | Learning the project from scratch |
 | [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Stage 3 report](SwarmRide_Sim/Stage3.md) · [Stage 4 report](SwarmRide_Sim/Stage4.md) · [Stage 5 bench model](SwarmRide_Sim/Stage5_Bench.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) · [Verification](SwarmRide_Sim/VERIFICATION.md) | Simulation |
+| [Project review](docs/REVIEW.md) | Code Analyzer, firmware static analysis and verification results, and recommendations |
 | [Project website](frontend/index.html) | The whole project explained on one page, with the photos, figures and a warning-time calculator (run `python -m http.server` in the repository root, then open `/frontend/index.html`) |
 | [Bench prototype](Bench_Prototype/README.md) | Building and testing the first damper: requirements, mechanical and electronics design, firmware, test plan, budget |
 | [Dashboard](dashboard/index.html) | All simulation results on one page (run `python -m http.server` in the repository root, then open `/dashboard/index.html`) |
