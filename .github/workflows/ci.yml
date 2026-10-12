@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  firmware:
+    name: Firmware (strict build, static analyzer, host test vs MATLAB)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Bench_Prototype/firmware
+    steps:
+      - uses: actions/checkout@v4
+      - name: Strict build with GCC's static analyzer (double and float)
+        run: make strict
+      - name: Host test against the MATLAB vectors (double and float)
+        run: make test
+
+  docs:
+    name: Documents (every local link and image exists)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check Markdown links and images
+        run: python tools/check_docs.py
+
+  matlab:
+    name: MATLAB Code Analyzer (all .m files)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: matlab-actions/setup-matlab@v2
+        with:
+          release: R2024b
+      - name: Run codeIssues and fail on any finding
+        uses: matlab-actions/run-command@v2
+        with:
+          command: |
+            I = codeIssues("SwarmRide_Sim");
+            T = I.Issues;
+            fprintf("%d files analysed, %d issues\n", numel(I.Files), height(T));
+            if height(T) > 0
+                disp(T(:, ["FullFilename", "LineStart", "Severity", "Description"]));
+                error("ci:codeIssues", "MATLAB Code Analyzer found %d issues.", height(T));
+            end
