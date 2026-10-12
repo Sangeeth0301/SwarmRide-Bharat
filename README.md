@@ -3,10 +3,12 @@
 </p>
 
 <p align="center">
+  <a href="https://sangeeth0301.github.io/SwarmRide-Bharat/"><img src="https://img.shields.io/badge/website-live-E07A1F?style=flat-square" alt="website"></a>
   <img src="https://img.shields.io/badge/status-simulation%20complete%20%C2%B7%20bench%20prototype%20designed-2A9D8F?style=flat-square" alt="status">
   <img src="https://img.shields.io/badge/MATLAB%20%2F%20Simulink-R2024b-0076A8?style=flat-square" alt="MATLAB/Simulink R2024b">
   <img src="https://img.shields.io/badge/rolling%20stock-LHB%20%C2%B7%20Vande%20Bharat%20%C2%B7%20ICF%20%C2%B7%20BOXN-13233A?style=flat-square" alt="rolling stock">
-  <a href="SwarmRide_Sim/VERIFICATION.md"><img src="https://img.shields.io/badge/verification-test%20suite-2A9D8F?style=flat-square" alt="verification"></a>
+  <a href="https://github.com/Sangeeth0301/SwarmRide-Bharat/actions/workflows/ci.yml"><img src="https://github.com/Sangeeth0301/SwarmRide-Bharat/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="SwarmRide_Sim/VERIFICATION.md"><img src="https://img.shields.io/badge/verification-85%20of%2085%20pass-2A9D8F?style=flat-square" alt="verification"></a>
   <img src="https://img.shields.io/badge/licence-proprietary-8A93A0?style=flat-square" alt="licence">
 </p>
 
