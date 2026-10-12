@@ -1,4 +1,4 @@
-SwarmRide verification report  (2026-10-04 17:09, MATLAB 2024b)
+SwarmRide verification report  (2026-10-12 08:24, MATLAB 2024b)
 
 --- test_sperling ---
 PASS  Sperling Wz, 1 Hz sine vs closed form                                             0 %          (limit 0.5)  Wz 1.967 vs 1.967
