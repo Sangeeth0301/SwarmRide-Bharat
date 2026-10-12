@@ -1,5 +1,9 @@
 # Changelog
 
+## Project website
+- `frontend/index.html`: the whole project on one page in simple English: problem, idea, how the smart damper works, Train Brain with a warning-time calculator, real bogies, the proof of Stages 1-5 as tabs with figures, the bench prototype, positioning, roadmap, where the project stands, and links to every document
+- Light and dark themes, phone layout, click-to-enlarge figures; linked from the README and the dashboard
+
 ## Stage 5: bench prototype (design package for Gate B)
 - Hardware sizing of the design-C damper from its duty in the coach simulation (`functions/bp_hardware.m`): 48 V-class servo motor (Kt 0.40 N m/A rms, 14 N m peak), 25 mm x 10 mm-lead ball screw, 8 kN, 60 V / 46 A four-quadrant drive, 3 x 1.0 ohm fail-safe resistors on a changeover contactor, 10 F supercapacitor + 128 Wh LiFePO4
 - Bench model `SR_Bench.slx`: test rig, drive firmware at 10 kHz (PI + back-EMF feed-forward, voltage limit, fail-safe latch), contactor drop-out, inverter and DC-DC losses, supercapacitor, winding temperature, energy meters
