@@ -52,7 +52,7 @@ t = o.az.Time;  a = squeeze(o.az.Data);
 W = sr_sperling(a(1, t > 3), 1 / P.Ts);
 end
 
-function CD = design_for(trainType) %#ok<INUSD>
+function CD = design_for(trainType) %#ok<INUSD,STOUT> outputs are set by the parameter scripts
 designType = 'C'; ctrlMode = 'C3'; trackType = 'poor'; %#ok<NASGU>
 sr_params;
 sr_params_stage3;

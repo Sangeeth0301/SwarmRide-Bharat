@@ -156,7 +156,7 @@ r = struct('track', trk, 'ctrl', c, 'win', w, 't', t, 'az', a(1, :), 'peak', max
     'peakw', max(abs(a(:, k)), [], 'all'), 'rms', sqrt(mean(a(1, k).^2)), 'Epush', Ep, 'Ppush', Pp);
 end
 
-function P = params_for(trainType) %#ok<INUSD>
+function P = params_for(trainType) %#ok<INUSD,STOUT> outputs are set by the parameter scripts
 designType = 'C'; trackType = 'poor'; %#ok<NASGU>
 sr_params;
 end

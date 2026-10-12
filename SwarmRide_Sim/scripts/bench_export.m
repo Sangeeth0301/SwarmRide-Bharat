@@ -16,13 +16,13 @@ write_vectors(fullfile(out, 'firmware', 'test', 'vectors'), P, HW);
 fprintf('Wrote drive files, firmware parameters and test vectors to %s\n', out);
 end
 
-function [P, D, HW] = lhb_params(U)
+function [P, D, HW] = lhb_params(U) %#ok<STOUT> P and D are set by the parameter scripts
 % the prototype's vehicle: LHB crowded, 160 km/h, design C, controller C3 (runs the scripts in
 % this function's own workspace, so no scenario variables leak in)
 trainType = 'LHB'; designType = 'C'; trackType = 'poor'; v_kmh = 160; mload_t = 12; ctrlMode = 'C3'; %#ok<NASGU>
 sr_params;
 sr_params_stage3;
-HW = bp_hardware(D, P, U);
+HW = bp_hardware(D, P, U); %#ok<NODEF> D is set by sr_params
 HW.Vbank_min = P.Vmin;
 end
 
