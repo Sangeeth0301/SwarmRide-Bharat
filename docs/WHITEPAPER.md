@@ -5,7 +5,7 @@
 Version 0.2 · October 2026 · Sangeeth
 Status: simulation complete, Stages 1–4. Gate A met in simulation. Bench prototype designed (Stage 5: hardware ratings, bench model, C firmware, test plan); building and testing it is next (Gate B).
 
-> **Confidential.** This document describes an invention that has not yet been filed for patent protection. Do not publish or present it openly before a provisional patent application is filed.
+> **All rights reserved.** This whitepaper is public for reference. No licence is granted to use, copy or build the SwarmRide design.
 
 ---
 

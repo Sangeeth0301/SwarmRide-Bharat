@@ -15,7 +15,7 @@
   while the locomotive warns every coach of the bump ahead.</b>
 </p>
 
-> **Confidential.** This repository describes an invention being prepared for patent filing. Do not share or make it public before a provisional application is filed.
+> **All rights reserved.** This repository is public for reference. No licence is granted to use, copy, manufacture or distribute the SwarmRide design, models or code (see *Credits and licence*).
 
 ---
 
