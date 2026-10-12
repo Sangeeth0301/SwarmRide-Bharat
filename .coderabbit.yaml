@@ -1,0 +1,36 @@
+# CodeRabbit review settings for SwarmRide Bharat
+language: en-US
+reviews:
+  profile: assertive
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!**/*.mat"
+    - "!**/*.slx"
+    - "!**/*.png"
+    - "!**/*.jpg"
+    - "!**/*.pdf"
+    - "!**/*.docx"
+    - "!Bench_Prototype/drive_files/**"
+    - "!Bench_Prototype/firmware/test/vectors/**"
+    - "!Bench_Prototype/firmware/include/sr_params_lhb.h"
+    - "!dashboard/data.js"
+  path_instructions:
+    - path: "SwarmRide_Sim/**/*.m"
+      instructions: >-
+        MATLAB/Simulink simulation of a regenerative train suspension. Check physics and units (SI),
+        sign conventions of forces and power, energy balance, numerical stability of fixed-step
+        solvers, and that MATLAB Function block code stays code-generation compatible.
+    - path: "Bench_Prototype/firmware/**/*.{c,h}"
+      instructions: >-
+        Embedded C99 for a Cortex-M4F. Each function is a port of a MATLAB function named in its
+        header comment; check that the port matches, float/double safety, array bounds, and that
+        the fail-safe can only drop the contactor, never hold it.
+    - path: "**/*.md"
+      instructions: >-
+        Engineering documentation. Check that numbers agree with SwarmRide_Sim/results reports and
+        that claims are not stronger than the simulation supports.
+chat:
+  auto_reply: true
