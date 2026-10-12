@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SwarmRide Bharat</title>
+<meta name="description" content="SwarmRide Bharat: a self-powered, load-adaptive, train-synchronised suspension for Indian Railways, explained from the problem to the bench prototype.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #13233A; --navy2: #1E3557; --orange: #E07A1F; --orange-d: #A8520F; --teal: #2A9D8F; --teal-d: #1F6F66;
+    --red: #D64541;
+    --ink: #1F2A37; --muted: #5E6878; --faint: #8A93A0; --line: #E3E7ED;
+    --bg: #F7F5F0; --card: #FFFFFF; --soft: #FBF8F1; --hero: #FFFFFF;
+    --chip: #EEF3FA; --done: #E6F4F1; --next: #FFF1E3;
+    --shadow: 0 1px 2px rgba(19,35,58,.05), 0 8px 24px rgba(19,35,58,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --navy: #E8EDF5; --navy2: #C9D3E2; --orange: #F0974A; --orange-d: #F6B27A; --teal: #4CC2B3; --teal-d: #7FD8CC;
+      --red: #F07A73;
+      --ink: #E4E8EE; --muted: #A9B3C1; --faint: #7D8796; --line: #2A3546;
+      --bg: #0F1722; --card: #162131; --soft: #1A2738; --hero: #121C2A;
+      --chip: #1F2D41; --done: #15312E; --next: #3A2814;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --navy: #E8EDF5; --navy2: #C9D3E2; --orange: #F0974A; --orange-d: #F6B27A; --teal: #4CC2B3; --teal-d: #7FD8CC;
+    --red: #F07A73;
+    --ink: #E4E8EE; --muted: #A9B3C1; --faint: #7D8796; --line: #2A3546;
+    --bg: #0F1722; --card: #162131; --soft: #1A2738; --hero: #121C2A;
+    --chip: #1F2D41; --done: #15312E; --next: #3A2814;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.55;
+         font-family: Inter, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 16px; }
+  a { color: var(--teal-d); }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+  /* nav */
+  nav.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--card) 92%, transparent);
+            backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav.top .wrap { display: flex; align-items: center; gap: 18px; height: 60px; }
+  .brand { font-weight: 800; font-size: 18px; color: var(--navy); text-decoration: none; white-space: nowrap; }
+  .brand span { color: var(--orange); }
+  .links { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+  .links::-webkit-scrollbar { display: none; }
+  .links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; padding: 7px 10px;
+             border-radius: 8px; white-space: nowrap; }
+  .links a:hover, .links a.on { color: var(--navy); background: var(--chip); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; text-decoration: none;
+         padding: 9px 16px; border-radius: 10px; border: 1px solid transparent; white-space: nowrap; cursor: pointer; }
+  .btn.primary { background: var(--orange); color: #fff; }
+  .btn.primary:hover { filter: brightness(1.05); }
+  .btn.ghost { background: var(--card); color: var(--navy); border-color: var(--line); }
+  .btn.ghost:hover { border-color: var(--faint); }
+  .theme { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 10px; width: 38px; height: 38px;
+           cursor: pointer; font-size: 16px; flex: none; }
+
+  /* hero */
+  .hero { background: var(--hero); border-bottom: 1px solid var(--line); }
+  .hero .wrap { padding-top: 64px; padding-bottom: 56px; }
+  .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--orange-d); margin: 0 0 12px; }
+  h1 { font-size: clamp(36px, 6vw, 64px); line-height: 1.04; margin: 0; color: var(--navy); letter-spacing: -1.5px; font-weight: 800; }
+  h1 span { color: var(--orange); }
+  .lede { font-size: clamp(17px, 2.1vw, 21px); color: var(--muted); max-width: 760px; margin: 18px 0 26px; }
+  .lede b { color: var(--ink); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .pill { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: var(--chip); color: var(--navy2); }
+  .pill.ok { background: var(--done); color: var(--teal-d); }
+  .pill.warn { background: var(--next); color: var(--orange-d); }
+  .photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+  .photo { margin: 0; border-radius: 16px; overflow: hidden; background: var(--card); box-shadow: var(--shadow); }
+  .photo img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+  .photo figcaption { font-size: 14px; font-weight: 600; padding: 10px 14px; color: var(--navy); }
+  .credit { font-size: 12px; color: var(--faint); margin-top: 10px; }
+
+  /* stats */
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 34px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  .stat .v { font-size: 32px; font-weight: 800; color: var(--navy); letter-spacing: -0.5px; line-height: 1.1; }
+  .stat .l { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
+
+  /* sections */
+  section.block { padding: 72px 0; border-bottom: 1px solid var(--line); }
+  section.block.alt { background: var(--soft); }
+  h2 { font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; margin: 0 0 12px; color: var(--navy); letter-spacing: -0.6px; font-weight: 800; }
+  .intro { color: var(--muted); font-size: 17px; max-width: 780px; margin: 0 0 32px; }
+  h3 { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+  .grid { display: grid; gap: 16px; }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+  .card p { margin: 6px 0 0; color: var(--muted); font-size: 15px; }
+  .card .num { font-size: 13px; font-weight: 800; color: var(--orange); letter-spacing: 1px; margin-bottom: 8px; }
+  .card.feature { background: #13233A; border-color: #13233A; }
+  .card.feature h3 { color: #FFFFFF; }
+  .card.feature p { color: #D5DCE6; }
+  .card.feature b { color: #FFFFFF; }
+  td.k { white-space: nowrap; }
+  .card .ev { font-size: 13px; color: var(--faint); margin-top: 10px; }
+  .eq { font-family: "Cambria Math", "STIX Two Math", Georgia, serif; font-size: 16px; color: var(--orange-d); font-weight: 600; margin-top: 10px; }
+  .split { display: grid; grid-template-columns: 1.25fr 1fr; gap: 32px; align-items: center; }
+  .split.rev { grid-template-columns: 1fr 1.25fr; }
+  .fig { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 10px; box-shadow: var(--shadow); cursor: zoom-in; }
+  .fig img { border-radius: 10px; width: 100%; }
+  .fig figcaption { font-size: 13.5px; color: #5E6878; padding: 10px 6px 4px; }
+  ol.steps { list-style: none; padding: 0; margin: 0; counter-reset: s; }
+  ol.steps li { counter-increment: s; position: relative; padding: 0 0 18px 48px; }
+  ol.steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 32px; height: 32px; border-radius: 50%;
+                        background: var(--navy); color: var(--card); font-weight: 700; display: grid; place-items: center; font-size: 14px; }
+  ol.steps b { color: var(--navy); }
+  ol.steps span { color: var(--muted); display: block; font-size: 15px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12.5px; text-transform: uppercase; letter-spacing: .8px; color: var(--faint); font-weight: 700; }
+  td b { color: var(--navy); }
+  .tablecard { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 8px 10px; overflow-x: auto; }
+
+  /* calculator */
+  .calc { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+  .calc label { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); font-weight: 600; margin-top: 14px; }
+  .calc label output { color: var(--navy); }
+  .calc input[type=range] { width: 100%; accent-color: var(--orange); margin-top: 8px; }
+  .answer { margin-top: 18px; padding: 16px; border-radius: 12px; background: var(--chip); }
+  .answer .big { font-size: 40px; font-weight: 800; color: var(--navy); line-height: 1; }
+  .answer .small { font-size: 14px; color: var(--muted); margin-top: 6px; }
+  .train { display: flex; gap: 4px; margin-top: 16px; }
+  .train i { flex: 1; height: 16px; border-radius: 4px; background: var(--line); }
+  .train i.loco { background: var(--navy); flex: 1.3; }
+  .train i.hit { background: var(--orange); }
+
+  /* proof tabs */
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .tab { border: 1px solid var(--line); background: var(--card); color: var(--muted); font: inherit; font-size: 14px; font-weight: 600;
+         padding: 10px 14px; border-radius: 12px; cursor: pointer; text-align: left; }
+  .tab small { display: block; font-weight: 500; font-size: 12px; color: var(--faint); }
+  .tab[aria-selected="true"] { background: var(--navy); color: var(--card); border-color: var(--navy); }
+  .tab[aria-selected="true"] small { color: inherit; opacity: .75; }
+  .panel { display: none; }
+  .panel.on { display: grid; grid-template-columns: 1fr 1.15fr; gap: 28px; align-items: start; }
+  .panel ul { margin: 10px 0 0; padding-left: 20px; color: var(--muted); }
+  .panel li { margin: 6px 0; }
+  .panel li b { color: var(--ink); }
+  .badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--done); color: var(--teal-d); margin-bottom: 10px; }
+  .figs { display: grid; gap: 14px; }
+
+  /* roadmap */
+  .road { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+  .step { border-radius: 14px; padding: 14px; border: 1px solid var(--line); background: var(--card); }
+  .step .s { font-size: 11.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+  .step.done .s { color: var(--teal-d); } .step.now .s { color: var(--orange-d); } .step.later .s { color: var(--faint); }
+  .step.done { border-top: 4px solid var(--teal); } .step.now { border-top: 4px solid var(--orange); } .step.later { border-top: 4px solid var(--line); }
+  .step h4 { margin: 6px 0 4px; font-size: 15px; color: var(--navy); }
+  .step p { margin: 0; font-size: 13px; color: var(--muted); }
+
+  .status { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .status .card h3 { display: flex; align-items: center; gap: 8px; }
+  .status ul { margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: 15px; }
+  .status li { margin: 6px 0; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+  .docs a.doc { display: block; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; color: inherit; }
+  .docs a.doc:hover { border-color: var(--faint); }
+  .docs a.doc b { color: var(--navy); display: block; }
+  .docs a.doc span { color: var(--muted); font-size: 14px; }
+
+  .callout { border-left: 4px solid var(--orange); background: var(--card); border-radius: 0 12px 12px 0; padding: 14px 18px; color: var(--muted); margin-top: 22px; }
+  .callout b { color: var(--ink); }
+
+  footer { padding: 36px 0 48px; color: var(--faint); font-size: 13.5px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  /* lightbox */
+  .lb { position: fixed; inset: 0; background: rgba(8,12,20,.86); display: none; place-items: center; z-index: 50; padding: 24px; cursor: zoom-out; }
+  .lb.on { display: grid; }
+  .lb img { max-height: 90vh; max-width: 96vw; border-radius: 10px; background: #fff; }
+
+  @media (max-width: 980px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .g3, .g4, .status { grid-template-columns: 1fr 1fr; }
+    .split, .split.rev, .panel.on { grid-template-columns: 1fr; }
+    .road { grid-template-columns: repeat(2, 1fr); }
+    nav.top .btn.ghost { display: none; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 16px; }
+    .photos, .g2, .g3, .g4, .status, .stats { grid-template-columns: 1fr; }
+    .road { grid-template-columns: 1fr; }
+    section.block { padding: 52px 0; }
+    nav.top .btn.primary { display: none; }
+    .hero .wrap { padding-top: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="#top">SwarmRide <span>Bharat</span></a>
+    <div class="links" id="links">
+      <a href="#problem">Problem</a>
+      <a href="#idea">Idea</a>
+      <a href="#how">How it works</a>
+      <a href="#brain">Train Brain</a>
+      <a href="#bogie">On the bogie</a>
+      <a href="#proof">Proof</a>
+      <a href="#bench">Bench prototype</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#status">Where we are</a>
+      <a href="#docs">Documents</a>
+    </div>
+    <button class="theme" id="theme" title="Switch light / dark" aria-label="Switch light or dark theme">◐</button>
+    <a class="btn ghost" href="../dashboard/index.html">Live dashboard</a>
+    <a class="btn primary" href="#proof">See the proof</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Smart train suspension for Indian Railways</p>
+    <h1>SwarmRide <span>Bharat</span></h1>
+    <p class="lede">Every bogie <b>powers itself</b>, <b>tunes its own ride</b> and <b>watches its own safety</b>, while the locomotive <b>warns every coach of the bump ahead</b>. One part changes: today's oil damper becomes a smart electromagnetic damper.</p>
+    <div class="row">
+      <span class="pill ok">✓ Simulation complete (Gate A met)</span>
+      <span class="pill ok">✓ Bench prototype designed</span>
+      <span class="pill warn">→ Next: build and test it (Gate B)</span>
+      <span class="pill">Confidential · pre-patent</span>
+    </div>
+
+    <div class="stats" aria-label="Headline results">
+      <div class="stat"><div class="v">−17%</div><div class="l">ride index, crowded LHB coach at 160 km/h</div></div>
+      <div class="stat"><div class="v">−41%</div><div class="l">body vibration on the same coach</div></div>
+      <div class="stat"><div class="v">33–38 W</div><div class="l">into each coach bogie's power bank on rough track; it needs 8 W</div></div>
+      <div class="stat"><div class="v">−80%</div><div class="l">worst-seat jolt at a known bad spot, for 0.1 Wh</div></div>
+      <div class="stat"><div class="v">85 / 85</div><div class="l">automatic verification checks pass</div></div>
+    </div>
+
+    <div class="photos">
+      <figure class="photo"><img src="../pdf/photos/casnub_crop.jpg" alt="Casnub bogie of a BOXN goods wagon" loading="lazy"><figcaption>Goods: Casnub bogie, BOXN wagon</figcaption></figure>
+      <figure class="photo"><img src="../pdf/photos/vande_bharat.jpg" alt="Vande Bharat train at a platform" loading="lazy"><figcaption>Passenger: Vande Bharat</figcaption></figure>
+      <figure class="photo"><img src="../pdf/photos/air_spring.jpg" alt="LHB coach bogie air spring" loading="lazy"><figcaption>Coach bogie: LHB air spring</figcaption></figure>
+    </div>
+    <p class="credit">Photos: Wikimedia Commons (CC BY-SA / CC0) and project archive. Credits: <a href="../pdf/photos/CREDITS.md">pdf/photos/CREDITS.md</a></p>
+  </div>
+</header>
+
+<main>
+
+<!-- PROBLEM -->
+<section class="block" id="problem">
+  <div class="wrap">
+    <p class="eyebrow">1 · The problem</p>
+    <h2>Today's dampers waste energy, ride worse when full, and see nothing.</h2>
+    <p class="intro">Every coach and wagon on Indian Railways carries secondary dampers that turn vibration into heat and are tuned for one load. The same fleet loses trains to track defects, hot axles and train parting. Its goods wagons have no electricity to run any sensor.</p>
+    <div class="grid g3">
+      <div class="card"><div class="num">TRACK</div><h3>Track defects cause the most derailments</h3><p>171 derailments from poor track maintenance in 2017–21. Track-recording runs fell 30–100% short of schedule.</p><div class="ev">CAG Report 22 of 2022</div></div>
+      <div class="card"><div class="num">BEARINGS</div><h3>Hot axles are caught only at fixed sites</h3><p>About 3 cases a day. Bearings are checked at only about 25 trackside sites.</p><div class="ev">Railway Board, 2025</div></div>
+      <div class="card"><div class="num">COUPLINGS</div><h3>Train parting is seen only at the last wagon</h3><p>643 partings and 2,059 wagon detachments in 2018–19.</p><div class="ev">Railway records</div></div>
+      <div class="card"><div class="num">COMFORT</div><h3>Crowded coaches ride worse</h3><p>Fixed dampers lose 17–30% of their damping as passengers board.</p><div class="ev">Our simulation, Stage 1</div></div>
+      <div class="card"><div class="num">ENERGY</div><h3>Damper energy is thrown away</h3><p>20–90 W per coach bogie, and about 210 W per loaded wagon bogie, all turned into heat.</p><div class="ev">Our simulation, Stage 1</div></div>
+      <div class="card"><div class="num">POWER</div><h3>Goods wagons have no electricity</h3><p>No power means no continuous monitoring on the wagons that carry the most risk.</p><div class="ev">Indian Railways freight stock</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- IDEA -->
+<section class="block alt" id="idea">
+  <div class="wrap">
+    <p class="eyebrow">2 · The idea</p>
+    <h2>One smart part, five jobs.</h2>
+    <p class="intro">SwarmRide replaces the passive damper with an <b>electromagnetic smart damper</b>, in the same mounting points. A magnet moving through a coil makes electricity, and the current drawn from the coil sets how firm the damper is. So the same device harvests energy, controls the ride and powers the bogie's own sensors.</p>
+    <div class="grid g3">
+      <div class="card"><div class="num">01 · HARVEST</div><h3>Makes its own power</h3><p>Suspension motion moves magnets through a coil and charges a power bank on the bogie.</p><div class="eq">e = Kₑ · v</div></div>
+      <div class="card"><div class="num">02 · CONTROL</div><h3>Ride tuned to the live load</h3><p>Power electronics set the coil current, and the current sets the damping, matched to the measured load (LPV).</p><div class="eq">F = Kₑ · i,&nbsp;&nbsp; c = Kₑ² / R</div></div>
+      <div class="card"><div class="num">03 · PREVIEW</div><h3>Warned before the bump</h3><p>The locomotive meets every bump first. Coach <i>n</i> gets the warning after tₙ = dₙ / v and prepares for it.</p><div class="eq">tₙ = dₙ / v</div></div>
+      <div class="card"><div class="num">04 · PROTECT</div><h3>Self-powered safety sensors</h3><p>The bank powers bearing, wheel, coupler and track sensors on every bogie, with no new wiring.</p><div class="eq">P_harvest &gt; P_sensors</div></div>
+      <div class="card"><div class="num">05 · FAIL-SAFE</div><h3>Falls back to today's damper</h3><p>On any fault a relay puts a resistor across the coil, and the damper behaves exactly like today's.</p><div class="eq">c_failsafe = c_today</div></div>
+      <div class="card feature"><h3>Two products, one technology</h3><p><b>SwarmRide Freight:</b> every axle watched and every wagon self-powered, with partings found at the exact wagon. <b>SwarmRide Passenger:</b> a ride tuned to the load and to the bump ahead, with no new wiring.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="block" id="how">
+  <div class="wrap split">
+    <figure class="fig"><img src="../images/pitch/smart_damper_concept.jpg" alt="The smart damper concept: a magnet stack moving through a fixed coil" loading="lazy"><figcaption>The smart damper: a bump moves the magnet stack through the fixed coil. It makes power, sets the ride and fails safe.</figcaption></figure>
+    <div>
+      <p class="eyebrow">3 · How the smart damper works</p>
+      <h2>A magnet moving through a coil.</h2>
+      <ol class="steps">
+        <li><b>A bump moves it.</b><span>The track lifts the bogie, the coach moves and the magnet slides through the copper coil.</span></li>
+        <li><b>It makes power.</b><span>The coil's voltage is proportional to the speed (Faraday's law). Power electronics charge a supercapacitor and a small battery on the bogie.</span></li>
+        <li><b>It sets the ride.</b><span>The current drawn from the coil pushes back on the magnet. More current means a firmer damper, set in milliseconds by software.</span></li>
+        <li><b>It can push.</b><span>At a known bad spot the same electronics briefly drive the coil as a motor, using banked energy.</span></li>
+        <li><b>It fails safe.</b><span>If anything goes wrong, a contactor connects resistors that give exactly today's damping. Safety rests on hardware, not software.</span></li>
+      </ol>
+      <div class="callout"><b>Lead design (C):</b> a ball screw turns a compact servo motor. It is small, strong and efficient, and it fits today's LHB damper mounts.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAIN BRAIN -->
+<section class="block alt" id="brain">
+  <div class="wrap">
+    <p class="eyebrow">4 · Train Brain</p>
+    <h2>The locomotive warns every coach before the bump arrives.</h2>
+    <p class="intro">The lead bogie feels every bump first. Coaches behind it reach the same spot a little later, at time t = distance ÷ speed. The Train Brain sends each coach its warning so the damper is ready. It also builds a track map that lists the known bad spots.</p>
+    <div class="split rev">
+      <div class="calc" aria-labelledby="calc-title">
+        <h3 id="calc-title">Try it: how much warning does a coach get?</h3>
+        <label for="spd">Train speed <output id="spd-o">160 km/h</output></label>
+        <input type="range" id="spd" min="30" max="160" step="5" value="160">
+        <label for="cch">Coach behind the locomotive <output id="cch-o">coach 5</output></label>
+        <input type="range" id="cch" min="1" max="20" step="1" value="5">
+        <div class="train" id="train" aria-hidden="true"></div>
+        <div class="answer" aria-live="polite">
+          <div class="big" id="ans-t">1.9 s</div>
+          <div class="small" id="ans-d">of warning: the bump is 83 m behind the lead bogie</div>
+          <div class="small" id="ans-c"></div>
+        </div>
+        <p class="credit">Coach length 23.5 m (LHB), measured to the coach's front bogie. The controller needs 0.01 s per step, and the timing tolerates ±20 ms of error.</p>
+      </div>
+      <figure class="fig"><img src="../images/pitch/train_preview_concept.jpg" alt="The locomotive warns every coach; today's bogie compared with the SwarmRide bogie" loading="lazy"><figcaption>Top: the warning travels along the train. Bottom: today's bogie (an oil damper making heat) and the SwarmRide bogie (smart damper, power bank, sensors).</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ON THE BOGIE -->
+<section class="block" id="bogie">
+  <div class="wrap">
+    <p class="eyebrow">5 · On a real bogie</p>
+    <h2>No new bogie, no new cables. One part swapped.</h2>
+    <p class="intro">SwarmRide fits the bogies Indian Railways already runs: the LHB and Vande Bharat air-spring bogies, the ICF coach bogie and the Casnub wagon bogie.</p>
+    <div class="grid g2">
+      <figure class="fig"><img src="../images/casnub_annotated.jpg" alt="Casnub bogie annotated with SwarmRide components" loading="lazy"><figcaption>Casnub bogie of a BOXNM1 wagon, annotated with where each SwarmRide part goes.</figcaption></figure>
+      <figure class="fig"><img src="../images/pitch/real_bogies.jpg" alt="LHB, ICF and Casnub bogies with SwarmRide" loading="lazy"><figcaption>Same bogie, one part swapped: LHB air-spring, ICF coach and Casnub wagon bogies.</figcaption></figure>
+    </div>
+    <div class="tablecard" style="margin-top:18px">
+      <table>
+        <thead><tr><th>Vehicle</th><th>What SwarmRide replaces</th><th>Load signal for the control</th></tr></thead>
+        <tbody>
+          <tr><td><b>LHB / Vande Bharat coach</b></td><td>The vertical secondary dampers beside the air springs</td><td>Air-spring pressure (already on board)</td></tr>
+          <tr><td><b>ICF coach</b></td><td>The secondary dampers on the bolster springs</td><td>Spring deflection sensor</td></tr>
+          <tr><td><b>BOXN wagon (Casnub)</b></td><td>Works beside the friction wedges, or replaces them with a geared smart damper</td><td>Spring-nest deflection sensor</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid g2" style="margin-top:18px">
+      <figure class="fig"><img src="../images/architecture.svg" alt="SwarmRide end-to-end system architecture" loading="lazy"><figcaption>Three levels: Train Brain (locomotive) → vehicle controller (each coach) → self-powered bogie unit. Energy stays on the bogie; only data travels.</figcaption></figure>
+      <figure class="fig"><img src="../images/pitch/two_products.jpg" alt="SwarmRide Passenger and SwarmRide Freight" loading="lazy"><figcaption>Two products, one technology: SwarmRide Passenger and SwarmRide Freight.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section class="block alt" id="proof">
+  <div class="wrap">
+    <p class="eyebrow">6 · The proof, in MATLAB / Simulink</p>
+    <h2>Same coach, same rail, only the damper changes.</h2>
+    <p class="intro">The system was built and tested in five stages before any hardware. Every comparison keeps the coach, rail, speed and load the same, so every result is fair. An automatic test suite checks the model against hand calculations, an independent model, energy conservation and step-size convergence: <b>85 of 85 checks pass</b>.</p>
+
+    <div class="tabs" role="tablist" aria-label="Simulation stages">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="p1" id="t1">Stage 1<small>The baseline to beat</small></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p2" id="t2">Stage 2<small>Smart damper and power</small></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p3" id="t3">Stage 3<small>The controllers</small></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p4" id="t4">Stage 4<small>Push, a full day, health</small></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p5" id="t5">Stage 5<small>Bench prototype</small></button>
+    </div>
+
+    <div class="panel on" role="tabpanel" id="p1" aria-labelledby="t1">
+      <div>
+        <span class="badge">Complete</span>
+        <h3>Today's trains, measured first</h3>
+        <p style="color:var(--muted)">A half-coach model (body bounce and pitch, two bogie frames) of LHB, Vande Bharat, ICF and BOXN with today's dampers, on a standard rough-track spectrum.</p>
+        <ul>
+          <li>The Simulink model matches an independent model within <b>0.003%</b>, and the bounce frequency matches a hand calculation (0.83 Hz).</li>
+          <li>Fixed dampers weaken as people board: LHB damping ratio <b>0.14 → 0.10</b> from empty to 12 t, and the ride index worsens 1.73 → 1.84.</li>
+          <li>Heat thrown away per bogie: <b>64–73 W</b> (LHB), <b>82–87 W</b> (Vande Bharat), up to <b>214 W</b> on a loaded BOXN.</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure class="fig"><img src="../SwarmRide_Sim/results/stage1b_zeta_vs_load.png" alt="Damping ratio falls with load" loading="lazy"><figcaption>Fixed dampers weaken as passengers board, on every coach type.</figcaption></figure>
+        <figure class="fig"><img src="../SwarmRide_Sim/results/stage1b_heat.png" alt="Heat wasted by today's dampers" loading="lazy"><figcaption>Energy today's dampers turn into heat: the ceiling on what can be recovered.</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p2" aria-labelledby="t2">
+      <div>
+        <span class="badge">Complete</span>
+        <h3>The smart damper and its power chain</h3>
+        <p style="color:var(--muted)">Today's damper is replaced by the electromagnetic damper, an active rectifier, a DC-DC converter and a supercapacitor + LiFePO4 bank on every bogie. Three designs: A direct-drive, B hybrid, C geared rotary.</p>
+        <ul>
+          <li><b>Same ride as today</b> when set to copy today's damper (Wz 1.846 vs 1.844), with power on top.</li>
+          <li>Into the bank on rough track at top speed: LHB <b>46–51 W</b>, Vande Bharat <b>55–62 W</b>, ICF <b>21–23 W</b>, BOXN <b>78–90 W</b>. The electronics need 8 W.</li>
+          <li>Energy balance within <b>0.001%</b>. The fail-safe gives exactly today's damping after a fault.</li>
+          <li><b>Design C (geared rotary) leads.</b> Chasing maximum power transfer is the wrong goal, because it burns half the power in the coil.</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure class="fig"><img src="../SwarmRide_Sim/results/stage2_power_chain.png" alt="Where the smart damper's power goes" loading="lazy"><figcaption>Where the power goes (LHB): 73 W in, 46 W into the bank, 8 W used, 38 W surplus.</figcaption></figure>
+        <figure class="fig"><img src="../SwarmRide_Sim/results/stage2_failsafe.png" alt="Fail-safe test" loading="lazy"><figcaption>Fail-safe: after a fault the damper follows today's damper exactly.</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p3" aria-labelledby="t3">
+      <div>
+        <span class="badge">Complete</span>
+        <h3>Load-adaptive control with the Train Brain preview</h3>
+        <p style="color:var(--muted)">An LPV (load-scheduled) LQR controller at 100 Hz, plus the rail ahead from the Train Brain. Tested head to head against today's damper and a fixed-setting harvester at empty, half and full load.</p>
+        <ul>
+          <li>Crowded LHB ride index <b>1.84 → 1.53 (−17%)</b>. Vande Bharat <b>−16%</b>, loaded wagon <b>−23%</b>.</li>
+          <li>Body vibration <b>about 40% lower</b>; suspension travel down by a third.</li>
+          <li>Still <b>33–38 W per bogie</b> into the bank. No fixed setting reaches this comfort.</li>
+          <li>Robust to a ±20 ms late warning and a ±10% load error. The preview alone adds only 1–2%; Stage 4 fixes that.</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure class="fig"><img src="../SwarmRide_Sim/results/stage3_ride_vs_load.png" alt="Ride at every load" loading="lazy"><figcaption>Better at every load: today's ride worsens as passengers board, while SwarmRide's stays nearly flat.</figcaption></figure>
+        <figure class="fig"><img src="../SwarmRide_Sim/results/stage3_comfort_vs_power.png" alt="Comfort versus power" loading="lazy"><figcaption>Comfort vs power: no fixed setting reaches SwarmRide's comfort.</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p4" aria-labelledby="t4">
+      <div>
+        <span class="badge">Complete</span>
+        <h3>Push at bad spots, a whole day, and safety sensing</h3>
+        <ul>
+          <li><b>Active push</b> at a known track settlement: the worst-seat jolt falls <b>0.97 → 0.20 m/s² (−80%)</b> for <b>345 J (0.1 Wh)</b>. At a short dip: −67% for 20 J.</li>
+          <li><b>A full day</b> with a 10 h night parked: with a 1 W sleep when parked, LHB ends at 60% (it started at 60%), Vande Bharat at 69% and a freight wagon at 80%. No load is ever left unpowered.</li>
+          <li><b>Hot axle:</b> the on-bogie sensor alarms <b>within 10 s</b>. With checkpoints every 250 km, 82% of faults pass 180 °C before any check.</li>
+          <li><b>Damaged wheel:</b> visible in the damper's own coil signal at <b>×5 to ×204</b> the healthy level, and located to the wheelset.</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure class="fig"><img src="../SwarmRide_Sim/results/stage4_active_push.png" alt="Active push at known bad spots" loading="lazy"><figcaption>The Train Brain warning pays off: the damper pushes with its own banked energy.</figcaption></figure>
+        <figure class="fig"><img src="../SwarmRide_Sim/results/stage4_journey.png" alt="Power bank over a full day" loading="lazy"><figcaption>A full day on one bogie's power bank: the electronics must sleep when parked.</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p5" aria-labelledby="t5">
+      <div>
+        <span class="badge">Designed · build next</span>
+        <h3>One real damper on a test rig</h3>
+        <p style="color:var(--muted)">The design-C damper is sized for real hardware from what it sees on the coach. A bench model adds everything the coach model idealised: a 10 kHz current loop, voltage limits, losses, a contactor that takes 20 ms, and winding heat.</p>
+        <ul>
+          <li>On the damper's own motion replayed from the coach: <b>14.4 W</b> into the bank (coach model 14.5 W).</li>
+          <li>Fail-safe gives <b>today's damping</b> after a fault, with a <b>20 ms</b> gap while the contactor moves.</li>
+          <li>Push: <b>800 W</b> peak for 95 J. The winding settles at <b>42 °C</b>.</li>
+          <li>Controller firmware in C matches MATLAB in <b>10 of 10</b> checks, in PC and microcontroller arithmetic.</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure class="fig"><img src="../SwarmRide_Sim/results/bench_replay.png" alt="Bench model replays the coach motion" loading="lazy"><figcaption>The rig replays the coach: bench model against the coach model, and power into the bank.</figcaption></figure>
+        <figure class="fig"><img src="../SwarmRide_Sim/results/bench_failsafe.png" alt="Fail-safe on the bench" loading="lazy"><figcaption>Fault at 5 s: a 20 ms gap, then exactly today's damping.</figcaption></figure>
+      </div>
+    </div>
+    <p class="credit" style="margin-top:16px">Click any figure to enlarge it. For interactive charts of every result, open the <a href="../dashboard/index.html">live dashboard</a>.</p>
+  </div>
+</section>
+
+<!-- BENCH -->
+<section class="block" id="bench">
+  <div class="wrap">
+    <p class="eyebrow">7 · Bench prototype (Gate B)</p>
+    <h2>Ready to build: one damper, one rig, ten tests.</h2>
+    <p class="intro">The simulation showed that the system rides better, makes its own power and catches faults. The bench prototype checks those assumptions in metal. Everything needed to build and test it is ready.</p>
+    <figure class="fig"><img src="../Bench_Prototype/images/bench_setup.png" alt="Bench prototype setup: test rig, drive and power bank, control and data" loading="lazy"><figcaption>The bench setup. The rig strokes the damper with its own motion from the coach simulation, while the drive, power bank and safety chain are measured.</figcaption></figure>
+    <div class="grid g2" style="margin-top:18px">
+      <div class="tablecard">
+        <table>
+          <thead><tr><th colspan="2">The prototype (one LHB damper, design C)</th></tr></thead>
+          <tbody>
+            <tr><td>Motor</td><td><b>48 V-class servo</b>, Kt 0.40 N m/A rms, 14 N m peak</td></tr>
+            <tr><td>Ball screw</td><td><b>Ø25 mm, 10 mm lead</b>, ±40 mm stroke</td></tr>
+            <tr><td>Force</td><td><b>8 kN peak</b> (simulated peak 6.1 kN)</td></tr>
+            <tr><td>Drive</td><td><b>60 V, 46 A</b>, four-quadrant, 10 kHz current loop</td></tr>
+            <tr><td>Fail-safe</td><td><b>Contactor + 3 × 1.0 Ω</b> = today's damping</td></tr>
+            <tr><td>Power bank</td><td><b>10 F supercapacitor + 128 Wh LiFePO4</b></td></tr>
+            <tr><td>Budget, plan</td><td><b>≈ ₹4.4–13.5 lakh</b> (indicative), <b>16 weeks</b> to Gate B</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tablecard">
+        <table>
+          <thead><tr><th>Test</th><th>What the lab must measure</th></tr></thead>
+          <tbody>
+            <tr><td class="k"><b>T1</b></td><td>Machine constant 175.4 V s/m</td></tr>
+            <tr><td class="k"><b>T2–T3</b></td><td>Damping = command (within 0.1%); efficiency 0.92 → 0.60</td></tr>
+            <tr><td class="k"><b>T4–T5</b></td><td>Current loop 0.5 ms; controlled up to 0.36 m/s (the coach needs 0.16)</td></tr>
+            <tr><td class="k"><b>T6</b></td><td>Fail-safe 17,500 N s/m, 20 ms gap</td></tr>
+            <tr><td class="k"><b>T7</b></td><td>14.4 W into the bank on replayed rough track</td></tr>
+            <tr><td class="k"><b>T8–T9</b></td><td>Push 800 W for 95 J; winding 42 °C</td></tr>
+            <tr><td class="k"><b>T10</b></td><td>Firmware rides a virtual coach (hardware in the loop)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card"><div class="num">FINDING 1</div><h3>The real duty is light</h3><p>At most 6.1 kN, 0.16 m/s and about 8 W of coil loss. A 1–1.5 kW-class 48 V servo is enough.</p></div>
+      <div class="card"><div class="num">FINDING 2</div><h3>Inertia is not the problem it looked like</h3><p>The ride gets slightly better up to 16× the assumed rotor inertia. Friction is the budget to watch: 600 N would cost a fifth of the harvest.</p></div>
+      <div class="card"><div class="num">FINDING 3</div><h3>The fail-safe has a 20 ms gap</h3><p>While the contactor moves there is no electromagnetic force. It is a small dip that the bench must confirm; a faster solid-state bypass is an option.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- POSITIONING -->
+<section class="block alt" id="position">
+  <div class="wrap">
+    <p class="eyebrow">8 · Why it is better than what is used today</p>
+    <h2>It fills the gaps between today's systems.</h2>
+    <p class="intro">SwarmRide does not replace Indian Railways' safety systems. It works alongside them, all the time and on every vehicle.</p>
+    <div class="tablecard">
+      <table>
+        <thead><tr><th>In service today</th><th>Its limit</th><th>What SwarmRide adds</th></tr></thead>
+        <tbody>
+          <tr><td><b>Fixed oil dampers, friction wedges</b></td><td>Tuned for one load; all energy becomes heat</td><td>Ride tuned to the live load; energy reused on the bogie</td></tr>
+          <tr><td><b>OMRS trackside bearing checks</b></td><td>Sees a wagon only when it passes about 25 sites</td><td>Every axle, all the time</td></tr>
+          <tr><td><b>End-of-train telemetry (EoTT)</b></td><td>Watches the last wagon only</td><td>Every wagon reports; a parting is located at the exact wagon</td></tr>
+          <tr><td><b>Track Recording Cars</b></td><td>Periodic, and behind schedule</td><td>Every train records the track on every run</td></tr>
+          <tr><td><b>Kavach</b></td><td>Collision prevention through signalling</td><td>A different job: vehicle and track health, working alongside it</td></tr>
+          <tr><td><b>Energy-harvesting dampers (research)</b></td><td>Power at the cost of ride comfort</td><td>Comfort and power together, with preview and fail-safe</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="block" id="roadmap">
+  <div class="wrap">
+    <p class="eyebrow">9 · Roadmap</p>
+    <h2>Prove it, get approval, pilot, then scale.</h2>
+    <p class="intro">Freight comes first, because wagons have no power and the safety need is greatest. Vande Bharat follows for comfort. Timing depends on funding and RDSO trials.</p>
+    <div class="road">
+      <div class="step done"><div class="s">Done</div><h4>Concept</h4><p>Problem evidence, architecture, pitch, technical design</p></div>
+      <div class="step done"><div class="s">Done</div><h4>Simulation 1–2</h4><p>Today's trains; smart damper and power chain</p></div>
+      <div class="step done"><div class="s">Done</div><h4>Simulation 3–4</h4><p>Controllers; push, full day, health sensing (Gate A)</p></div>
+      <div class="step done"><div class="s">Done</div><h4>Bench design</h4><p>Hardware ratings, bench model, firmware, test plan</p></div>
+      <div class="step now"><div class="s">Next</div><h4>Bench prototype</h4><p>Build one damper and test it on a rig (Gate B)</p></div>
+      <div class="step later"><div class="s">Later</div><h4>Field run</h4><p>One instrumented LHB bogie, with RDSO (Gate C)</p></div>
+      <div class="step later"><div class="s">Later</div><h4>Pilot and scale</h4><p>Freight rakes, then Vande Bharat trainsets</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATUS -->
+<section class="block alt" id="status">
+  <div class="wrap">
+    <p class="eyebrow">10 · Where we are</p>
+    <h2>Is the project complete?</h2>
+    <p class="intro"><b>The simulation and design phase is complete.</b> The product is not finished yet: the next proof must come from real hardware, then a real train.</p>
+    <div class="status">
+      <div class="card"><h3><span class="dot" style="background:var(--teal)"></span>Done</h3>
+        <ul>
+          <li>Full MATLAB/Simulink system: Stages 1–5, 85 of 85 checks</li>
+          <li>Gate A met in simulation: better ride at every load, self-powered over a full day</li>
+          <li>Bench prototype designed: ratings, bench model, C firmware, rig files, test plan, budget</li>
+          <li>Investor pitch (PDF and Word), whitepaper, technical document, dashboard</li>
+        </ul>
+      </div>
+      <div class="card"><h3><span class="dot" style="background:var(--orange)"></span>Next</h3>
+        <ul>
+          <li><b>File a provisional patent</b> before any public pitch or demo</li>
+          <li>Get supplier quotes and order the motor, screw and electronics</li>
+          <li>Build and test one damper: T1–T10 (Gate B)</li>
+          <li>Firmware: state observer, CAN link to the Train Brain</li>
+        </ul>
+      </div>
+      <div class="card"><h3><span class="dot" style="background:var(--faint)"></span>Later</h3>
+        <ul>
+          <li>Real vehicle data from RDSO to replace estimated parameters</li>
+          <li>Side-to-side (lateral) model</li>
+          <li>Instrumented field run on one bogie (Gate C)</li>
+          <li>RDSO approval, pilot, scale</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><b>Honest limits:</b> vehicle parameters are engineering estimates until RDSO data is available. The model covers up-and-down motion only. Hardware costs are indicative and not yet quoted.</div>
+  </div>
+</section>
+
+<!-- DOCS -->
+<section class="block" id="docs">
+  <div class="wrap">
+    <p class="eyebrow">11 · Documents</p>
+    <h2>Read more.</h2>
+    <div class="grid g3 docs">
+      <a class="doc" href="../dashboard/index.html"><b>Live dashboard →</b><span>Interactive charts of every simulation result</span></a>
+      <a class="doc" href="../SwarmRide_Bharat_Pitch.pdf"><b>Investor pitch (PDF) →</b><span>Seven pages for investors and Indian Railways</span></a>
+      <a class="doc" href="../docs/WHITEPAPER.md"><b>Whitepaper →</b><span>Technical overview and results</span></a>
+      <a class="doc" href="../SwarmRide_Bharat_Technical_Document.md"><b>Technical document →</b><span>Full design for engineers</span></a>
+      <a class="doc" href="../Bench_Prototype/README.md"><b>Bench prototype →</b><span>Requirements, designs, firmware, test plan, budget</span></a>
+      <a class="doc" href="../SwarmRide_Sim/VERIFICATION.md"><b>Verification →</b><span>What is proven, how, and what is not</span></a>
+      <a class="doc" href="../SwarmRide_Sim/Stage1.md"><b>Stage reports →</b><span>Stages 1–4 and the Stage 5 bench model, block by block</span></a>
+      <a class="doc" href="../SwarmRide_Bharat_Complete_Guide.md"><b>Complete guide →</b><span>Learn the project from scratch</span></a>
+      <a class="doc" href="../README.md"><b>Repository README →</b><span>Everything on one page</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>SwarmRide Bharat</b> · Confidential: an invention being prepared for patent filing. Do not share before a provisional application is filed.</span>
+    <span>© 2026 Sangeeth. All rights reserved.</span>
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-label="Enlarged figure"><img id="lb-img" alt=""></div>
+
+<script>
+// theme toggle (remembered per viewer; works without storage)
+(function () {
+  const root = document.documentElement, btn = document.getElementById('theme');
+  try { const t = localStorage.getItem('sr-theme'); if (t) root.dataset.theme = t; } catch (e) {}
+  btn.addEventListener('click', () => {
+    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('sr-theme', root.dataset.theme); } catch (e) {}
+  });
+})();
+
+// stage tabs
+const tabs = [...document.querySelectorAll('.tab')];
+function pick(tab) {
+  tabs.forEach(t => {
+    const on = t === tab;
+    t.setAttribute('aria-selected', on);
+    document.getElementById(t.getAttribute('aria-controls')).classList.toggle('on', on);
+  });
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => pick(t));
+  t.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      pick(n); n.focus();
+    }
+  });
+});
+
+// warning-time calculator: t = d / v
+const spd = document.getElementById('spd'), cch = document.getElementById('cch');
+const COACH = 23.5, LOCO = 20;   // metres (LHB coach length; locomotive)
+function calc() {
+  const v = +spd.value, n = +cch.value;
+  const d = LOCO + (n - 1) * COACH + 2.5;            // to the coach's front bogie
+  const t = d / (v / 3.6);
+  document.getElementById('spd-o').textContent = v + ' km/h';
+  document.getElementById('cch-o').textContent = 'coach ' + n;
+  document.getElementById('ans-t').textContent = t.toFixed(t < 10 ? 2 : 1) + ' s';
+  document.getElementById('ans-d').textContent = 'of warning: the bump is ' + Math.round(d) + ' m behind the lead bogie';
+  document.getElementById('ans-c').textContent = 'That is ' + Math.round(t / 0.01).toLocaleString() + ' controller steps (100 per second) to prepare.';
+  const tr = document.getElementById('train');
+  tr.innerHTML = '<i class="loco"></i>' + Array.from({ length: 20 }, (_, k) => '<i' + (k + 1 === n ? ' class="hit"' : '') + '></i>').join('');
+}
+spd.addEventListener('input', calc); cch.addEventListener('input', calc); calc();
+
+// lightbox
+const lb = document.getElementById('lb'), lbi = document.getElementById('lb-img');
+document.querySelectorAll('.fig img').forEach(img => img.addEventListener('click', () => {
+  lbi.src = img.src; lbi.alt = img.alt; lb.classList.add('on');
+}));
+lb.addEventListener('click', () => lb.classList.remove('on'));
+addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('on'); });
+
+// highlight the section in view
+const links = [...document.querySelectorAll('#links a')];
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+}), { rootMargin: '-45% 0px -50% 0px' });
+document.querySelectorAll('section.block').forEach(s => io.observe(s));
+</script>
+</body>
+</html>
