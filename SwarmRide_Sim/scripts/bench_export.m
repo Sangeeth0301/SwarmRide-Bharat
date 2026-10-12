@@ -91,7 +91,7 @@ fclose(fh);
 end
 
 function s = join_num(v)
-s = strjoin(arrayfun(@(x) sprintf('%.10g', x), v, 'UniformOutput', false), ', ');
+s = strjoin(arrayfun(@(x) sprintf('SR_C(%.10g)', x), v, 'UniformOutput', false), ', ');
 end
 
 function write_vectors(dir, P, HW)
