@@ -74,7 +74,7 @@ for s = 1:numel(spec)
         for trk = {'good', 'poor'}
             pw = zeros(size(spec(s).v));
             for j = 1:numel(spec(s).v)
-                [o, P] = sr_run(m3, spec(s).train, 'designType', 'C', 'ctrlMode', 'C3', 'trackType', trk{1}, ...
+                [o, ~] = sr_run(m3, spec(s).train, 'designType', 'C', 'ctrlMode', 'C3', 'trackType', trk{1}, ...
                     'v_kmh', spec(s).v(j), 'mload_t', spec(s).loads{L, 2});
                 tt = o.az.Time;  pdx = sr_sig(o, 'Pdc', tt);
                 pw(j) = mean(pdx(:, tt > T0), 'all');
