@@ -124,7 +124,7 @@ try
     print(['-s' m2 '/Power Bank (supercap + LiFePO4)'], '-dpng', '-r150', fullfile(resdir, 'stage2_model_bank.png'));
     print(['-s' m2 '/Power Electronics'], '-dpng', '-r150', fullfile(resdir, 'stage2_model_pe.png'));
 catch err
-    warning('Diagram export failed: %s', err.message);
+    warning('swarmride:diagram', 'Diagram export failed: %s', err.message);
 end
 fprintf('Saved results/stage2_*.png\n');
 

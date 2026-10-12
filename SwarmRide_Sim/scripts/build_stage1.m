@@ -62,7 +62,7 @@ sr_add_scope(mdl, 'Scope 4 - Rail under the wheels', {'Track Input/1'}, ...
 try
     set_param(mdl, 'EnablePacing', 'on', 'PacingRate', 1);
 catch err
-    warning('Real-time pacing not set: %s', err.message);
+    warning('swarmride:pacing', 'Real-time pacing not set: %s', err.message);
 end
 
 try
