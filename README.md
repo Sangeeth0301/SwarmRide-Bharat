@@ -351,6 +351,7 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
 ├── images/                           banner, architecture, annotated bogie, pitch sketches, roadmap
 ├── Bench_Prototype/                  bench prototype: requirements, designs, firmware (C), rig drive files, test plan, BOM
 ├── dashboard/                        investor dashboard (open index.html through a local web server)
+├── frontend/                         project website: the whole story on one page
 ├── pdf/                              pitch builder, preview study, photographs and credits
 ├── tools/                            documentation checks, Markdown to Word
 └── SwarmRide_Sim/                    MATLAB/Simulink simulation
@@ -393,6 +394,7 @@ The pitch and preview tooling use Python 3 (numpy, scipy, matplotlib, Pillow) an
 | [Technical document](SwarmRide_Bharat_Technical_Document.md) | Engineers |
 | [Complete guide](SwarmRide_Bharat_Complete_Guide.md) | Learning the project from scratch |
 | [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Stage 3 report](SwarmRide_Sim/Stage3.md) · [Stage 4 report](SwarmRide_Sim/Stage4.md) · [Stage 5 bench model](SwarmRide_Sim/Stage5_Bench.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) · [Verification](SwarmRide_Sim/VERIFICATION.md) | Simulation |
+| [Project website](frontend/index.html) | The whole project explained on one page, with the photos, figures and a warning-time calculator (run `python -m http.server` in the repository root, then open `/frontend/index.html`) |
 | [Bench prototype](Bench_Prototype/README.md) | Building and testing the first damper: requirements, mechanical and electronics design, firmware, test plan, budget |
 | [Dashboard](dashboard/index.html) | All simulation results on one page (run `python -m http.server` in the repository root, then open `/dashboard/index.html`) |
 | [Results preview](SwarmRide_Simulation_Results_Preview.pdf) | Early estimate, before the Simulink stages |
