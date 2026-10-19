@@ -81,6 +81,14 @@ Every coach and wagon on Indian Railways carries **secondary dampers** that turn
 | **② Vehicle** | One controller per coach or wagon | Load estimation, LPV damping schedule, preview feed-forward, health analytics, reporting |
 | **③ Bogie** | Every bogie, self-powered | Smart dampers, active rectifier, DC-DC converter, supercapacitor + LiFePO4 bank, safety sensors, fail-safe relay |
 
+### Architecture vs simulation
+
+How much of this architecture the simulation covers, box by box: **11 of 22 boxes are in Simulink**, 1 is partly simulated, 4 are ideal stand-ins (perfect preview, load estimate and states), 2 are checked in MATLAB after the run and 4 are not simulated (all at train level). Full table: [docs/ARCHITECTURE_VS_SIMULATION.md](docs/ARCHITECTURE_VS_SIMULATION.md).
+
+<p align="center">
+  <img src="images/architecture_sim_map.png" alt="Architecture vs simulation: every box marked by how the simulation covers it" width="100%">
+</p>
+
 ---
 
 ## On a real bogie
