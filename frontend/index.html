@@ -603,6 +603,9 @@
       <a class="doc" href="../SwarmRide_Sim/Stage1.md"><b>Stage reports →</b><span>Stages 1–4 and the Stage 5 bench model, block by block</span></a>
       <a class="doc" href="../SwarmRide_Bharat_Complete_Guide.md"><b>Complete guide →</b><span>Learn the project from scratch</span></a>
       <a class="doc" href="../README.md"><b>Repository README →</b><span>Everything on one page</span></a>
+      <a class="doc" href="../docs/ARCHITECTURE_VS_SIMULATION.md"><b>Architecture vs simulation →</b><span>Which boxes are simulated, and what is still ideal</span></a>
+      <a class="doc" href="../docs/Base_Paper_Study.md"><b>Base paper study →</b><span>The IEEE TVT 2022 paper, and how SwarmRide goes further</span></a>
+      <a class="doc" href="../presentation/SwarmRide_Bharat_Project_Review.pptx"><b>Project review deck →</b><span>24 slides (PowerPoint download)</span></a>
     </div>
   </div>
 </section>
@@ -673,6 +676,15 @@ document.querySelectorAll('.fig img').forEach(img => img.addEventListener('click
 }));
 lb.addEventListener('click', () => lb.classList.remove('on'));
 addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('on'); });
+
+// on GitHub Pages, open Markdown documents on GitHub, where they render
+if (location.hostname.endsWith('github.io')) {
+  const repo = 'https://github.com/Sangeeth0301/SwarmRide-Bharat/blob/main/';
+  document.querySelectorAll('a[href$=".md"]').forEach(a => {
+    const path = new URL(a.getAttribute('href'), location.href).pathname.replace(/^\/SwarmRide-Bharat\//, '');
+    a.href = repo + path;
+  });
+}
 
 // highlight the section in view
 const links = [...document.querySelectorAll('#links a')];

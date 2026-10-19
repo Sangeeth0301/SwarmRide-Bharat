@@ -1,0 +1,14 @@
+{
+  "name": "swarmride-deck",
+  "version": "1.0.0",
+  "description": "Builds presentation/SwarmRide_Bharat_Project_Review.pptx",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  },
+  "private": true
+}

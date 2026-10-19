@@ -83,6 +83,14 @@ Every coach and wagon on Indian Railways carries **secondary dampers** that turn
 | **② Vehicle** | One controller per coach or wagon | Load estimation, LPV damping schedule, preview feed-forward, health analytics, reporting |
 | **③ Bogie** | Every bogie, self-powered | Smart dampers, active rectifier, DC-DC converter, supercapacitor + LiFePO4 bank, safety sensors, fail-safe relay |
 
+### Architecture vs simulation
+
+How much of this architecture the simulation covers, box by box: **11 of 22 boxes are in Simulink**, 1 is partly simulated, 4 are ideal stand-ins (perfect preview, load estimate and states), 2 are checked in MATLAB after the run and 4 are not simulated (all at train level). Full table: [docs/ARCHITECTURE_VS_SIMULATION.md](docs/ARCHITECTURE_VS_SIMULATION.md).
+
+<p align="center">
+  <img src="images/architecture_sim_map.png" alt="Architecture vs simulation: every box marked by how the simulation covers it" width="100%">
+</p>
+
 ---
 
 ## On a real bogie
@@ -345,7 +353,8 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
 ```
 .
 ├── README.md                         project overview (this page)
-├── docs/WHITEPAPER.md                technical whitepaper
+├── docs/                             whitepaper, review, architecture vs simulation, base paper study
+├── presentation/                     project review deck (.pptx) and its builder
 ├── SwarmRide_Bharat_Pitch.*          investor pitch: Markdown · Word · PDF
 ├── SwarmRide_Bharat_Technical_Document.md
 ├── SwarmRide_Bharat_Complete_Guide.md
@@ -355,7 +364,7 @@ A plain harvester trades comfort for watts. SwarmRide is designed to improve com
 ├── dashboard/                        investor dashboard (open index.html through a local web server)
 ├── frontend/                         project website: the whole story on one page
 ├── pdf/                              pitch builder, preview study, photographs and credits
-├── tools/                            documentation checks, Markdown to Word
+├── tools/                            documentation checks, Markdown to Word, architecture-vs-simulation map
 └── SwarmRide_Sim/                    MATLAB/Simulink simulation
     ├── sr_setup.m                    start here
     ├── functions/                    physics, sensors, track, rolling stock, damper design
@@ -395,6 +404,9 @@ The pitch and preview tooling use Python 3 (numpy, scipy, matplotlib, Pillow) an
 | [Investor pitch](SwarmRide_Bharat_Pitch.md) · [PDF](SwarmRide_Bharat_Pitch.pdf) · [Word](SwarmRide_Bharat_Pitch.docx) | Investors and Indian Railways |
 | [Technical document](SwarmRide_Bharat_Technical_Document.md) | Engineers |
 | [Complete guide](SwarmRide_Bharat_Complete_Guide.md) | Learning the project from scratch |
+| [Architecture vs simulation](docs/ARCHITECTURE_VS_SIMULATION.md) | Which architecture boxes the simulation covers, block by block, and what is still ideal |
+| [Base paper study](docs/Base_Paper_Study.md) · [Word](docs/Base_Paper_Study.docx) | The IEEE TVT 2022 base paper in simple English, and how SwarmRide upgrades each of its limits |
+| [Project review deck](presentation/SwarmRide_Bharat_Project_Review.pptx) | 24-slide Control Systems project review (PowerPoint), built by `presentation/build` |
 | [Stage 1 report](SwarmRide_Sim/Stage1.md) · [Stage 2 report](SwarmRide_Sim/Stage2.md) · [Stage 3 report](SwarmRide_Sim/Stage3.md) · [Stage 4 report](SwarmRide_Sim/Stage4.md) · [Stage 5 bench model](SwarmRide_Sim/Stage5_Bench.md) · [Model guide](SwarmRide_Sim/MODEL_GUIDE.md) · [Verification](SwarmRide_Sim/VERIFICATION.md) | Simulation |
 | [Project review](docs/REVIEW.md) | Code Analyzer, firmware static analysis and verification results, and recommendations |
 | [Project website](frontend/index.html) | The whole project explained on one page, with the photos, figures and a warning-time calculator (run `python -m http.server` in the repository root, then open `/frontend/index.html`) |

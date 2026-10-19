@@ -1,5 +1,13 @@
 # Changelog
 
+## Architecture check, base paper and project review
+- Architecture vs simulation (`docs/ARCHITECTURE_VS_SIMULATION.md`, `images/architecture_sim_map.*`, `tools/draw_architecture_sim_map.py`): every architecture box checked against the Simulink blocks. 11 of 22 in Simulink, 1 partly, 4 ideal stand-ins, 2 checked in MATLAB after the run, 4 not simulated (train level)
+- Architecture diagram fixed: the vehicle box now shows the real LPV law F* = -Kx(m_hat) x instead of c* = 2 zeta sqrt(k m)
+- Control system as a Simulink block diagram (`scripts/build_control_diagram.m`, `models/SR_ControlDiagram.slx`, `results/control_system_design.png`), rebuilt by `regenerate_all`
+- Base paper study in simple English (`docs/Base_Paper_Study.md` and Word): Hua, Cai and Zhu, IEEE Trans. Vehicular Technology 2022, and how SwarmRide upgrades each limit
+- 24-slide project review deck (`presentation/`) with its pptxgenjs builder
+- README, project website and documents list updated
+
 ## Public release and project review
 - Repository made public; confidential notices replaced with an all-rights-reserved notice (pull request #1)
 - CodeRabbit review settings (`.coderabbit.yaml`)

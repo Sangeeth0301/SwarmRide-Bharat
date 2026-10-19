@@ -1,0 +1,127 @@
+{
+ "casnub": {
+  "path": "pdf/photos/casnub_crop.jpg",
+  "w": 1400,
+  "h": 670
+ },
+ "vb": {
+  "path": "pdf/photos/vande_bharat.jpg",
+  "w": 1920,
+  "h": 1440
+ },
+ "air": {
+  "path": "pdf/photos/air_spring.jpg",
+  "w": 1280,
+  "h": 960
+ },
+ "goods": {
+  "path": "pdf/photos/goods_train_crop.jpg",
+  "w": 1600,
+  "h": 696
+ },
+ "damper": {
+  "path": "images/pitch/smart_damper_concept.jpg",
+  "w": 1754,
+  "h": 1240
+ },
+ "preview": {
+  "path": "images/pitch/train_preview_concept.jpg",
+  "w": 1754,
+  "h": 1240
+ },
+ "bogies": {
+  "path": "images/pitch/real_bogies.jpg",
+  "w": 1754,
+  "h": 1240
+ },
+ "products": {
+  "path": "images/pitch/two_products.jpg",
+  "w": 1754,
+  "h": 1240
+ },
+ "arch": {
+  "path": "images/architecture.png",
+  "w": 2800,
+  "h": 1960
+ },
+ "casnub_ann": {
+  "path": "images/casnub_annotated.jpg",
+  "w": 1920,
+  "h": 1280
+ },
+ "ctrl": {
+  "path": "SwarmRide_Sim/results/control_system_design.png",
+  "w": 4400,
+  "h": 2114
+ },
+ "m4": {
+  "path": "SwarmRide_Sim/results/stage4_model_top.png",
+  "w": 2618,
+  "h": 1377
+ },
+ "mctrl": {
+  "path": "SwarmRide_Sim/results/stage3_model_controller.png",
+  "w": 2164,
+  "h": 500
+ },
+ "mbench": {
+  "path": "SwarmRide_Sim/results/bench_model_top.png",
+  "w": 2823,
+  "h": 1585
+ },
+ "ride": {
+  "path": "SwarmRide_Sim/results/stage3_ride_vs_load.png",
+  "w": 1427,
+  "h": 1080
+ },
+ "cvp": {
+  "path": "SwarmRide_Sim/results/stage3_comfort_vs_power.png",
+  "w": 1183,
+  "h": 838
+ },
+ "push": {
+  "path": "SwarmRide_Sim/results/stage4_active_push.png",
+  "w": 1482,
+  "h": 708
+ },
+ "day": {
+  "path": "SwarmRide_Sim/results/stage4_journey.png",
+  "w": 1480,
+  "h": 1030
+ },
+ "axle": {
+  "path": "SwarmRide_Sim/results/stage4_hot_axle.png",
+  "w": 1544,
+  "h": 668
+ },
+ "wheel": {
+  "path": "SwarmRide_Sim/results/stage4_wheel_defect.png",
+  "w": 1497,
+  "h": 668
+ },
+ "breplay": {
+  "path": "SwarmRide_Sim/results/bench_replay.png",
+  "w": 1481,
+  "h": 668
+ },
+ "bfs": {
+  "path": "SwarmRide_Sim/results/bench_failsafe.png",
+  "w": 1489,
+  "h": 630
+ },
+ "bsetup": {
+  "path": "Bench_Prototype/images/bench_setup.png",
+  "w": 1400,
+  "h": 900
+ },
+ "zeta": {
+  "path": "SwarmRide_Sim/results/stage1b_zeta_vs_load.png",
+  "w": 1183,
+  "h": 630
+ },
+ "heat": {
+  "path": "SwarmRide_Sim/results/stage1b_heat.png",
+  "w": 1166,
+  "h": 595
+ }
+}

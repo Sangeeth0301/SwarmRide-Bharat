@@ -85,10 +85,10 @@
   <text x="172" y="483" class="bl">→ body mass m</text>
 
   <rect x="316" y="386" width="232" height="112" rx="10" class="hiT"/>
-  <text x="432" y="418" class="bt">LPV damping scheduler</text>
-  <text x="432" y="443" class="bl">same ride at every load</text>
-  <text x="432" y="463" class="eq">c* = 2ζ√(k·m)</text>
-  <text x="432" y="483" class="bl">ζ held constant</text>
+  <text x="432" y="418" class="bt">LPV state feedback</text>
+  <text x="432" y="443" class="bl">LQR gains at 5 loads, blended</text>
+  <text x="432" y="463" class="eq">F* = −Kx(m̂)·x</text>
+  <text x="432" y="483" class="bl">same ride at every load</text>
 
   <rect x="576" y="386" width="232" height="112" rx="10" class="hiT"/>
   <text x="692" y="418" class="bt">Preview feed-forward</text>
