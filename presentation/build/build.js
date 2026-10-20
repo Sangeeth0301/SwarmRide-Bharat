@@ -96,7 +96,8 @@ function table(s, rows, x, y, w, colW, o = {}) {
     return { text: typeof t === "object" ? t.t : t, options: { bold, fill: { color: hl ? (o.hlColor || "DCEFEA") : H.white } } };
   }));
   s.addTable([head, ...body], { x, y, w, colW, fontSize: o.size || 14, color: H.ink, fontFace: THEME.bodyFontFace,
-    border: { type: "solid", color: H.line, pt: 0.75 }, margin: o.pad || [0.07, 0.1, 0.07, 0.1], valign: "middle", autoPage: false });
+    border: { type: "solid", color: H.line, pt: 0.75 }, margin: o.pad || [0.07, 0.1, 0.07, 0.1], valign: "middle", autoPage: false,
+    ...(o.rowH ? { rowH: o.rowH } : {}) });
 }
 function arrow(s, x1, y1, x2, y2, color = H.navy, dash) {
   const flipH = x2 < x1, flipV = y2 < y1;
@@ -304,10 +305,10 @@ section("Architecture and control system design");
   s.addNotes("Outer loop: the state observer estimates body bounce, pitch and bogie motion; the LPV-LQR gain, blended between five load points by the measured load, gives the ideal force; the Train Brain preview adds a feed-forward term. The semi-active map turns F* into a damping command the damper can give (resist only), except inside a push window at a known bad spot (C4). Inner loop: a PI current controller with back-EMF feed-forward makes the coil current follow i* within 0.5 ms; the current is the force.");
 }
 {
-  const s = slide("LIGHT", "05 · Control system design", "The full design, drawn in Simulink");
-  pic(s, "ctrl", M, 1.7, CW, 4.85, { frame: H.white, alt: "Simulink block diagram of the SwarmRide control system: vehicle controller, damper drive, smart damper and half-coach vehicle" });
-  txt(s, "Summing junctions, gains, PI transfer function, saturations, push switch, fail-safe contactor · SR_ControlDiagram.slx", M, 6.62, CW, 0.3, { fontSize: 12, color: H.muted });
-  s.addNotes("Top row: the vehicle controller at 100 Hz — Train Brain preview delay, preview gain Kp(m), LPV-LQR gain Kx(m), the summing junction that forms F*, the semi-active conversion, the damping law, and the C4 push switch, then the current limit. Bottom: the 10 kHz drive — current-error junction, PI controller (L s + Rc)/(tau s), back-EMF feed-forward, inverter voltage limit, and the fail-safe contactor that swaps the inverter for resistors. Then the coil 1/(L s + Rc), F = nd Ke i, the ball-screw friction and inertance, and the half-coach plant, with the observer and the power bank below.");
+  const s = slide("LIGHT", "05 · Control system design", "Control system architecture: two loops, self-powered, fail-safe");
+  pic(s, "ctrl", M, 1.55, CW, 5.05, { frame: H.white, alt: "SwarmRide control system architecture: vehicle controller outer loop, damper drive inner loop, smart damper and vehicle, power, fail-safe and sensing" });
+  txt(s, "Outer loop 100 Hz · inner current loop 10 kHz · harvested energy to the bogie bank · contactor falls back to today’s damper on a fault", M, 6.66, CW, 0.3, { fontSize: 12, color: H.muted });
+  s.addNotes("Read it in three rows. Top, the vehicle controller (outer loop, 100 Hz): the track map and Train Brain give the preview feed-forward, the state feedback (LPV-LQR) uses the estimated coach state, and the load estimate schedules both gains. The force command goes through the semi-active conversion and the damping law, or, at a known bad spot, the push command; the C4 switch picks one, then the current limit. Middle, the damper drive (inner loop, 10 kHz): the PI current controller with back-EMF feed-forward, the voltage limit and the contactor drive the coil; the electromagnetic damper and the ball screw make the damper force on the half-coach vehicle, and the measured coil current is fed back. Bottom: harvested energy goes through the power electronics to the bogie's power bank; the fail-safe supervisor switches the contactor to the fail-safe resistors on a fault or a low bank; sensors and the state estimator close the outer loop. The Simulink version is SR_ControlDiagram.slx.");
 }
 {
   const s = slide("LIGHT", "05 · Control system design", "Controllers used: optimal, load-scheduled, with preview");
@@ -318,16 +319,18 @@ section("Architecture and control system design");
     [{ t: "C3 + preview", b: true }, "States [x; p], 221 rail samples ahead and behind", "Full"],
     [{ t: "C4 + push", b: true }, "Coil motors inside a window at a known bad spot", "Stage 4"],
     [{ t: "Drive PI", b: true }, "Kp = L/τ, Ki = R/τ, τ = 0.5 ms, back-EMF FF, anti-windup", "10 kHz"]],
-    M, 1.8, 7.3, [1.9, 4.1, 1.3], { size: 14, highlight: [2, 3, 4] });
+    M, 1.8, 7.3, [1.9, 4.1, 1.3], { size: 14, highlight: [2, 3, 4], rowH: 0.67 });
   const x = 8.2, w = W - M - 8.2;
   card(s, x, 1.8, w, 4.75, H.navy);
   txt(s, [{ text: "Optimal design (LQR)", options: { bold: true, color: H.orangeL, fontSize: 18, breakLine: true } },
     { text: " ", options: { breakLine: true } },
-    { text: "J = Σ (a/a_ref)² + (d/s_ref)² + r_w (F/F_ref)²", options: { fontFace: "Courier New", breakLine: true } },
+    { text: "J = Σ (a/a_ref)² + (d/s_ref)²", options: { fontFace: "Courier New", breakLine: true } },
+    { text: "      + r_w·(F/F_ref)²", options: { fontFace: "Courier New", breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "F* = −Kx(m)·x − Kp(m)·p", options: { fontFace: "Courier New", breakLine: true } },
     { text: " ", options: { breakLine: true } },
-    { text: "c* = F*·v / (v² + ε²)  ∈ [c_floor, c_cap]", options: { fontFace: "Courier New", breakLine: true } },
+    { text: "c* = F*·v / (v² + ε²)", options: { fontFace: "Courier New", breakLine: true } },
+    { text: "c_floor ≤ c* ≤ c_cap", options: { fontFace: "Courier New", breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Stable at every load: closed-loop spectral radius 0.979–0.981 (LHB, < 1)", options: { color: "BFD8D5" } }],
     x + 0.3, 2.05, w - 0.6, 4.3, { fontSize: 14, color: H.ice });
@@ -430,7 +433,7 @@ section("Base paper vs SwarmRide");
     ["Safety sensing", "—", { t: "Hot axle in 10 s, wheel defects in the coil signal", b: true }],
     ["Fail-safe", "—", "Hardware contactor → today’s damping"],
     ["Validation", "Prototype cyclic tests + simulation", "85 automated checks, bench model, C firmware"]],
-    M, 1.75, CW, [2.1, 4.4, CW - 6.5], { size: 16, headSize: 13, highlight: [3, 4, 5, 6] });
+    M, 1.75, CW, [2.1, 4.4, CW - 6.5], { size: 16, headSize: 13, highlight: [3, 4, 5, 6], rowH: 0.47 });
   txt(s, "“—” = not part of the base paper’s study as described in its published abstract (DOI 10.1109/TVT.2022.3149265)", M, 6.62, CW, 0.3, { fontSize: 12, color: H.muted });
   s.addNotes("We keep the base paper’s core idea — one electromagnetic device that both controls vibration and harvests energy on a train — and add the capabilities highlighted in teal: look-ahead, push, a power bank that actually runs the bogie, safety sensing, plus a hardware fail-safe and a verified firmware path to hardware.");
 }
@@ -444,7 +447,7 @@ section("Base paper vs SwarmRide");
     ["vs fixed harvester", "Fixed duty harvested more power", "Fixed (C1) Wz 1.639 at 37 W vs C3 1.528 at 33 W"],
     ["Load change", "One design load", { t: "Flat comfort: Wz 1.493 empty → 1.528 crowded", b: true }],
     ["Power use", "Not reported", "Bogie self-powered all day (1 W sleep when parked)"]],
-    M, 1.75, CW, [2.3, 4.6, CW - 6.9], { size: 16, headSize: 13 });
+    M, 1.75, CW, [2.3, 4.6, CW - 6.9], { size: 16, headSize: 13, rowH: 0.46 });
   card(s, M, 5.65, CW, 0.85, H.card, H.line);
   txt(s, [{ text: "The axis and speeds differ, so the two power figures are not like-for-like. " }, { text: "What is directly comparable is the capability: ", options: { bold: true, color: H.navy } }, { text: "ours adapts to load, looks ahead, can push, and uses its energy on the bogie." }],
     M + 0.25, 5.75, CW - 0.5, 0.7, { fontSize: 14, valign: "middle" });

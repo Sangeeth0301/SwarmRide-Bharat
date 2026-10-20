@@ -50,9 +50,9 @@
   "h": 1280
  },
  "ctrl": {
-  "path": "SwarmRide_Sim/results/control_system_design.png",
-  "w": 4400,
-  "h": 2114
+  "path": "images/control_system_design_slide.png",
+  "w": 2700,
+  "h": 1305
  },
  "m4": {
   "path": "SwarmRide_Sim/results/stage4_model_top.png",
