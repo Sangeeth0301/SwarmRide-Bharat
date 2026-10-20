@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 92 1800 870" width="1800" height="870" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+<defs><marker id="m2D3748" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2D3748"/></marker><marker id="mDD6B20" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#DD6B20"/></marker><marker id="mC53030" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C53030"/></marker><marker id="m2B6CB0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2B6CB0"/></marker><marker id="m2C7A7B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C7A7B"/></marker><style>
+.ttl{font-size:28px;font-weight:700;fill:#1A202C;letter-spacing:0.2px}.sub{font-size:15px;fill:#718096}
+.band{font-size:13px;font-weight:700;letter-spacing:1.4px;fill:#2D3748}
+.bt{font-size:15px;font-weight:600;fill:#1A202C}.bs{font-size:12px;fill:#718096}
+.cap{font-size:13px;font-weight:600;fill:#4A5568}.capS{font-size:12px;fill:#6B7686;font-style:italic}
+.sig{font-size:16px;font-weight:600;fill:#2D3748}.sgn{font-size:14px;font-weight:700;fill:#2D3748}
+.pl{font-size:12.5px;font-weight:600;fill:#4A5568}.sl{font-size:12px;fill:#718096;font-style:italic}
+.sch{font-size:12.5px;fill:#3A6FB0;font-style:italic}.flow{font-size:13px;fill:#6B7686;font-style:italic}
+.flowT{font-size:12.5px;fill:#2C7A7B;font-weight:600;font-style:italic}
+.cH{font-size:12.5px;font-weight:700;letter-spacing:1.2px;fill:#2A9D8F}.cS{font-size:13.5px;font-weight:700;fill:#13233A}
+.cL{font-size:13px;fill:#4A5568}.lg{font-size:13.5px;fill:#3D4A5C}
+</style></defs>
+<rect y="92" width="1800" height="962" fill="#FFFFFF"/>
+<text x="40" y="48" class="ttl" text-anchor="start">SwarmRide Bharat — Control System Architecture</text>
+<text x="40" y="76" class="sub" text-anchor="start">Cascaded control of the regenerative smart damper: vehicle-level outer loop, damper-drive inner loop, self-powered bogie with hardware fail-safe.</text>
+<rect x="16" y="98" width="1768" height="282" rx="8" fill="#F7F8FA" stroke="#E2E8F0" stroke-width="1.2"/>
+<rect x="40" y="111" width="4" height="17" rx="1" fill="#2A9D8F"/>
+<text x="54" y="125" class="band" text-anchor="start">VEHICLE CONTROLLER  —  OUTER LOOP  (100 Hz)</text>
+<rect x="40" y="158.0" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="41" y="159.0" width="148" height="5" rx="2" fill="#2A9D8F"/>
+<text x="115.0" y="187" class="bt" text-anchor="middle">Track map</text>
+<text x="115.0" y="206" class="bs" text-anchor="middle">known bumps ahead</text>
+<rect x="240" y="158.0" width="180" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="241" y="159.0" width="178" height="5" rx="2" fill="#2A9D8F"/>
+<text x="330.0" y="187" class="bt" text-anchor="middle">Train Brain</text>
+<text x="330.0" y="206" class="bs" text-anchor="middle">preview of the rail</text>
+<path d="M190,190 L238,190" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="470" y="158.0" width="190" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="471" y="159.0" width="188" height="5" rx="2" fill="#2A9D8F"/>
+<text x="565.0" y="196" class="bt" text-anchor="middle">Preview feed-forward</text>
+<path d="M420,190 L468,190" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="470" y="300.0" width="190" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="471" y="301.0" width="188" height="5" rx="2" fill="#2A9D8F"/>
+<text x="565.0" y="329" class="bt" text-anchor="middle">State feedback</text>
+<text x="565.0" y="348" class="bs" text-anchor="middle">LPV-LQR</text>
+<rect x="40" y="238.0" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="41" y="239.0" width="148" height="5" rx="2" fill="#7A8594"/>
+<text x="115.0" y="267" class="bt" text-anchor="middle">Load estimate</text>
+<text x="115.0" y="286" class="bs" text-anchor="middle">air-spring pressure</text>
+<path d="M190,270 L565,270 L565,224" fill="none" stroke="#2B6CB0" stroke-width="1.7" stroke-linejoin="round" stroke-dasharray="7 4" marker-end="url(#m2B6CB0)"/>
+<path d="M565,270 L565,298" fill="none" stroke="#2B6CB0" stroke-width="1.7" stroke-linejoin="round" stroke-dasharray="7 4" marker-end="url(#m2B6CB0)"/>
+<text x="378" y="262" class="sch" text-anchor="middle">gain scheduling by load</text>
+<circle cx="720" cy="256" r="16" fill="#FFFFFF" stroke="#2D3748" stroke-width="1.6"/>
+<text x="720" y="262" class="sig" text-anchor="middle">Σ</text>
+<text x="707" y="233" class="sgn" text-anchor="middle">−</text>
+<text x="707" y="290" class="sgn" text-anchor="middle">−</text>
+<path d="M660,190 L720,190 L720,237" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<path d="M660,332 L720,332 L720,275" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<path d="M737,256 L790,256" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<circle cx="760" cy="256" r="4.5" fill="#2D3748"/>
+<rect x="800" y="224.0" width="230" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="801" y="225.0" width="228" height="5" rx="2" fill="#2A9D8F"/>
+<text x="915.0" y="253" class="bt" text-anchor="middle">Semi-active conversion</text>
+<text x="915.0" y="272" class="bs" text-anchor="middle">resist only, within limits</text>
+<text x="764" y="300" class="sl" text-anchor="middle">force</text>
+<text x="764" y="316" class="sl" text-anchor="middle">command</text>
+<rect x="1100" y="224.0" width="190" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="1101" y="225.0" width="188" height="5" rx="2" fill="#2A9D8F"/>
+<text x="1195.0" y="262" class="bt" text-anchor="middle">Damping law</text>
+<path d="M1030,256 L1098,256" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<path d="M760,256 L760,150 L1098,150" fill="none" stroke="#DD6B20" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#mDD6B20)"/>
+<rect x="1100" y="118.0" width="190" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="1101" y="119.0" width="188" height="5" rx="2" fill="#E07A1F"/>
+<text x="1195.0" y="147" class="bt" text-anchor="middle">Push command</text>
+<text x="1195.0" y="166" class="bs" text-anchor="middle">known bad spot</text>
+<rect x="1370" y="118" width="62" height="170" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/><rect x="1371" y="119" width="60" height="5" rx="2" fill="#E07A1F"/>
+<path d="M1380,150 L1420,206" stroke="#2D3748" stroke-width="2.2"/><circle cx="1420" cy="206" r="3.5" fill="#2D3748"/>
+<text x="1401" y="308" class="cap" text-anchor="middle">C4 push switch</text>
+<path d="M1290,150 L1368,150" fill="none" stroke="#DD6B20" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#mDD6B20)"/>
+<path d="M1290,256 L1368,256" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="1500" y="174.0" width="170" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="1501" y="175.0" width="168" height="5" rx="2" fill="#7A8594"/>
+<text x="1585.0" y="212" class="bt" text-anchor="middle">Current limit</text>
+<path d="M1432,206 L1498,206" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<text x="800" y="389" class="flow" text-anchor="middle">current command  →  damper drive</text>
+<rect x="16" y="420" width="1768" height="262" rx="8" fill="#F7F8FA" stroke="#E2E8F0" stroke-width="1.2"/>
+<rect x="96" y="433" width="4" height="17" rx="1" fill="#C9921A"/>
+<text x="110" y="447" class="band" text-anchor="start">DAMPER DRIVE  —  INNER LOOP  (10 kHz)   ·   SMART DAMPER AND VEHICLE</text>
+<path d="M1670,206 L1730,206 L1730,395 L70,395 L70,548 L89,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<circle cx="108" cy="548" r="16" fill="#FFFFFF" stroke="#2D3748" stroke-width="1.6"/>
+<text x="108" y="554" class="sig" text-anchor="middle">Σ</text>
+<text x="83" y="539" class="sgn" text-anchor="middle">+</text>
+<text x="95" y="582" class="sgn" text-anchor="middle">−</text>
+<rect x="160" y="516.0" width="170" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="161" y="517.0" width="168" height="5" rx="2" fill="#C9921A"/>
+<text x="245.0" y="545" class="bt" text-anchor="middle">Current controller</text>
+<text x="245.0" y="564" class="bs" text-anchor="middle">PI</text>
+<path d="M125,548 L158,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<circle cx="380" cy="548" r="16" fill="#FFFFFF" stroke="#2D3748" stroke-width="1.6"/>
+<text x="380" y="554" class="sig" text-anchor="middle">Σ</text>
+<text x="355" y="539" class="sgn" text-anchor="middle">+</text>
+<text x="367" y="525" class="sgn" text-anchor="middle">+</text>
+<path d="M330,548 L362,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="300" y="453.0" width="160" height="50" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="301" y="454.0" width="158" height="5" rx="2" fill="#C9921A"/>
+<text x="380.0" y="475" class="bt" text-anchor="middle">Back-EMF</text>
+<text x="380.0" y="494" class="bs" text-anchor="middle">feed-forward</text>
+<rect x="160" y="465" width="110.80000000000001" height="26" rx="13" fill="#F7FAFC" stroke="#A0AEC0" stroke-width="1.2"/>
+<text x="215.4" y="483" class="pl" text-anchor="middle">damper speed</text>
+<path d="M278,478 L298,478" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<path d="M380,503 L380,530" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="430" y="516.0" width="140" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="431" y="517.0" width="138" height="5" rx="2" fill="#C9921A"/>
+<text x="500.0" y="554" class="bt" text-anchor="middle">Voltage limit</text>
+<path d="M397,548 L428,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="612" y="498" width="70" height="104" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/><rect x="613" y="499" width="68" height="5" rx="2" fill="#D64541"/>
+<path d="M622,522 L670,548" stroke="#2D3748" stroke-width="2.2"/><circle cx="670" cy="548" r="3.5" fill="#2D3748"/>
+<text x="647" y="488" class="cap" text-anchor="middle">Contactor</text>
+<path d="M570,548 L590,548 L590,522 L610,522" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<text x="590" y="514" class="sl" text-anchor="middle">voltage</text>
+<rect x="430" y="614.0" width="160" height="48" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="431" y="615.0" width="158" height="5" rx="2" fill="#D64541"/>
+<text x="510.0" y="644" class="bt" text-anchor="middle">Fail-safe resistors</text>
+<path d="M590,638 L600,638 L600,576 L610,576" fill="none" stroke="#C53030" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#mC53030)"/>
+<circle cx="735" cy="548" r="16" fill="#FFFFFF" stroke="#2D3748" stroke-width="1.6"/>
+<text x="735" y="554" class="sig" text-anchor="middle">Σ</text>
+<text x="710" y="539" class="sgn" text-anchor="middle">+</text>
+<text x="722" y="525" class="sgn" text-anchor="middle">−</text>
+<path d="M682,548 L716,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="760" y="453.0" width="130" height="50" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="761" y="454.0" width="128" height="5" rx="2" fill="#7A8594"/>
+<text x="825.0" y="484" class="bt" text-anchor="middle">Back-EMF</text>
+<rect x="912" y="465" width="110.80000000000001" height="26" rx="13" fill="#F7FAFC" stroke="#A0AEC0" stroke-width="1.2"/>
+<text x="967.4" y="483" class="pl" text-anchor="middle">damper speed</text>
+<path d="M912,478 L892,478" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<path d="M760,478 L735,478 L735,529" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="790" y="516.0" width="140" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="791" y="517.0" width="138" height="5" rx="2" fill="#3A6FB0"/>
+<text x="860.0" y="554" class="bt" text-anchor="middle">Coil</text>
+<path d="M752,548 L788,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<path d="M930,548 L998,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<circle cx="958" cy="548" r="4.5" fill="#2D3748"/>
+<rect x="1000" y="516.0" width="205" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="1001" y="517.0" width="203" height="5" rx="2" fill="#3A6FB0"/>
+<text x="1102.5" y="545" class="bt" text-anchor="middle">Electromagnetic damper</text>
+<text x="1102.5" y="564" class="bs" text-anchor="middle">magnets + coil</text>
+<circle cx="1245" cy="548" r="16" fill="#FFFFFF" stroke="#2D3748" stroke-width="1.6"/>
+<text x="1245" y="554" class="sig" text-anchor="middle">Σ</text>
+<text x="1220" y="539" class="sgn" text-anchor="middle">+</text>
+<text x="1232" y="582" class="sgn" text-anchor="middle">+</text>
+<path d="M1205,548 L1226,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="1175" y="612.0" width="140" height="52" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="1176" y="613.0" width="138" height="5" rx="2" fill="#7A8594"/>
+<text x="1245.0" y="635" class="bt" text-anchor="middle">Ball screw</text>
+<text x="1245.0" y="654" class="bs" text-anchor="middle">friction + inertia</text>
+<path d="M1245,612 L1245,567" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="1310" y="503.0" width="200" height="90" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="1311" y="504.0" width="198" height="5" rx="2" fill="#3A6FB0"/>
+<text x="1410.0" y="545" class="bt" text-anchor="middle">Half-coach vehicle</text>
+<text x="1410.0" y="564" class="bs" text-anchor="middle">body + 2 bogies</text>
+<path d="M1262,548 L1308,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<text x="1285" y="536" class="sl" text-anchor="middle">force</text>
+<rect x="1335" y="445" width="103.4" height="26" rx="13" fill="#F7FAFC" stroke="#A0AEC0" stroke-width="1.2"/>
+<text x="1386.7" y="463" class="pl" text-anchor="middle">track bumps</text>
+<path d="M1405,472 L1405,501" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<rect x="1595" y="516.0" width="175" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="1596" y="517.0" width="173" height="5" rx="2" fill="#3A6FB0"/>
+<text x="1682.5" y="545" class="bt" text-anchor="middle">Ride comfort</text>
+<text x="1682.5" y="564" class="bs" text-anchor="middle">Sperling index</text>
+<path d="M1510,548 L1593,548" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<text x="1552" y="536" class="sl" text-anchor="middle">motion</text>
+<path d="M958,548 L958,664 L108,664 L108,567" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<text x="260" y="657" class="sl" text-anchor="start">measured coil current</text>
+<rect x="16" y="704" width="1768" height="216" rx="8" fill="#F7F8FA" stroke="#E2E8F0" stroke-width="1.2"/>
+<rect x="40" y="717" width="4" height="17" rx="1" fill="#D64541"/>
+<text x="54" y="731" class="band" text-anchor="start">POWER, FAIL-SAFE AND SENSING</text>
+<rect x="40" y="768.0" width="150" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="41" y="769.0" width="148" height="5" rx="2" fill="#D64541"/>
+<text x="115.0" y="806" class="bt" text-anchor="middle">Fault detection</text>
+<rect x="240" y="768.0" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="241" y="769.0" width="198" height="5" rx="2" fill="#D64541"/>
+<text x="340.0" y="797" class="bt" text-anchor="middle">Fail-safe supervisor</text>
+<text x="340.0" y="816" class="bs" text-anchor="middle">latched</text>
+<path d="M190,800 L238,800" fill="none" stroke="#C53030" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#mC53030)"/>
+<path d="M440,800 L647,800 L647,604" fill="none" stroke="#C53030" stroke-width="1.7" stroke-linejoin="round" stroke-dasharray="7 4" marker-end="url(#mC53030)"/>
+<text x="655" y="786" class="sl" fill="#C53030" text-anchor="start">relay</text>
+<rect x="760" y="768.0" width="210" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="761" y="769.0" width="208" height="5" rx="2" fill="#E07A1F"/>
+<text x="865.0" y="797" class="bt" text-anchor="middle">Power electronics</text>
+<text x="865.0" y="816" class="bs" text-anchor="middle">rectifier + DC-DC</text>
+<path d="M860,580 L860,766" fill="none" stroke="#DD6B20" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#mDD6B20)"/>
+<text x="870" y="735" class="sl" fill="#DD6B20" text-anchor="start">harvested energy</text>
+<rect x="1020" y="768.0" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="1021" y="769.0" width="198" height="5" rx="2" fill="#E07A1F"/>
+<text x="1120.0" y="797" class="bt" text-anchor="middle">Power bank</text>
+<text x="1120.0" y="816" class="bs" text-anchor="middle">supercap + LiFePO4</text>
+<path d="M970,800 L1018,800" fill="none" stroke="#DD6B20" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#mDD6B20)"/>
+<path d="M1120,832 L1120,880 L340,880 L340,834" fill="none" stroke="#C53030" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#mC53030)"/>
+<text x="730" y="874" class="sl" fill="#C53030" text-anchor="middle">bank OK</text>
+<rect x="1300" y="768.0" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4"/>
+<rect x="1301" y="769.0" width="198" height="5" rx="2" fill="#2A9D8F"/>
+<text x="1400.0" y="797" class="bt" text-anchor="middle">Sensors</text>
+<text x="1400.0" y="816" class="bs" text-anchor="middle">accelerometers + encoder</text>
+<path d="M1405,593 L1405,766" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<text x="1415" y="735" class="sl" text-anchor="start">coach motion</text>
+<rect x="1560" y="768.0" width="200" height="64" rx="6" fill="#FFFFFF" stroke="#A0AEC0" stroke-width="1.4" stroke-dasharray="7 4"/>
+<rect x="1561" y="769.0" width="198" height="5" rx="2" fill="#2A9D8F"/>
+<text x="1660.0" y="797" class="bt" text-anchor="middle">State estimator</text>
+<text x="1660.0" y="816" class="bs" text-anchor="middle">ideal in the sim today</text>
+<path d="M1500,800 L1558,800" fill="none" stroke="#2D3748" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#m2D3748)"/>
+<path d="M1760,800 L1784,800 L1784,942 L24,942 L24,332 L468,332" fill="none" stroke="#2C7A7B" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#m2C7A7B)"/>
+<text x="900" y="936" class="flowT" text-anchor="middle">estimated state  →  state feedback</text>
+</svg>
