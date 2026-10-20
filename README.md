@@ -89,6 +89,14 @@ How much of this architecture the simulation covers, box by box: **11 of 22 boxe
   <img src="images/architecture_sim_map.png" alt="Architecture vs simulation: every box marked by how the simulation covers it" width="100%">
 </p>
 
+### Control system design
+
+Two cascaded loops: the vehicle controller (outer loop, 100 Hz) decides the damper current from the track preview, the coach state and the load; the damper drive (inner loop, 10 kHz) makes the coil follow it. Harvested energy charges the bogie's own bank, and a contactor falls back to today's damping on a fault. Simulink version: `SwarmRide_Sim/models/SR_ControlDiagram.slx`.
+
+<p align="center">
+  <img src="images/control_system_design.png" alt="SwarmRide control system architecture: outer vehicle loop, inner damper-drive loop, power, fail-safe and sensing" width="100%">
+</p>
+
 ---
 
 ## On a real bogie
