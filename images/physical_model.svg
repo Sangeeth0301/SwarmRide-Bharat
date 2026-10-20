@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 610" width="900" height="610" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2D3748"/></marker><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#718096"/></marker><marker id="o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#DD6B20"/></marker><style>
+.hd{font-size:17px;font-weight:700;fill:#2D3748;letter-spacing:0.3px}
+.big{font-size:22px;font-weight:700;fill:#1A202C}.bt{font-size:17px;font-weight:700;fill:#1A202C}
+.btO{font-size:17px;font-weight:700;fill:#C05621}.sub{font-size:15px;fill:#4A5568}
+.dof{font-size:15px;font-weight:700;fill:#2D3748;font-style:italic}.gl{font-size:13px;font-weight:700;fill:#C05621}
+.dim{font-size:14px;fill:#718096}.ct{font-size:19px;font-weight:700;fill:#C05621}.cs{font-size:13.5px;fill:#718096}
+.ch{font-size:12.5px;font-weight:700;fill:#C05621;letter-spacing:0.8px}.cl{font-size:15px;fill:#2D3748}
+</style></defs>
+<rect width="900" height="610" fill="#FFFFFF"/>
+<text x="40" y="34" class="hd" text-anchor="start">Physical model · LHB half-coach, 4 degrees of freedom</text>
+<rect x="60" y="54" width="560" height="78" rx="8" fill="#F7FAFC" stroke="#2D3748" stroke-width="2"/>
+<text x="340" y="87" class="big" text-anchor="middle">Coach body</text>
+<text x="340" y="113" class="sub" text-anchor="middle">28 t empty → 40 t crowded  ·  bounce zb + pitch θ</text>
+<line x1="40" y1="118" x2="40" y2="68" stroke="#2D3748" stroke-width="2" marker-end="url(#a)"/>
+<text x="34" y="62" class="dof" text-anchor="end">zb</text>
+<line x1="133" y1="132" x2="133" y2="140" stroke="#2D3748" stroke-width="2.5"/>
+<rect x="103" y="140.0" width="60" height="29.3" rx="14.7" fill="#EBF4FF" stroke="#2B6CB0" stroke-width="2"/>
+<rect x="103" y="169.3" width="60" height="29.3" rx="14.7" fill="#EBF4FF" stroke="#2B6CB0" stroke-width="2"/>
+<rect x="103" y="198.7" width="60" height="29.3" rx="14.7" fill="#EBF4FF" stroke="#2B6CB0" stroke-width="2"/>
+<line x1="133" y1="228" x2="133" y2="236" stroke="#2D3748" stroke-width="2.5"/>
+<rect x="196" y="132" width="34" height="56" rx="5" fill="#FFF3E6" stroke="#DD6B20" stroke-width="2.2"/>
+<line x1="204" y1="142" x2="222" y2="147" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="204" y1="151" x2="222" y2="156" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="204" y1="160" x2="222" y2="165" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="204" y1="169" x2="222" y2="174" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="204" y1="178" x2="222" y2="183" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="213" y1="188" x2="213" y2="236" stroke="#2D3748" stroke-width="3"/>
+<line x1="230" y1="148" x2="240" y2="148" stroke="#DD6B20" stroke-width="2"/>
+<circle cx="253" cy="148" r="13" fill="#FFFFFF" stroke="#DD6B20" stroke-width="2.2"/>
+<text x="253" y="153" class="gl" text-anchor="middle">G</text>
+<rect x="80" y="236" width="190" height="44" rx="6" fill="#F7FAFC" stroke="#2D3748" stroke-width="2"/>
+<polyline points="120.0,280.0 120.0,286.0 131.0,287.9 109.0,291.7 131.0,295.5 109.0,299.3 131.0,303.1 109.0,306.9 131.0,310.7 109.0,314.5 131.0,318.3 109.0,322.1 120.0,324.0 120.0,330.0" fill="none" stroke="#2D3748" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="120" cy="356" r="25" fill="#FFFFFF" stroke="#2D3748" stroke-width="2.2"/>
+<circle cx="120" cy="356" r="5" fill="#2D3748"/>
+<polyline points="230.0,280.0 230.0,286.0 241.0,287.9 219.0,291.7 241.0,295.5 219.0,299.3 241.0,303.1 219.0,306.9 241.0,310.7 219.0,314.5 241.0,318.3 219.0,322.1 230.0,324.0 230.0,330.0" fill="none" stroke="#2D3748" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="230" cy="356" r="25" fill="#FFFFFF" stroke="#2D3748" stroke-width="2.2"/>
+<circle cx="230" cy="356" r="5" fill="#2D3748"/>
+<line x1="463" y1="132" x2="463" y2="140" stroke="#2D3748" stroke-width="2.5"/>
+<rect x="433" y="140.0" width="60" height="29.3" rx="14.7" fill="#EBF4FF" stroke="#2B6CB0" stroke-width="2"/>
+<rect x="433" y="169.3" width="60" height="29.3" rx="14.7" fill="#EBF4FF" stroke="#2B6CB0" stroke-width="2"/>
+<rect x="433" y="198.7" width="60" height="29.3" rx="14.7" fill="#EBF4FF" stroke="#2B6CB0" stroke-width="2"/>
+<line x1="463" y1="228" x2="463" y2="236" stroke="#2D3748" stroke-width="2.5"/>
+<rect x="526" y="132" width="34" height="56" rx="5" fill="#FFF3E6" stroke="#DD6B20" stroke-width="2.2"/>
+<line x1="534" y1="142" x2="552" y2="147" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="534" y1="151" x2="552" y2="156" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="534" y1="160" x2="552" y2="165" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="534" y1="169" x2="552" y2="174" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="534" y1="178" x2="552" y2="183" stroke="#DD6B20" stroke-width="1.6"/>
+<line x1="543" y1="188" x2="543" y2="236" stroke="#2D3748" stroke-width="3"/>
+<line x1="560" y1="148" x2="570" y2="148" stroke="#DD6B20" stroke-width="2"/>
+<circle cx="583" cy="148" r="13" fill="#FFFFFF" stroke="#DD6B20" stroke-width="2.2"/>
+<text x="583" y="153" class="gl" text-anchor="middle">G</text>
+<rect x="410" y="236" width="190" height="44" rx="6" fill="#F7FAFC" stroke="#2D3748" stroke-width="2"/>
+<polyline points="450.0,280.0 450.0,286.0 461.0,287.9 439.0,291.7 461.0,295.5 439.0,299.3 461.0,303.1 439.0,306.9 461.0,310.7 439.0,314.5 461.0,318.3 439.0,322.1 450.0,324.0 450.0,330.0" fill="none" stroke="#2D3748" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="450" cy="356" r="25" fill="#FFFFFF" stroke="#2D3748" stroke-width="2.2"/>
+<circle cx="450" cy="356" r="5" fill="#2D3748"/>
+<polyline points="560.0,280.0 560.0,286.0 571.0,287.9 549.0,291.7 571.0,295.5 549.0,299.3 571.0,303.1 549.0,306.9 571.0,310.7 549.0,314.5 571.0,318.3 549.0,322.1 560.0,324.0 560.0,330.0" fill="none" stroke="#2D3748" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="560" cy="356" r="25" fill="#FFFFFF" stroke="#2D3748" stroke-width="2.2"/>
+<circle cx="560" cy="356" r="5" fill="#2D3748"/>
+<text x="175" y="264" class="bt" text-anchor="middle">Front bogie · z1</text>
+<text x="505" y="264" class="bt" text-anchor="middle">Rear bogie · z2</text>
+<text x="345" y="160" class="bt" text-anchor="middle">Secondary</text>
+<text x="345" y="180" class="bt" text-anchor="middle">suspension</text>
+<text x="345" y="202" class="sub" text-anchor="middle">air spring +</text>
+<text x="345" y="220" class="sub" text-anchor="middle">smart damper,</text>
+<text x="345" y="238" class="sub" text-anchor="middle">in parallel</text>
+<text x="340" y="312" class="bt" text-anchor="middle">Primary suspension</text>
+<path d="M40,382 C90,377 120,388 170,382 S250,376 300,383 S390,389 430,381 S520,376 560,383 S620,388 640,382" fill="none" stroke="#2D3748" stroke-width="3"/>
+<rect x="40" y="386" width="600" height="10" fill="#E2E8F0"/>
+<text x="340" y="420" class="sub" text-anchor="middle">Rail irregularity w(t) under each of the 4 wheels  ·  160 km/h</text>
+<line x1="175" y1="440" x2="505" y2="440" stroke="#718096" stroke-width="1.4" marker-start="url(#g)" marker-end="url(#g)"/>
+<line x1="175" y1="432" x2="175" y2="448" stroke="#718096" stroke-width="1.4"/><line x1="505" y1="432" x2="505" y2="448" stroke="#718096" stroke-width="1.4"/>
+<text x="340" y="462" class="dim" text-anchor="middle">bogie centres 14.9 m</text>
+<rect x="650" y="54" width="226" height="408" rx="10" fill="#FFFFFF" stroke="#DD6B20" stroke-width="2"/>
+<rect x="651" y="55" width="224" height="6" rx="2" fill="#DD6B20"/>
+<line x1="650" y1="148" x2="599" y2="148" stroke="#DD6B20" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="666" y="90" class="ct" text-anchor="start">Smart EM damper</text>
+<text x="666" y="111" class="cs" text-anchor="start">replaces today's oil damper</text>
+<text x="666" y="128" class="cs" text-anchor="start">2 per bogie · design C</text>
+<text x="666" y="168" class="ch" text-anchor="start">How it is built</text>
+<text x="666" y="190" class="cl" text-anchor="start">Ball screw + magnet</text>
+<text x="666" y="210" class="cl" text-anchor="start">generator (G)</text>
+<text x="666" y="238" class="ch" text-anchor="start">How it works</text>
+<text x="666" y="260" class="cl" text-anchor="start">Speed → voltage</text>
+<text x="666" y="280" class="cl" text-anchor="start">Current → force</text>
+<text x="666" y="300" class="cl" text-anchor="start">So the current sets</text>
+<text x="666" y="320" class="cl" text-anchor="start">the damping</text>
+<text x="666" y="348" class="ch" text-anchor="start">What it gives</text>
+<text x="666" y="370" class="cl" text-anchor="start">Damping 0–246 kN·s/m</text>
+<text x="666" y="390" class="cl" text-anchor="start">Harvests 33–38 W</text>
+<text x="666" y="410" class="cl" text-anchor="start">Fail-safe = today's</text>
+<text x="666" y="430" class="cl" text-anchor="start">35 kN·s/m damper</text>
+<rect x="40" y="490" width="410" height="96" rx="10" fill="#F7FAFC" stroke="#A0AEC0" stroke-width="1.6"/>
+<text x="60" y="522" class="bt" text-anchor="start">Today</text>
+<text x="60" y="548" class="sub" text-anchor="start">Air spring + oil damper</text>
+<text x="60" y="570" class="sub" text-anchor="start">one fixed setting · energy → heat</text>
+<rect x="466" y="490" width="410" height="96" rx="10" fill="#FFF3E6" stroke="#DD6B20" stroke-width="2"/>
+<text x="486" y="522" class="btO" text-anchor="start">SwarmRide</text>
+<text x="486" y="548" class="sub" text-anchor="start">Air spring + smart EM damper</text>
+<text x="486" y="570" class="sub" text-anchor="start">same mounts · tunable · energy → bank</text>
+<line x1="452" y1="538" x2="462" y2="538" stroke="#DD6B20" stroke-width="2.4" marker-end="url(#o)"/>
+</svg>
