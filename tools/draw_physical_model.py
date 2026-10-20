@@ -7,7 +7,7 @@ import sys
 from xml.sax.saxutils import escape
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else "images/physical_model.svg"
-W, H = 900, 610
+W, H = 900, 580
 INK, MUT, ORG, ORGF, BLU, BLUF, GRY = '#2D3748', '#718096', '#DD6B20', '#FFF3E6', '#2B6CB0', '#EBF4FF', '#A0AEC0'
 o = []
 
@@ -49,77 +49,60 @@ def smart_damper(cx, y1, y2):
 t(40, 34, 'Physical model · LHB half-coach, 4 degrees of freedom', 'hd')
 
 # ---------------- coach body ----------------
-o.append(f'<rect x="60" y="54" width="560" height="78" rx="8" fill="#F7FAFC" stroke="{INK}" stroke-width="2"/>')
-t(340, 87, 'Coach body', 'big', 'middle')
-t(340, 113, '28 t empty → 40 t crowded  ·  bounce zb + pitch θ', 'sub', 'middle')
-o.append(f'<line x1="40" y1="118" x2="40" y2="68" stroke="{INK}" stroke-width="2" marker-end="url(#a)"/>')
-t(34, 62, 'zb', 'dof', 'end')
+o.append(f'<rect x="70" y="54" width="780" height="78" rx="8" fill="#F7FAFC" stroke="{INK}" stroke-width="2"/>')
+t(460, 87, 'Coach body', 'big', 'middle')
+t(460, 113, '28 t empty → 40 t crowded  ·  bounce zb + pitch θ', 'sub', 'middle')
+o.append(f'<line x1="48" y1="118" x2="48" y2="68" stroke="{INK}" stroke-width="2" marker-end="url(#a)"/>')
+t(42, 62, 'zb', 'dof', 'end')
 
-bog = [175, 505]
+bog = [235, 685]
 for cx in bog:
-    air_spring(cx - 42, 132, 236)
-    smart_damper(cx + 38, 132, 236)
-    o.append(f'<rect x="{cx-95}" y="236" width="190" height="44" rx="6" fill="#F7FAFC" stroke="{INK}" stroke-width="2"/>')
-    for wx in (cx - 55, cx + 55):
+    air_spring(cx - 50, 132, 236)
+    smart_damper(cx + 40, 132, 236)
+    o.append(f'<rect x="{cx-110}" y="236" width="220" height="44" rx="6" fill="#F7FAFC" stroke="{INK}" stroke-width="2"/>')
+    for wx in (cx - 62, cx + 62):
         spring(wx, 280, 330, w=11, n=5)
         o.append(f'<circle cx="{wx}" cy="356" r="25" fill="#FFFFFF" stroke="{INK}" stroke-width="2.2"/>')
         o.append(f'<circle cx="{wx}" cy="356" r="5" fill="{INK}"/>')
-t(175, 264, 'Front bogie · z1', 'bt', 'middle')
-t(505, 264, 'Rear bogie · z2', 'bt', 'middle')
+t(235, 264, 'Front bogie · z1', 'bt', 'middle')
+t(685, 264, 'Rear bogie · z2', 'bt', 'middle')
 
-# labels between the bogies
-t(345, 160, 'Secondary', 'bt', 'middle')
-t(345, 180, 'suspension', 'bt', 'middle')
-t(345, 202, 'air spring +', 'sub', 'middle')
-t(345, 220, 'smart damper,', 'sub', 'middle')
-t(345, 238, 'in parallel', 'sub', 'middle')
-t(340, 312, 'Primary suspension', 'bt', 'middle')
+# key between the bogies
+t(460, 160, 'Secondary suspension', 'bt', 'middle')
+o.append(f'<rect x="388" y="176" width="24" height="14" rx="7" fill="{BLUF}" stroke="{BLU}" stroke-width="1.8"/>')
+t(420, 188, 'Air spring', 'sub')
+o.append(f'<rect x="388" y="200" width="24" height="14" rx="3" fill="{ORGF}" stroke="{ORG}" stroke-width="1.8"/>')
+t(420, 212, 'Smart EM damper (G)', 'sub')
+t(460, 234, 'side by side, same mounts', 'cap', 'middle')
+t(460, 312, 'Primary suspension', 'bt', 'middle')
 
 # rail
-d = 'M40,382 C90,377 120,388 170,382 S250,376 300,383 S390,389 430,381 S520,376 560,383 S620,388 640,382'
+d = 'M50,382 C110,377 150,388 210,382 S320,376 380,383 S500,389 560,381 S680,376 740,383 S820,388 850,382'
 o.append(f'<path d="{d}" fill="none" stroke="{INK}" stroke-width="3"/>')
-o.append(f'<rect x="40" y="386" width="600" height="10" fill="#E2E8F0"/>')
-t(340, 420, 'Rail irregularity w(t) under each of the 4 wheels  ·  160 km/h', 'sub', 'middle')
+o.append(f'<rect x="50" y="386" width="800" height="10" fill="#E2E8F0"/>')
+t(460, 420, 'Rail irregularity w(t) under each of the 4 wheels  ·  160 km/h', 'sub', 'middle')
 # dimension: bogie centres
-o.append(f'<line x1="175" y1="440" x2="505" y2="440" stroke="{MUT}" stroke-width="1.4" marker-start="url(#g)" marker-end="url(#g)"/>')
-o.append(f'<line x1="175" y1="432" x2="175" y2="448" stroke="{MUT}" stroke-width="1.4"/><line x1="505" y1="432" x2="505" y2="448" stroke="{MUT}" stroke-width="1.4"/>')
-t(340, 462, 'bogie centres 14.9 m', 'dim', 'middle')
-
-# ---------------- smart damper callout ----------------
-o.append(f'<rect x="650" y="54" width="226" height="408" rx="10" fill="#FFFFFF" stroke="{ORG}" stroke-width="2"/>')
-o.append(f'<rect x="651" y="55" width="224" height="6" rx="2" fill="{ORG}"/>')
-o.append(f'<line x1="650" y1="148" x2="599" y2="148" stroke="{ORG}" stroke-width="1.6" stroke-dasharray="5 4"/>')
-t(666, 90, 'Smart EM damper', 'ct')
-t(666, 111, 'replaces today\'s oil damper', 'cs')
-t(666, 128, '2 per bogie · design C', 'cs')
-items = [('How it is built', None), ('Ball screw + magnet', 'b'), ('generator (G)', 'b'),
-         ('How it works', None), ('Speed → voltage', 'b'), ('Current → force', 'b'), ('So the current sets', 'b'), ('the damping', 'b'),
-         ('What it gives', None), ('Damping 0–246 kN·s/m', 'b'), ('Harvests 33–38 W', 'b'), ('Fail-safe = today\'s', 'b'), ('35 kN·s/m damper', 'b')]
-yy = 160
-for s_, kind in items:
-    if kind is None:
-        yy += 8
-        t(666, yy, s_, 'ch'); yy += 22
-    else:
-        t(666, yy, s_, 'cl'); yy += 20
+o.append(f'<line x1="235" y1="440" x2="685" y2="440" stroke="{MUT}" stroke-width="1.4" marker-start="url(#g)" marker-end="url(#g)"/>')
+o.append(f'<line x1="235" y1="432" x2="235" y2="448" stroke="{MUT}" stroke-width="1.4"/><line x1="685" y1="432" x2="685" y2="448" stroke="{MUT}" stroke-width="1.4"/>')
+t(460, 462, 'bogie centres 14.9 m', 'dim', 'middle')
 
 # ---------------- today vs SwarmRide ----------------
-o.append(f'<rect x="40" y="490" width="410" height="96" rx="10" fill="#F7FAFC" stroke="{GRY}" stroke-width="1.6"/>')
-t(60, 522, 'Today', 'bt')
-t(60, 548, 'Air spring + oil damper', 'sub')
-t(60, 570, 'one fixed setting · energy → heat', 'sub')
-o.append(f'<rect x="466" y="490" width="410" height="96" rx="10" fill="{ORGF}" stroke="{ORG}" stroke-width="2"/>')
-t(486, 522, 'SwarmRide', 'btO')
-t(486, 548, 'Air spring + smart EM damper', 'sub')
-t(486, 570, 'same mounts · tunable · energy → bank', 'sub')
-o.append(f'<line x1="452" y1="538" x2="462" y2="538" stroke="{ORG}" stroke-width="2.4" marker-end="url(#o)"/>')
+o.append(f'<rect x="50" y="484" width="390" height="80" rx="10" fill="#F7FAFC" stroke="{GRY}" stroke-width="1.6"/>')
+t(70, 512, 'Today', 'bt')
+t(70, 536, 'Air spring + oil damper', 'sub')
+t(70, 555, 'one fixed setting · energy → heat', 'sub')
+o.append(f'<rect x="460" y="484" width="390" height="80" rx="10" fill="{ORGF}" stroke="{ORG}" stroke-width="2"/>')
+t(480, 512, 'SwarmRide', 'btO')
+t(480, 536, 'Air spring + smart EM damper', 'sub')
+t(480, 555, 'same mounts · tunable · energy → bank', 'sub')
+o.append(f'<line x1="443" y1="524" x2="457" y2="524" stroke="{ORG}" stroke-width="2.4" marker-end="url(#o)"/>')
 
 css = """
 .hd{font-size:17px;font-weight:700;fill:#2D3748;letter-spacing:0.3px}
 .big{font-size:22px;font-weight:700;fill:#1A202C}.bt{font-size:17px;font-weight:700;fill:#1A202C}
 .btO{font-size:17px;font-weight:700;fill:#C05621}.sub{font-size:15px;fill:#4A5568}
 .dof{font-size:15px;font-weight:700;fill:#2D3748;font-style:italic}.gl{font-size:13px;font-weight:700;fill:#C05621}
-.dim{font-size:14px;fill:#718096}.ct{font-size:19px;font-weight:700;fill:#C05621}.cs{font-size:13.5px;fill:#718096}
+.dim{font-size:14px;fill:#718096}.cap{font-size:13.5px;fill:#718096;font-style:italic}.ct{font-size:19px;font-weight:700;fill:#C05621}.cs{font-size:13.5px;fill:#718096}
 .ch{font-size:12.5px;font-weight:700;fill:#C05621;letter-spacing:0.8px}.cl{font-size:15px;fill:#2D3748}
 """
 mk = (f'<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="{INK}"/></marker>'
