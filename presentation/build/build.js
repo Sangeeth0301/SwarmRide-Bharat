@@ -99,24 +99,6 @@ function table(s, rows, x, y, w, colW, o = {}) {
     border: { type: "solid", color: H.line, pt: 0.75 }, margin: o.pad || [0.07, 0.1, 0.07, 0.1], valign: "middle", autoPage: false,
     ...(o.rowH ? { rowH: o.rowH } : {}) });
 }
-function arrow(s, x1, y1, x2, y2, color = H.navy, dash) {
-  const flipH = x2 < x1, flipV = y2 < y1;
-  s.addShape(pres.shapes.LINE, { x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.max(Math.abs(x2 - x1), 0.001), h: Math.max(Math.abs(y2 - y1), 0.001),
-    flipH, flipV, line: { color, width: 2, endArrowType: "triangle", dashType: dash || "solid" } });
-}
-function seg(s, x1, y1, x2, y2, color = H.navy, dash) {
-  s.addShape(pres.shapes.LINE, { x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.max(Math.abs(x2 - x1), 0.001), h: Math.max(Math.abs(y2 - y1), 0.001),
-    flipH: x2 < x1, flipV: y2 < y1, line: { color, width: 2, dashType: dash || "solid" } });
-}
-function block(s, x, y, w, h, fill, line, lines) {
-  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y, w, h, fill: { color: fill }, line: { color: line, width: 1.5 }, rectRadius: 0.06 });
-  s.addText(lines.map((l, i) => ({ text: l.t, options: { bold: !!l.b, fontSize: l.size || 14, color: H.navy, fontFace: l.mono ? "Courier New" : THEME.bodyFontFace, breakLine: i < lines.length - 1 } })),
-    { x, y, w, h, isTextBox: true, align: "center", valign: "middle", margin: 0.05 });
-}
-function sigma(s, cx, cy) {
-  s.addShape(pres.shapes.OVAL, { x: cx - 0.28, y: cy - 0.28, w: 0.56, h: 0.56, fill: { color: H.card }, line: { color: H.navy, width: 2 } });
-  txt(s, "Σ", cx - 0.28, cy - 0.28, 0.56, 0.56, { fontSize: 20, bold: true, color: H.navy, align: "center", valign: "middle" });
-}
 
 // ======================= 1. PROBLEM =======================
 section("The problem");
@@ -270,42 +252,6 @@ section("Architecture and control system design");
   txt(s, [{ text: "Casnub (BOXN wagon): ", options: { bold: true, color: H.navy } }, { text: "where each SwarmRide part goes" }], M, 6.3, w, 0.4, { fontSize: 15 });
   txt(s, [{ text: "LHB · ICF · Casnub: ", options: { bold: true, color: H.navy } }, { text: "one part swapped, same mounts" }], M + w + 0.3, 6.3, w, 0.4, { fontSize: 15 });
   s.addNotes("LHB and Vande Bharat: replaces the vertical secondary dampers beside the air springs; load from air-spring pressure. ICF: secondary dampers on the bolster springs. BOXN: beside or in place of the friction wedges, with a geared smart damper.");
-}
-{ // block diagram (native shapes, coordinates from a 1920 x 1080 grid)
-  const s = slide("LIGHT", "05 · Control system design", "Closed-loop block diagram: two loops, one plant");
-  const p = (v) => v / 144;
-  txt(s, "Track w(t)", p(128), p(330), p(170), p(50), { fontSize: 14, bold: true, color: H.navy });
-  block(s, p(300), p(300), p(260), p(110), H.sky, H.navy, [{ t: "Train Brain", b: true }, { t: "p = rail ahead", size: 13 }]);
-  block(s, p(640), p(300), p(220), p(110), H.mint, H.tealD, [{ t: "Preview gain", b: true }, { t: "Kp(m)", mono: true }]);
-  sigma(s, p(960), p(560));
-  block(s, p(1060), p(500), p(280), p(120), H.peach, H.orangeD, [{ t: "Semi-active map", b: true }, { t: "+ C4 push → i*", size: 13 }]);
-  sigma(s, p(1440), p(560));
-  block(s, p(1540), p(480), p(252), p(160), H.cream, H.orangeD, [{ t: "PI current loop", b: true }, { t: "+ back-EMF FF", size: 13 }, { t: "coil: F = Ke·i", size: 13 }]);
-  block(s, p(1380), p(740), p(412), p(140), H.sky, H.navy, [{ t: "Half-coach vehicle G(s)", b: true }, { t: "ẋ = A(m)x + B_F F + B_w w", mono: true, size: 13 }]);
-  block(s, p(980), p(760), p(280), p(100), H.mint, H.tealD, [{ t: "State observer x̂", b: true }]);
-  block(s, p(560), p(760), p(300), p(100), H.mint, H.tealD, [{ t: "LPV-LQR gain", b: true }, { t: "Kx(m)", mono: true }]);
-  arrow(s, p(280), p(355), p(300), p(355));
-  arrow(s, p(560), p(355), p(640), p(355));
-  seg(s, p(860), p(355), p(960), p(355)); arrow(s, p(960), p(355), p(960), p(520));
-  arrow(s, p(1000), p(560), p(1060), p(560));
-  arrow(s, p(1340), p(560), p(1400), p(560));
-  arrow(s, p(1480), p(560), p(1540), p(560));
-  arrow(s, p(1680), p(640), p(1680), p(740));
-  arrow(s, p(1380), p(810), p(1260), p(810));
-  arrow(s, p(980), p(810), p(860), p(810));
-  seg(s, p(710), p(760), p(710), p(560)); arrow(s, p(710), p(560), p(920), p(560));
-  seg(s, p(1580), p(640), p(1580), p(690), H.orangeD, "dash"); seg(s, p(1580), p(690), p(1440), p(690), H.orangeD, "dash"); arrow(s, p(1440), p(690), p(1440), p(600), H.orangeD, "dash");
-  [["−", 975, 470], ["−", 880, 565], ["−", 1450, 600]].forEach(([t, x, y]) => txt(s, t, p(x), p(y), p(40), p(40), { fontSize: 18, bold: true, color: H.red }));
-  [["F*", 1005, 515], ["i*", 1345, 515], ["F_d", 1695, 672], ["x", 1300, 765]].forEach(([t, x, y]) => txt(s, t, p(x), p(y), p(70), p(40), { fontSize: 14, bold: true, color: H.navy }));
-  txt(s, "i (meas.)", p(1460), p(700), p(130), p(36), { fontSize: 12, color: H.orangeD });
-  card(s, p(128), p(445), p(540), p(270), H.navy);
-  txt(s, [{ text: "Controllers used", options: { bold: true, color: H.orangeL, fontSize: 15, breakLine: true } },
-    { text: "Outer: LPV-LQR state feedback + preview, 100 Hz", options: { breakLine: true } },
-    { text: "F* = −Kx(m)·x − Kp(m)·p", options: { fontFace: "Courier New", breakLine: true } },
-    { text: "Inner: PI current loop + back-EMF feed-forward, 10 kHz, τ = 0.5 ms" }],
-    p(128) + 0.2, p(445) + 0.15, p(540) - 0.4, p(270) - 0.3, { fontSize: 13, color: H.ice, paraSpaceAfter: 4 });
-  txt(s, "m = measured load (air-spring pressure) schedules both gains · dashed = inner current feedback", M, 6.55, CW, 0.3, { fontSize: 12, color: H.muted });
-  s.addNotes("Outer loop: the state observer estimates body bounce, pitch and bogie motion; the LPV-LQR gain, blended between five load points by the measured load, gives the ideal force; the Train Brain preview adds a feed-forward term. The semi-active map turns F* into a damping command the damper can give (resist only), except inside a push window at a known bad spot (C4). Inner loop: a PI current controller with back-EMF feed-forward makes the coil current follow i* within 0.5 ms; the current is the force.");
 }
 {
   const s = slide("LIGHT", "05 · Control system design", "Control system architecture: two loops, self-powered, fail-safe");
