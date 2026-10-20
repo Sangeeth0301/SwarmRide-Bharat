@@ -39,11 +39,6 @@
   "w": 1754,
   "h": 1240
  },
- "arch": {
-  "path": "images/architecture.png",
-  "w": 2800,
-  "h": 1960
- },
  "casnub_ann": {
   "path": "images/casnub_annotated.jpg",
   "w": 1920,
@@ -128,5 +123,10 @@
   "path": "images/physical_model.png",
   "w": 2700,
   "h": 1740
+ },
+ "archS": {
+  "path": "images/architecture_slide.png",
+  "w": 2800,
+  "h": 1784
  }
 }

@@ -230,18 +230,19 @@ section("Literature review and base paper");
 section("Architecture and control system design");
 {
   const s = slide("LIGHT", "04 · Architecture", "Three levels: train, vehicle, self-powered bogie");
-  pic(s, "arch", M, 1.75, 6.9, 4.95, { frame: H.white, alt: "SwarmRide end-to-end system architecture: Train Brain, vehicle controller, bogie unit" });
-  const x = 7.8, w = W - M - 7.8;
-  [["① Train Brain · locomotive", "Lead-bogie bump sensing, track map, timed warnings tₙ = dₙ / v", H.navy],
-   ["② Vehicle controller · 100 Hz", "Load estimate, LPV-LQR + preview, push windows, health analytics", H.tealD],
-   ["③ Bogie unit · self-powered", "Smart dampers, 10 kHz drive, supercap + LiFePO4, sensors, fail-safe relay", H.orangeD]].forEach(([h, d, col], i) => {
-    const y = 1.75 + i * 1.45;
-    card(s, x, y, w, 1.3, H.card, H.line);
-    s.addShape(pres.shapes.OVAL, { x: x + 0.2, y: y + 0.25, w: 0.3, h: 0.3, fill: { color: col }, line: { type: "none" } });
-    txt(s, h, x + 0.65, y + 0.18, w - 0.85, 0.42, { fontSize: 17, bold: true, color: H.navy });
-    txt(s, d, x + 0.65, y + 0.62, w - 0.85, 0.62, { fontSize: 14 });
+  pic(s, "archS", M, 1.5, 8.3, 5.3, { frame: H.white, alt: "SwarmRide end-to-end system architecture: Train Brain, vehicle controller, bogie unit" });
+  const x = M + 8.3 + 0.25, w = W - M - x;
+  [["Train Brain · loco", "Feels each bump first, keeps the track map, warns every coach", H.navy],
+   ["Vehicle controller", "One per coach, 100 Hz: load estimate, LPV-LQR + preview, health", H.tealD],
+   ["Bogie unit", "Self-powered: smart dampers, 10 kHz drive, power bank, sensors, fail-safe", H.orangeD]].forEach(([h, d, col], i) => {
+    const y = 1.5 + i * 1.3;
+    card(s, x, y, w, 1.18, H.card, H.line);
+    s.addShape(pres.shapes.RECTANGLE, { x, y: y + 0.12, w: 0.06, h: 0.94, fill: { color: col }, line: { type: "none" } });
+    txt(s, h, x + 0.2, y + 0.1, w - 0.3, 0.36, { fontSize: 13, bold: true, color: col });
+    txt(s, d, x + 0.2, y + 0.46, w - 0.3, 0.64, { fontSize: 11 });
   });
-  txt(s, "Energy stays on the bogie; only data travels along the train.", x, 6.2, w, 0.5, { fontSize: 15, bold: true, color: H.navy });
+  card(s, x, 5.45, w, 1.35, H.navy);
+  txt(s, "Energy stays on the bogie; only data travels along the train.", x + 0.2, 5.55, w - 0.4, 1.15, { fontSize: 12.5, bold: true, color: H.ice, valign: "middle" });
   s.addNotes("Walk the three levels top to bottom. The key architectural point versus the base paper: the harvested energy is stored and used on the bogie itself, so goods wagons with no electricity can run sensors.");
 }
 {
