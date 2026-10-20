@@ -123,5 +123,10 @@
   "path": "SwarmRide_Sim/results/stage1b_heat.png",
   "w": 1166,
   "h": 595
+ },
+ "phys": {
+  "path": "images/physical_model.png",
+  "w": 2700,
+  "h": 1830
  }
 }

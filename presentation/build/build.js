@@ -172,17 +172,20 @@ section("The problem");
 section("The solution");
 {
   const s = slide("LIGHT", "02 · The solution", "One smart electromagnetic damper. Five jobs.");
-  pic(s, "damper", M, 1.75, 6.4, 4.95, { frame: H.white, alt: "Smart damper concept: magnet stack moving through a fixed copper coil" });
-  const jobs = [["1 · Harvest", "motion in a coil charges the power bank", "e = Ke · v"], ["2 · Control", "coil current sets damping, by load", "F = Ke · i,  c = Ke² / R"],
-    ["3 · Preview", "the loco warns every coach ahead", "tₙ = dₙ / v"], ["4 · Protect", "the bank powers safety sensors", "P_harvest > P_sensors"],
-    ["5 · Fail-safe", "a relay restores today’s damping", "c_failsafe = c_today"]];
-  jobs.forEach(([h, d, eq], i) => {
-    const x = 7.3, y = 1.75 + i * 1.0, w = W - M - 7.3;
-    card(s, x, y, w, 0.9, H.card, H.line);
-    txt(s, [{ text: h + " — ", options: { bold: true, color: H.navy } }, { text: d, options: { color: H.body } }], x + 0.2, y + 0.1, w - 0.4, 0.4, { fontSize: 15 });
-    txt(s, eq, x + 0.2, y + 0.53, w - 0.4, 0.3, { fontSize: 13, color: H.orangeD, fontFace: "Courier New" });
+  pic(s, "damper", M, 1.55, 5.7, 3.95, { frame: H.white, alt: "Smart damper concept: magnet stack moving through a fixed copper coil" });
+  pic(s, "phys", M + 5.9, 1.55, CW - 5.9, 3.95, { frame: H.white, alt: "Physical model: LHB half-coach with the smart electromagnetic damper in parallel with the air spring on each bogie" });
+  txt(s, [{ text: "Concept: ", options: { bold: true, color: H.navy } }, { text: "a magnet moving through a coil" }], M, 5.55, 5.7, 0.3, { fontSize: 12 });
+  txt(s, [{ text: "Physical model: ", options: { bold: true, color: H.navy } }, { text: "the smart damper takes the oil damper’s place, beside the air spring" }], M + 5.9, 5.55, CW - 5.9, 0.3, { fontSize: 12 });
+  const jobs = [["1 · Harvest", "bounce → power bank"], ["2 · Control", "current sets damping"], ["3 · Preview", "loco warns each coach"],
+    ["4 · Protect", "powers safety sensors"], ["5 · Fail-safe", "relay → today’s damper"]];
+  const jw = (CW - 0.4) / 5;
+  jobs.forEach(([h, d], i) => {
+    const x = M + i * (jw + 0.1), y = 5.95;
+    card(s, x, y, jw, 0.72, H.card, H.line);
+    txt(s, h, x + 0.15, y + 0.06, jw - 0.3, 0.32, { fontSize: 14, bold: true, color: H.navy });
+    txt(s, d, x + 0.15, y + 0.36, jw - 0.3, 0.3, { fontSize: 12, color: H.body });
   });
-  s.addNotes("Same mounting points as today’s damper. A magnet moving through a coil makes electricity; the current drawn sets how firm the damper is. So one device harvests, controls the ride, powers sensors and fails safe.");
+  s.addNotes("Left, the concept: a magnet moving through a coil makes electricity, and the current drawn sets how firm the damper is. Right, the physical model we simulate: an LHB half-coach with 4 degrees of freedom (body bounce and pitch, front and rear bogie). On each bogie the smart damper sits beside the air spring, in the same place and on the same mounts as today's oil damper. Design C is a ball screw driving a magnet generator, two per bogie, with a damping range of 0 to 246 kN s/m per bogie; if anything fails, the coil is switched onto resistors that give today's 35 kN s/m. So one device harvests, controls the ride, takes the preview, powers the sensors and fails safe.");
 }
 {
   const s = slide("LIGHT", "02 · The solution", "Train Brain: the loco warns every coach before the bump");
