@@ -64,11 +64,6 @@
   "w": 1427,
   "h": 1080
  },
- "cvp": {
-  "path": "SwarmRide_Sim/results/stage3_comfort_vs_power.png",
-  "w": 1183,
-  "h": 838
- },
  "push": {
   "path": "SwarmRide_Sim/results/stage4_active_push.png",
   "w": 1482,

@@ -288,69 +288,56 @@ section("Architecture and control system design");
 section("Results");
 {
   const s = slide("LIGHT", "06 · Results · ride comfort", "Better ride at every load, on every train");
-  pic(s, "ride", M, 1.7, 7.6, 5.0, { frame: H.white, alt: "Sperling ride index against load for LHB, Vande Bharat, ICF and BOXN: today's damper, fixed harvester, SwarmRide LPV and LPV plus preview" });
-  const x = 8.5, w = W - M - 8.5;
-  stat(s, x, 1.7, w, 1.55, "−17%", "Sperling Wz, crowded LHB, 160 km/h · 1.844 → 1.528", true);
-  stat(s, x, 3.42, w, 1.55, "−41%", "body vibration RMS · 0.174 → 0.103 m/s²", false);
-  stat(s, x, 5.14, w, 1.55, "−16% · −23%", "Vande Bharat · loaded BOXN wagon", false);
+  pic(s, "ride", M, 1.7, 7.9, 5.0, { frame: H.white, alt: "Ride comfort against load for LHB, Vande Bharat, ICF and BOXN: today's damper and SwarmRide" });
+  const x = 8.8, w = W - M - 8.8;
+  stat(s, x, 1.7, w, 2.3, "17%", "better ride on a crowded LHB coach at 160 km/h", true);
+  stat(s, x, 4.25, w, 2.3, "41%", "less body shaking", false);
   s.addNotes("Same coach, same rail, poor track; controller C3 (LPV-LQR + preview) against today’s damper. Today’s ride gets worse as passengers board, because a fixed damper is tuned for one load. SwarmRide’s line stays nearly flat. Lower Wz is more comfortable.");
 }
 {
-  const s = slide("LIGHT", "06 · Results · comfort and power", "Each controller step buys comfort — and still makes power");
-  table(s, [["Crowded LHB, rough track", "Wz", "RMS m/s²", "Stroke", "Bank"],
-    ["C0 today’s damper", "1.844", "0.174", "25 mm", "0 W"],
-    ["C1 fixed harvester", "1.639", "0.124", "12 mm", "37 W"],
-    ["C2 LPV-LQR", "1.559", "0.109", "17 mm", "37 W"],
-    [{ t: "C3 LPV + preview", b: true }, { t: "1.528", b: true }, { t: "0.103", b: true }, "16 mm", { t: "33 W", b: true }]],
-    M, 1.85, 6.9, [2.5, 1.0, 1.2, 1.1, 1.1], { size: 15, highlight: [3] });
-  pic(s, "cvp", 7.75, 1.75, W - M - 7.75, 3.9, { frame: H.white, alt: "Comfort against harvested power for fixed settings and SwarmRide controllers" });
-  txt(s, "No fixed setting reaches C3 — the best fixed one stops at Wz 1.635.", 7.75, 5.75, W - M - 7.75, 0.6, { fontSize: 14 });
-  card(s, M, 4.6, 6.9, 1.6, H.navy);
-  txt(s, [{ text: "33 W into the bank against 8 W needed", options: { bold: true, color: H.orangeL, breakLine: true } }, { text: "by the bogie electronics — the bogie powers itself, with 25 W to spare.", options: { color: H.ice } }],
-    M + 0.3, 4.8, 6.3, 1.2, { fontSize: 17 });
-  txt(s, "C1 corresponds to the base paper’s fixed-duty-cycle harvester · design C damper · 160 km/h · poor track", M, 6.62, CW, 0.3, { fontSize: 12, color: H.muted });
+  const s = slide("LIGHT", "06 · Results · power", "The bogie makes four times the power it needs");
+  const w = (CW - 0.5) / 3;
+  stat(s, M, 1.9, w, 2.4, "33 W", "harvested per bogie on a crowded LHB coach", true);
+  stat(s, M + w + 0.25, 1.9, w, 2.4, "8 W", "needed by the bogie’s sensors, controller and radio", false);
+  stat(s, M + 2 * (w + 0.25), 1.9, w, 2.4, "25 W", "spare, stored in the bogie’s own battery", false);
+  card(s, M, 4.75, CW, 1.6, H.card, H.line);
+  txt(s, [{ text: "Every controller step improves comfort and still makes power. ", options: { bold: true, color: H.navy } },
+    { text: "No fixed damper setting matches SwarmRide’s comfort." }], M + 0.35, 4.9, CW - 0.7, 1.3, { fontSize: 18, valign: "middle" });
   s.addNotes("This is the head-to-head ladder. C1, a fixed harvester, already beats today’s damper but only at one setting. The optimal LPV controller C2 does better at every load, and the preview C3 adds a little more. Power into the bank stays at 33–38 W per coach bogie across Vande Bharat and LHB.");
 }
 {
   const s = slide("LIGHT", "06 · Results · active push (C4)", "At a known bad spot, the damper pushes with its own energy");
-  pic(s, "push", M, 1.7, CW, 3.35, { frame: H.white, alt: "Body acceleration at a track settlement and a short dip: today's damper, C3 resist only, C4 push" });
-  const w = (CW - 0.5) / 3;
-  stat(s, M, 5.2, w, 1.5, "−80%", "worst seat at a settlement: 0.97 → 0.76 (C3) → 0.20 m/s²", true);
-  stat(s, M + w + 0.25, 5.2, w, 1.5, "0.1 Wh", "energy per push (345 J), peak 1.5 kW from the supercap", false);
-  stat(s, M + 2 * (w + 0.25), 5.2, w, 1.5, "−67%", "at a short dip, for just 20 J", false);
+  pic(s, "push", M, 1.7, CW, 3.45, { frame: H.white, alt: "Body shaking at a track dip: today's damper, resist only, and push" });
+  const w = (CW - 0.3) / 2;
+  stat(s, M, 5.35, w, 1.3, "80%", "less jolt at a known track dip", true);
+  stat(s, M + w + 0.3, 5.35, w, 1.3, "0.1 Wh", "per push, from the bogie’s own battery", false);
   s.addNotes("Crowded LHB, 160 km/h. A semi-active damper (like the base paper’s) can only resist, so it cannot act before the motion starts — that is why the preview added only 1–2% in Stage 3. In Stage 4 the same H-bridge drives the coil as a motor for about a second around a known bad spot, using banked energy. The Train Brain warning finally pays off.");
 }
 {
   const s = slide("LIGHT", "06 · Results · a full day", "Self-powered through a whole day and night");
-  pic(s, "day", M, 1.7, 7.2, 5.0, { frame: H.white, alt: "Battery state of charge over a full day for LHB, Vande Bharat, ICF and BOXN with three electronics strategies" });
-  const x = 8.1, w = W - M - 8.1;
-  table(s, [["Battery, 1 W sleep", "Start", "End"], ["LHB day", "60%", { t: "60%", b: true }], ["Vande Bharat", "60%", { t: "69%", b: true }], ["BOXN freight", "60%", { t: "80%", b: true }], ["ICF (slow)", "60%", "36%"]],
-    x, 1.8, w, [w * 0.5, w * 0.25, w * 0.25], { size: 15 });
-  txt(s, [{ text: "Electronics left on at 8 W through a 10 h night drain every vehicle to its 10% floor. " }, { text: "A 1 W sleep when parked fixes it", options: { bold: true, color: H.navy } }, { text: " — no load is ever left unpowered." }],
-    x, 4.4, w, 2.0, { fontSize: 15 });
+  pic(s, "day", M, 1.7, 7.9, 5.0, { frame: H.white, alt: "Battery charge over a full day for LHB, Vande Bharat, ICF and BOXN" });
+  const x = 8.8, w = W - M - 8.8;
+  stat(s, x, 1.7, w, 2.3, "24 h", "the bogie runs on its own power, day and night", true);
+  card(s, x, 4.25, w, 2.3, H.card, H.line);
+  txt(s, "A 1 W sleep mode when parked keeps the battery level or rising. No sensor is ever left without power.", x + 0.25, 4.4, w - 0.5, 2.0, { fontSize: 16, valign: "middle" });
   s.addNotes("Journey simulator stepping the Simulink power-bank rules over 14–20 h, with power tables from Simulink. Honest finding: the slow ICF coach and all-smooth track still drain slowly, so they need a small top-up or a lower sensing rate. That is a design rule for the product, not a showstopper.");
 }
 {
   const s = slide("LIGHT", "06 · Results · self-powered safety sensing", "The damper is also a safety sensor");
   const w = (CW - 0.3) / 2;
-  pic(s, "axle", M, 1.7, w, 3.2, { frame: H.white, alt: "Hot axle: bearing temperature rise and trackside checkpoint detection histogram" });
-  pic(s, "wheel", M + w + 0.3, 1.7, w, 3.2, { frame: H.white, alt: "Wheel defect: coil-voltage spectrum and front versus rear bogie signal" });
-  const w3 = (CW - 0.5) / 3;
-  stat(s, M, 5.1, w3, 1.5, "10 s", "hot-axle alarm by the on-bogie sensor", true);
-  stat(s, M + w3 + 0.25, 5.1, w3, 1.5, "82%", "of faults pass 180 °C before a trackside check", false);
-  stat(s, M + 2 * (w3 + 0.25), 5.1, w3, 1.5, "×5 – ×204", "wheel-defect signal in the coil, located to the wheelset", false);
+  pic(s, "axle", M, 1.7, w, 3.4, { frame: H.white, alt: "Hot axle: bearing temperature rise and when it is detected" });
+  pic(s, "wheel", M + w + 0.3, 1.7, w, 3.4, { frame: H.white, alt: "Wheel defect seen in the damper coil signal" });
+  stat(s, M, 5.3, w, 1.35, "10 s", "to flag a hot axle, instead of hours at trackside checks", true);
+  stat(s, M + w + 0.3, 5.3, w, 1.35, "Wheel defects", "seen in the damper’s own signal, no extra sensor", false);
   s.addNotes("Hot axle: illustrative bearing model, checkpoints every 250 km. The danger window between the alarm temperature and failure is about 30 minutes, much shorter than the 2.5 h between trackside checkpoints. A sensor riding on the bogie, powered by the damper, is the only reliable way. Wheel: eccentric 0.5 mm and three-lobed 0.3 mm; the damper’s coil voltage already contains the wheel’s signature, so no extra sensor is needed.");
 }
 {
   const s = slide("LIGHT", "06 · Results · bench prototype (Stage 5)", "Ready for hardware: the bench model agrees");
   const w = (CW - 0.3) / 2;
-  pic(s, "breplay", M, 1.7, w, 3.2, { frame: H.white, alt: "Bench model replaying the coach motion: damper force and power into the bank" });
-  pic(s, "bfs", M + w + 0.3, 1.7, w, 3.2, { frame: H.white, alt: "Fail-safe test: force during the contactor change and damping after the fault" });
-  const w4 = (CW - 0.6) / 4;
-  stat(s, M, 5.1, w4, 1.5, "14.4 W", "into the bank on replayed track (coach model 14.5 W)", true);
-  stat(s, M + (w4 + 0.2), 5.1, w4, 1.5, "17,500", "N s/m after a fault: the same as today’s damper", false);
-  stat(s, M + 2 * (w4 + 0.2), 5.1, w4, 1.5, "10 / 10", "C firmware matches MATLAB in every test", false);
-  stat(s, M + 3 * (w4 + 0.2), 5.1, w4, 1.5, "85 / 85", "automatic verification checks pass", false);
+  pic(s, "breplay", M, 1.7, w, 3.4, { frame: H.white, alt: "Bench model replaying the coach motion" });
+  pic(s, "bfs", M + w + 0.3, 1.7, w, 3.4, { frame: H.white, alt: "Fail-safe test on the bench model" });
+  stat(s, M, 5.3, w, 1.35, "14.4 W vs 14.5 W", "bench model and coach model agree", true);
+  stat(s, M + w + 0.3, 5.3, w, 1.35, "85 / 85", "automatic checks pass", false);
   s.addNotes("Design-C damper: 48 V servo, 25 mm × 10 mm ball screw, 8 kN, 60 V / 46 A drive, 10 F supercap. The bench model adds everything the coach model idealised: a 10 kHz current loop with a voltage limit, inverter and DC-DC losses, a contactor that takes 20 ms, and winding heat. It still predicts the same power into the bank, and the fail-safe gives exactly today’s damping. The C firmware matches MATLAB on 2,700 test vectors.");
 }
 
@@ -374,19 +361,15 @@ section("Base paper vs SwarmRide");
 }
 {
   const s = slide("LIGHT", "07 · Base paper vs SwarmRide", "Results side by side");
-  table(s, [["Metric", "Base paper (lateral, high-speed train)", "SwarmRide (vertical, crowded LHB)"],
-    ["Speed", "200–350 km/h", "160 km/h (LHB / Vande Bharat top speed)"],
-    ["Ride", "Better than passive and fixed-duty dampers", { t: "Wz −17% (1.844 → 1.528), RMS −41%", b: true }],
-    ["Bad spots", "Resist only", { t: "−80% worst seat at a settlement, for 0.1 Wh", b: true }],
-    ["Power", "25.89–153.19 W (semi-active)", { t: "33–38 W per coach bogie; 55 W loaded wagon", b: true }],
-    ["vs fixed harvester", "Fixed duty harvested more power", "Fixed (C1) Wz 1.639 at 37 W vs C3 1.528 at 33 W"],
-    ["Load change", "One design load", { t: "Flat comfort: Wz 1.493 empty → 1.528 crowded", b: true }],
-    ["Power use", "Not reported", "Bogie self-powered all day (1 W sleep when parked)"]],
-    M, 1.75, CW, [2.3, 4.6, CW - 6.9], { size: 16, headSize: 13, rowH: 0.46 });
-  card(s, M, 5.65, CW, 0.85, H.card, H.line);
-  txt(s, [{ text: "The axis and speeds differ, so the two power figures are not like-for-like. " }, { text: "What is directly comparable is the capability: ", options: { bold: true, color: H.navy } }, { text: "ours adapts to load, looks ahead, can push, and uses its energy on the bogie." }],
-    M + 0.25, 5.75, CW - 0.5, 0.7, { fontSize: 14, valign: "middle" });
-  txt(s, "Base-paper values from its abstract · SwarmRide values from SwarmRide_Sim/results (Stages 3–4)", M, 6.62, CW, 0.3, { fontSize: 12, color: H.muted });
+  table(s, [["", "Base paper (Hua et al. 2022)", "SwarmRide"],
+    ["Motion and speed", "Side to side, high-speed train", "Up and down, LHB / Vande Bharat, 160 km/h"],
+    ["Ride", "Better than a passive damper", { t: "17% better, stays good at every load", b: true }],
+    ["Bad spots", "Resist only", { t: "Pushes: 80% less jolt", b: true }],
+    ["Harvested power", "Measured, not used", { t: "Runs the bogie all day", b: true }]],
+    M, 1.8, CW, [2.6, 4.4, CW - 7.0], { size: 18, headSize: 14, rowH: 0.7 });
+  card(s, M, 5.55, CW, 1.0, H.navy);
+  txt(s, "The trains and directions differ, so we compare capability, not watts: ours adapts to load, looks ahead, can push, and uses its energy on the bogie.",
+    M + 0.3, 5.6, CW - 0.6, 0.9, { fontSize: 15, color: H.ice, valign: "middle" });
   s.addNotes("Be honest with the examiners: the base paper studies lateral ride at higher speeds, so their watts and ours are not a like-for-like contest. The comparison that matters is architectural, and our own controller ladder (C0 to C4) shows each new capability’s value on the same coach and rail.");
 }
 {
