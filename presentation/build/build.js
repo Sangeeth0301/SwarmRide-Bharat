@@ -173,10 +173,8 @@ section("The solution");
   const s = slide("LIGHT", "02 · The solution", "Train Brain: the loco warns every coach before the bump");
   pic(s, "preview", M, 1.75, 6.9, 4.95, { frame: H.white, alt: "The locomotive warns every coach; today's bogie compared with the SwarmRide bogie" });
   const x = 7.8, w = W - M - 7.8;
-  txt(s, "The lead bogie feels every bump first. Coach n reaches the same spot after", x, 1.8, w, 0.7, { fontSize: 16 });
-  card(s, x, 2.55, w, 0.8, H.card, H.line);
-  txt(s, "tₙ = dₙ / v", x, 2.55, w, 0.8, { fontSize: 30, bold: true, color: H.navy, fontFace: "Courier New", align: "center", valign: "middle" });
-  table(s, [["At 160 km/h", "Warning"], ["Coach 1", { t: "0.5 s", b: true }], ["Coach 5", { t: "2.6 s = 260 control steps", b: true }], ["Coach 10", { t: "5.3 s", b: true }]], x, 3.6, w, [w * 0.42, w * 0.58], { size: 15 });
+  txt(s, "The loco’s front bogie feels every bump first. Every coach behind reaches the same spot a little later, so it is warned in advance.", x, 1.8, w, 1.2, { fontSize: 16 });
+  table(s, [["At 160 km/h", "Warning before the bump"], ["Coach 1", { t: "0.5 s", b: true }], ["Coach 5", { t: "2.6 s", b: true }], ["Coach 10", { t: "5.3 s", b: true }]], x, 3.2, w, [w * 0.42, w * 0.58], { size: 15, rowH: 0.48 });
   txt(s, "Tested robust to a ±20 ms late warning. The Train Brain also keeps a map of known bad spots for the push (C4).", x, 5.6, w, 1.0, { fontSize: 15 });
   s.addNotes("Distances: locomotive 20 m, LHB coach 23.5 m, measured to each coach’s front bogie. The controller runs at 100 Hz, so even coach 1 gets 50 steps to prepare.");
 }
@@ -255,37 +253,24 @@ section("Architecture and control system design");
   s.addNotes("LHB and Vande Bharat: replaces the vertical secondary dampers beside the air springs; load from air-spring pressure. ICF: secondary dampers on the bolster springs. BOXN: beside or in place of the friction wedges, with a geared smart damper.");
 }
 {
-  const s = slide("LIGHT", "05 · Control system design", "Control system architecture: two loops, self-powered, fail-safe");
-  pic(s, "ctrl", M, 1.55, CW, 5.05, { frame: H.white, alt: "SwarmRide control system architecture: vehicle controller outer loop, damper drive inner loop, smart damper and vehicle, power, fail-safe and sensing" });
-  txt(s, "Outer loop 100 Hz · inner current loop 10 kHz · harvested energy to the bogie bank · contactor falls back to today’s damper on a fault", M, 6.66, CW, 0.3, { fontSize: 12, color: H.muted });
-  s.addNotes("Read it in three rows. Top, the vehicle controller (outer loop, 100 Hz): the track map and Train Brain give the preview feed-forward, the state feedback (LPV-LQR) uses the estimated coach state, and the load estimate schedules both gains. The force command goes through the semi-active conversion and the damping law, or, at a known bad spot, the push command; the C4 switch picks one, then the current limit. Middle, the damper drive (inner loop, 10 kHz): the PI current controller with back-EMF feed-forward, the voltage limit and the contactor drive the coil; the electromagnetic damper and the ball screw make the damper force on the half-coach vehicle, and the measured coil current is fed back. Bottom: harvested energy goes through the power electronics to the bogie's power bank; the fail-safe supervisor switches the contactor to the fail-safe resistors on a fault or a low bank; sensors and the state estimator close the outer loop. The Simulink version is SR_ControlDiagram.slx.");
-}
-{
-  const s = slide("LIGHT", "05 · Control system design", "Controllers used: optimal, load-scheduled, with preview");
-  table(s, [["Controller", "Control law", "Role"],
-    ["C0 Oil damper", "Passive, fixed c = c_today", "Baseline"],
-    ["C1 Fixed harvester", "One fixed damping setting", "Benchmark"],
-    [{ t: "C2 LPV-LQR", b: true }, "LQR at 5 loads, gains blended by load m, Tc = 10 ms", "Core"],
-    [{ t: "C3 + preview", b: true }, "States [x; p], 221 rail samples ahead and behind", "Full"],
-    [{ t: "C4 + push", b: true }, "Coil motors inside a window at a known bad spot", "Stage 4"],
-    [{ t: "Drive PI", b: true }, "Kp = L/τ, Ki = R/τ, τ = 0.5 ms, back-EMF FF, anti-windup", "10 kHz"]],
-    M, 1.8, 7.3, [1.9, 4.1, 1.3], { size: 14, highlight: [2, 3, 4], rowH: 0.67 });
-  const x = 8.2, w = W - M - 8.2;
-  card(s, x, 1.8, w, 4.75, H.navy);
-  txt(s, [{ text: "Optimal design (LQR)", options: { bold: true, color: H.orangeL, fontSize: 18, breakLine: true } },
-    { text: " ", options: { breakLine: true } },
-    { text: "J = Σ (a/a_ref)² + (d/s_ref)²", options: { fontFace: "Courier New", breakLine: true } },
-    { text: "      + r_w·(F/F_ref)²", options: { fontFace: "Courier New", breakLine: true } },
-    { text: " ", options: { breakLine: true } },
-    { text: "F* = −Kx(m)·x − Kp(m)·p", options: { fontFace: "Courier New", breakLine: true } },
-    { text: " ", options: { breakLine: true } },
-    { text: "c* = F*·v / (v² + ε²)", options: { fontFace: "Courier New", breakLine: true } },
-    { text: "c_floor ≤ c* ≤ c_cap", options: { fontFace: "Courier New", breakLine: true } },
-    { text: " ", options: { breakLine: true } },
-    { text: "Stable at every load: closed-loop spectral radius 0.979–0.981 (LHB, < 1)", options: { color: "BFD8D5" } }],
-    x + 0.3, 2.05, w - 0.6, 4.3, { fontSize: 14, color: H.ice });
-  txt(s, "a = body acceleration over both bogies · d = suspension stroke · F = damper force · m = measured load", M, 6.62, CW, 0.3, { fontSize: 12, color: H.muted });
-  s.addNotes("The ladder of controllers proves each idea separately. C1 is the same kind of approach as the base paper’s fixed-duty-cycle damper. C2 is the optimal controller made load-adaptive (LPV). C3 adds the Train Brain preview, C4 the active push. The inner PI loop with back-EMF feed-forward cancels the coil’s own pole, so the current follows its reference as a first-order lag of 0.5 ms.");
+  const s = slide("LIGHT", "05 · Control system design", "Four controllers, each adds one idea");
+  const cw = (CW - 0.6) / 4;
+  [["C1", "Fixed harvester", "One fixed setting, like the base paper. Harvests, but cannot adapt.", H.muted],
+   ["C2", "Load-adaptive", "Optimal (LQR) control, re-tuned to the passenger load. Same ride, empty or crowded.", H.tealD],
+   ["C3", "+ Train Brain preview", "Uses the loco’s warning to prepare before every bump.", H.tealD],
+   ["C4", "+ Push at bad spots", "At known bad spots the damper pushes, using its own stored energy.", H.orangeD]].forEach(([tag, h, d, col], i) => {
+    const x = M + i * (cw + 0.2), y = 1.8;
+    card(s, x, y, cw, 3.3, H.card, H.line);
+    s.addShape(pres.shapes.RECTANGLE, { x, y, w: cw, h: 0.08, fill: { color: col }, line: { type: "none" } });
+    txt(s, tag, x + 0.25, y + 0.3, cw - 0.5, 0.6, { fontSize: 30, bold: true, color: col });
+    txt(s, h, x + 0.25, y + 0.95, cw - 0.5, 0.75, { fontSize: 18, bold: true, color: H.navy });
+    txt(s, d, x + 0.25, y + 1.7, cw - 0.5, 1.45, { fontSize: 14 });
+  });
+  card(s, M, 5.35, CW, 1.2, H.navy);
+  txt(s, [{ text: "Inside every damper: ", options: { bold: true, color: H.orangeL } },
+    { text: "a fast current loop, 10,000 times a second, makes the coil follow the controller’s command. Today’s oil damper is the baseline we beat." }],
+    M + 0.3, 5.45, CW - 0.6, 1.0, { fontSize: 15, color: H.ice, valign: "middle" });
+  s.addNotes("Each controller adds one idea, so we can show what each idea is worth on the same coach and track. C1 is a fixed harvester, the same kind of approach as the base paper. C2 is an optimal LQR controller designed at five loads and blended by the measured load, so the ride stays the same from empty to crowded. C3 adds the Train Brain preview. C4 adds the push at known bad spots. Inside the damper, a PI current loop with back-EMF feed-forward makes the coil current follow the command. All controllers are stable at every load.");
 }
 {
   const s = slide("LIGHT", "05 · Implementation", "Built and run in MATLAB/Simulink R2024b");
@@ -363,8 +348,8 @@ section("Results");
   pic(s, "bfs", M + w + 0.3, 1.7, w, 3.2, { frame: H.white, alt: "Fail-safe test: force during the contactor change and damping after the fault" });
   const w4 = (CW - 0.6) / 4;
   stat(s, M, 5.1, w4, 1.5, "14.4 W", "into the bank on replayed track (coach model 14.5 W)", true);
-  stat(s, M + (w4 + 0.2), 5.1, w4, 1.5, "17,500", "N s/m after a fault = today’s damper (20 ms gap)", false);
-  stat(s, M + 2 * (w4 + 0.2), 5.1, w4, 1.5, "10 / 10", "C firmware = MATLAB, double and float", false);
+  stat(s, M + (w4 + 0.2), 5.1, w4, 1.5, "17,500", "N s/m after a fault: the same as today’s damper", false);
+  stat(s, M + 2 * (w4 + 0.2), 5.1, w4, 1.5, "10 / 10", "C firmware matches MATLAB in every test", false);
   stat(s, M + 3 * (w4 + 0.2), 5.1, w4, 1.5, "85 / 85", "automatic verification checks pass", false);
   s.addNotes("Design-C damper: 48 V servo, 25 mm × 10 mm ball screw, 8 kN, 60 V / 46 A drive, 10 F supercap. The bench model adds everything the coach model idealised: a 10 kHz current loop with a voltage limit, inverter and DC-DC losses, a contactor that takes 20 ms, and winding heat. It still predicts the same power into the bank, and the fail-safe gives exactly today’s damping. The C firmware matches MATLAB on 2,700 test vectors.");
 }
@@ -375,7 +360,7 @@ section("Base paper vs SwarmRide");
   const s = slide("LIGHT", "07 · Base paper vs SwarmRide", "Architecture: same core idea, five new capabilities");
   table(s, [["Aspect", "Base paper · Hua et al., IEEE TVT 2022", "SwarmRide (ours)"],
     ["Vehicle, axis", "High-speed train, lateral", "LHB, Vande Bharat, ICF, BOXN freight — vertical"],
-    ["Damper drive", "Damping set by harvesting-circuit duty cycle", "Ball-screw servo + 4-quadrant H-bridge: current = force"],
+    ["Damper drive", "Damping set by harvesting-circuit duty cycle", "Ball-screw servo + 4-quadrant H-bridge: the current sets the force"],
     ["Controller", "LQG target force, semi-active tracking", { t: "LPV-LQR scheduled on measured load + 10 kHz PI loop", b: true }],
     ["Look-ahead", "—", { t: "Train Brain preview, 221 rail samples", b: true }],
     ["Active push", "No (semi-active, resist only)", { t: "Yes — C4 at known bad spots, from banked energy", b: true }],
@@ -384,7 +369,7 @@ section("Base paper vs SwarmRide");
     ["Fail-safe", "—", "Hardware contactor → today’s damping"],
     ["Validation", "Prototype cyclic tests + simulation", "85 automated checks, bench model, C firmware"]],
     M, 1.75, CW, [2.1, 4.4, CW - 6.5], { size: 16, headSize: 13, highlight: [3, 4, 5, 6], rowH: 0.47 });
-  txt(s, "“—” = not part of the base paper’s study as described in its published abstract (DOI 10.1109/TVT.2022.3149265)", M, 6.62, CW, 0.3, { fontSize: 12, color: H.muted });
+  txt(s, "“—” means not part of the base paper’s study, as described in its published abstract", M, 6.62, CW, 0.3, { fontSize: 12, color: H.muted });
   s.addNotes("We keep the base paper’s core idea — one electromagnetic device that both controls vibration and harvests energy on a train — and add the capabilities highlighted in teal: look-ahead, push, a power bank that actually runs the bogie, safety sensing, plus a hardware fail-safe and a verified firmware path to hardware.");
 }
 {
@@ -409,7 +394,7 @@ section("Base paper vs SwarmRide");
   txt(s, "08 · WHY IT MATTERS", M, 0.75, CW, 0.4, { fontSize: 14, bold: true, charSpacing: 3, color: H.navy });
   txt(s, "Not a better damper. A self-powered, train-aware suspension.", M, 1.3, 11, 2.0, { fontSize: 44, bold: true, color: H.navy });
   const w = (CW - 0.6) / 4;
-  [["Adapts", "Comfort stays flat from empty to crowded"], ["Anticipates", "The loco warns every coach, t = d / v"], ["Acts", "Pushes at bad spots: −80% jolt"], ["Protects", "Powers its own safety sensors, all day"]].forEach(([h, d], i) => {
+  [["Adapts", "Comfort stays flat from empty to crowded"], ["Anticipates", "The loco warns every coach before the bump"], ["Acts", "Pushes at bad spots: −80% jolt"], ["Protects", "Powers its own safety sensors, all day"]].forEach(([h, d], i) => {
     const x = M + i * (w + 0.2);
     card(s, x, 4.3, w, 2.1, H.navy);
     txt(s, h, x + 0.25, 4.5, w - 0.5, 0.55, { fontSize: 24, bold: true, color: H.orangeL });

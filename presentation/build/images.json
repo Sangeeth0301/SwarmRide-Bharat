@@ -20,12 +20,12 @@
   "h": 696
  },
  "damper": {
-  "path": "images/pitch/smart_damper_concept.jpg",
+  "path": "images/pitch/smart_damper_concept_plain.jpg",
   "w": 1754,
   "h": 1240
  },
  "preview": {
-  "path": "images/pitch/train_preview_concept.jpg",
+  "path": "images/pitch/train_preview_concept_plain.jpg",
   "w": 1754,
   "h": 1240
  },
@@ -43,11 +43,6 @@
   "path": "images/casnub_annotated.jpg",
   "w": 1920,
   "h": 1280
- },
- "ctrl": {
-  "path": "images/control_system_design_slide.png",
-  "w": 2700,
-  "h": 1305
  },
  "m4": {
   "path": "SwarmRide_Sim/results/stage4_model_top.png",
