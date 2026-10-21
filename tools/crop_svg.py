@@ -1,6 +1,7 @@
 """Crops the top of an SVG (for example its title) by shifting the viewBox, for slides that carry their own title.
+Optional "old=>new" arguments replace text, for example to swap a formula for plain words.
 Usage, from the repository root:
-    python tools/crop_svg.py images/architecture.svg images/architecture_slide.svg 88
+    python tools/crop_svg.py images/architecture.svg images/architecture_slide.svg 88 ["old=>new" ...]
 (PNG: render the output SVG in a browser)
 """
 import re
@@ -8,6 +9,11 @@ import sys
 
 src, out, top = sys.argv[1], sys.argv[2], float(sys.argv[3])
 s = open(src, encoding='utf-8').read()
+for pair in sys.argv[4:]:
+    old, new = pair.split('=>', 1)
+    if old not in s:
+        sys.exit(f'text not found: {old}')
+    s = s.replace(old, new)
 m = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)" width="([\d.]+)" height="([\d.]+)"', s)
 if not m:
     sys.exit('expected an SVG that starts with viewBox="0 0 W H" width="W" height="H"')
