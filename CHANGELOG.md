@@ -8,6 +8,13 @@
 - 22-slide project review deck (`presentation/`) with its pptxgenjs builder
 - README, project website and documents list updated
 
+## Public release and project review
+- Repository made public; confidential notices replaced with an all-rights-reserved notice (pull request #1)
+- CodeRabbit review settings (`.coderabbit.yaml`)
+- MATLAB Code Analyzer: 37 findings fixed or documented, 0 left (warning identifiers, unused variables and outputs, script-set variables, datetime)
+- Firmware: generated tables written with explicit casts; 0 warnings under strict GCC flags and the static analyzer in both number types; `make strict` target
+- Review report: `docs/REVIEW.md`
+
 ## Project website
 - `frontend/index.html`: the whole project on one page in simple English: problem, idea, how the smart damper works, Train Brain with a warning-time calculator, real bogies, the proof of Stages 1-5 as tabs with figures, the bench prototype, positioning, roadmap, where the project stands, and links to every document
 - Light and dark themes, phone layout, click-to-enlarge figures; linked from the README and the dashboard

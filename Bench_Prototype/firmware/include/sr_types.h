@@ -10,4 +10,7 @@ typedef float sr_real;
 typedef double sr_real;
 #endif
 
+/* Generated tables are written as SR_C(value): the explicit cast says the rounding to float is intended. */
+#define SR_C(x) ((sr_real)(x))
+
 #endif

@@ -69,7 +69,7 @@ say('  Bank (per bogie): DC-DC %.0f W bidirectional, supercapacitor %d x %.0f F 
 
 %% B. Bench model checks
 say('=== B. Bench model checks ===\n');
-[ob, Bs] = bench_run(mb, 'replay_poor', 'simequiv');
+[ob, ~] = bench_run(mb, 'replay_poor', 'simequiv');
 tb = ob.F_lc.Time;  Fb = squeeze(ob.F_lc.Data);
 Rv = DR.poor;  Fv = interp1(double(Rv.t), double(Rv.Fd), tb);
 kb = tb > 3 & tb < tb(end) - 0.01;
@@ -149,7 +149,7 @@ for Fc = [300 600]
 end
 [o, P] = sr_run(m3, 'LHB', 'designType', 'C', 'ctrlMode', 'C3', 'D_override', struct('F_rated', HW.F_peak));
 MG(end+1) = mrec('F_rated', HW.F_peak, o, P);
-[o, P] = sr_run(m4, 'LHB', 'designType', 'C', 'ctrlMode', 'C4', 'trackType', 'settlement', 'D_override', struct('F_rated', HW.F_peak));
+[o, ~] = sr_run(m4, 'LHB', 'designType', 'C', 'ctrlMode', 'C4', 'trackType', 'settlement', 'D_override', struct('F_rated', HW.F_peak));
 r8 = squeeze(o.az.Data);  tt = o.az.Time;  k8 = tt > 0.3 & tt < 15;
 MG(end+1) = struct('what', 'F_rated_settle', 'val', HW.F_peak, 'Wz', NaN, 'Wzmax', NaN, 'rms', max(abs(r8(:, k8)), [], 'all'), 'Pdc', NaN);
 [o, P] = sr_run(m1, 'LHB');
@@ -284,7 +284,7 @@ T.F_change = max(abs(F(k)));  T.F_before = max(abs(F(t > 1 & t < 5)));
 T.Fe_gap = max(abs(Fe(k & md > 0.5 & md < 1.5)));
 end
 
-function q = test_replay(o, BP, Rv)
+function q = test_replay(o, ~, Rv)
 t = o.F_lc.Time;  k = t > 3 & t < t(end) - 0.01;
 g = @(n) squeeze(o.(n).Data);
 Pm = g('Pmech');  Pc = g('Pcu');  Pb = g('Pbank');  i = g('i');  s = g('sat');  Fe = g('F_em');  act = g('act');

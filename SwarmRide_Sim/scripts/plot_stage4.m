@@ -88,7 +88,7 @@ try
     load_system(fullfile(root, 'models', 'SR_Stage4.slx'));
     print('-sSR_Stage4', '-dpng', '-r150', fullfile(resdir, 'stage4_model_top.png'));
 catch err
-    warning('Diagram export failed: %s', err.message);
+    warning('swarmride:diagram', 'Diagram export failed: %s', err.message);
 end
 fprintf('Saved results/stage4_*.png\n');
 
