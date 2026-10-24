@@ -102,6 +102,11 @@ Two cascaded loops: the vehicle controller (outer loop, 100 Hz) decides the damp
 ## On a real bogie
 
 <p align="center">
+  <img src="images/oil_damper_today.jpg" alt="LHB bogie today: the oil damper beside the air spring" width="70%">
+</p>
+<p align="center"><sub>Today's LHB bogie: the oil damper (1) beside the air spring (2). The oil damper is the part SwarmRide replaces. Photo: Apurv013, CC0, Wikimedia Commons.</sub></p>
+
+<p align="center">
   <img src="images/casnub_annotated.jpg" alt="Casnub bogie of a BOXN wagon, annotated with SwarmRide components" width="100%">
 </p>
 <p align="center"><sub>Casnub bogie of a BOXNM1 wagon, annotated with where each SwarmRide part goes.</sub></p>
